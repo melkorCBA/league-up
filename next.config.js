@@ -5,6 +5,7 @@ const nextConfig = {
   images: {
     domains: ["melkorwebjobstorage.blob.core.windows.net"],
   },
+  output: "standalone",
 };
 
 module.exports = nextConfig;

@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "dockerbuild": "sh dockerbuild.sh",
-    "dockerrun": "sh dockerrun.sh"
+    "dockerrun": "sh dockerrun.sh",
+    "heroku-release": "npm run heroku-udockerbuid & npm run heroku-dockerpush & npm run heroku-dockerrelease",
+    "heroku-udockerbuid": "sh heroku-dockerbuild.sh",
+    "heroku-dockerpush": "sh heroku-dockerpush.sh",
+    "heroku-dockerrelease": "sh heroku-dockerrelease.sh"
   },
   "dependencies": {
     "axios": "^0.27.2",
