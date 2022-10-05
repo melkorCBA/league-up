@@ -5,14 +5,19 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "buildv2": "mv .env.production-v2 .env.production && next build",
     "start": "next start",
     "lint": "next lint",
     "dockerbuild": "sh dockerbuild.sh",
     "dockerrun": "sh dockerrun.sh",
     "heroku-release": "npm run heroku-udockerbuid & npm run heroku-dockerpush & npm run heroku-dockerrelease",
-    "heroku-udockerbuid": "sh heroku-dockerbuild.sh",
+    "heroku-release-v2": "npm run heroku-dockerbuid-v2 & npm run heroku-dockerpush-v2 & npm run heroku-dockerrelease-v2",
+    "heroku-dockerbuid": "sh heroku-dockerbuild.sh",
     "heroku-dockerpush": "sh heroku-dockerpush.sh",
-    "heroku-dockerrelease": "sh heroku-dockerrelease.sh"
+    "heroku-dockerrelease": "sh heroku-dockerrelease.sh",
+    "heroku-dockerbuid-v2": "sh heroku-dockerbuild-v2.sh",
+    "heroku-dockerpush-v2": "sh heroku-dockerpush-v2.sh",
+    "heroku-dockerrelease-v2": "sh heroku-dockerrelease-v2.sh"
   },
   "dependencies": {
     "axios": "^0.27.2",
