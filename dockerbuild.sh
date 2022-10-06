@@ -1,2 +1,2 @@
 #! /bin/bash
-docker build . -t melkorcba/standings-board
+npm run -s dockerbuild Dockerfile melkorcba/standings-board

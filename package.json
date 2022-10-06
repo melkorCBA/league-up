@@ -3,21 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "buildv2": "mv .env.production-v2 .env.production && next build",
+    "dev": "react-env next dev",
+    "build": "react-env next build",
     "start": "next start",
     "lint": "next lint",
-    "dockerbuild": "sh dockerbuild.sh",
-    "dockerrun": "sh dockerrun.sh",
-    "heroku-release": "npm run heroku-udockerbuid & npm run heroku-dockerpush & npm run heroku-dockerrelease",
-    "heroku-release-v2": "npm run heroku-dockerbuid-v2 & npm run heroku-dockerpush-v2 & npm run heroku-dockerrelease-v2",
-    "heroku-dockerbuid": "sh heroku-dockerbuild.sh",
-    "heroku-dockerpush": "sh heroku-dockerpush.sh",
-    "heroku-dockerrelease": "sh heroku-dockerrelease.sh",
-    "heroku-dockerbuid-v2": "sh heroku-dockerbuild-v2.sh",
-    "heroku-dockerpush-v2": "sh heroku-dockerpush-v2.sh",
-    "heroku-dockerrelease-v2": "sh heroku-dockerrelease-v2.sh"
+    "dockerbuild": "sh -c 'docker build  -f $0 -t $1 .'",
+    "dockerrun": "sh -c 'docker run -p $0:$1 -d $2'",
+    "dockerpush": "sh -c 'docker push $0'",
+    "heroku-login": "heroku login",
+    "heroku-clogin": "heroku container:login",
+    "heroku-release": "sh -c 'heroku container:release web -a $0'",
+    "release-evening-forest": "sh heroku-evening-forest-69342.sh",
+    "release-intense-island": "sh heroku-intense-island-29243.sh",
+    "gitac": "sh -c 'message=$0 git add .;  git commit -m message'"
   },
   "dependencies": {
     "axios": "^0.27.2",
@@ -27,7 +25,8 @@
     "pusher": "^5.1.1-beta",
     "pusher-js": "^7.4.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-env": "^0.0.0"
   },
   "devDependencies": {
     "eslint": "8.23.0",
