@@ -15,7 +15,7 @@
     "heroku-release": "sh -c 'heroku container:release web -a $0'",
     "release-evening-forest": "sh heroku-evening-forest-69342.sh",
     "release-intense-island": "sh heroku-intense-island-29243.sh",
-    "gitac": "sh -c 'message=$0 git add .;  git commit -m message'"
+    "gitac": "sh -c 'message=$0; git add .;  git commit -m \"$message\";'"
   },
   "dependencies": {
     "axios": "^0.27.2",
