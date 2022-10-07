@@ -12,5 +12,5 @@ npm.cmd run -s dockerbuild Dockerfile registry.heroku.com/$instance/web;
 echo 'pushing image to' $instance;
 npm.cmd run -s heroku-push registry.heroku.com/$instance/web;
 # # # release
-# echo 'releasing image to' $instance;
-# npm.cmd run -s heroku-release $instance;
+echo 'releasing image to' $instance;
+npm.cmd run -s heroku-release $instance;
