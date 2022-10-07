@@ -18,7 +18,6 @@
     "gitac": "sh -c 'message=$0; git add .;  git commit -m \"$message\";'"
   },
   "dependencies": {
-    "@beam-australia/react-env": "^3.1.1",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
     "mongoose": "^6.5.4",
@@ -26,8 +25,7 @@
     "pusher": "^5.1.1-beta",
     "pusher-js": "^7.4.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-env": "latest"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "eslint": "8.23.0",

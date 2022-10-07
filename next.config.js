@@ -7,10 +7,10 @@ const nextConfig = {
   },
   output: "standalone",
   publicRuntimeConfig: {
-    PUBLIC_BaseApiURL: process.env.PUBLIC_BaseApiURL,
-    PUBLIC_BaseURL: process.env.PUBLIC_BaseURL,
-    PUBLIC_PusherApiKey: process.env.PUBLIC_PusherApiKey,
-    PUBLIC_AdminPasscode: process.env.PUBLIC_AdminPasscode,
+    BRW_BaseApiURL: process.env.BRW_BaseApiURL,
+    BRW_BaseURL: process.env.BRW_BaseURL,
+    BRW_PusherApiKey: process.env.BRW_PusherApiKey,
+    BRW_AdminPasscode: process.env.BRW_AdminPasscode,
   },
 };
 
