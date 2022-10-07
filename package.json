@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "react-env next dev",
-    "build": "react-env -- next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "dockerbuild": "sh -c 'docker build  -f $0 -t $1 .'",
