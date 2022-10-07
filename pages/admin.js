@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
 import UpdateGrid from "../components/updateGrid";
 import Head from "next/head";
-import { session, ENVIRONMENT } from "../lib/util";
+import {
+  session,
+  ENVIRONMENT,
+  setClientenvsInSession,
+  CLIENT_ENVIRONMENT,
+} from "../lib/util";
 
-export default function Admin({ initalTeamsData, league }) {
+export default function Admin({ initalTeamsData, league, clientenvs }) {
+  // add envs to session
+  setClientenvsInSession(clientenvs);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [passcode, setPasscode] = useState("");
   useEffect(() => {
@@ -46,10 +54,18 @@ export default function Admin({ initalTeamsData, league }) {
 }
 
 export async function getServerSideProps() {
+  const envs = CLIENT_ENVIRONMENT;
+
   const teamsResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/teams`);
   const leagueResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/league`);
   const initalTeamsData = await teamsResponse.json();
   const leagues = await leagueResponse.json();
   // Pass data to the page via props
-  return { props: { initalTeamsData, league: leagues["data"][0] } };
+  return {
+    props: {
+      initalTeamsData,
+      league: leagues["data"][0],
+      clientenvs: envs,
+    },
+  };
 }

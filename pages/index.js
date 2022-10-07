@@ -1,10 +1,12 @@
 import Head from "next/head";
 import Image from "next/image";
 import Table from "../components/table";
-import { ENVIRONMENT } from "../lib/util";
+import { ENVIRONMENT, setClientenvsInSession } from "../lib/util";
 import styles from "../styles/Home.module.css";
 
 export default function Home({ initalTeamsData, league }) {
+  // add envs to session
+  setClientenvsInSession(clientenvs);
   return (
     <div className={styles.container}>
       <Head>
@@ -43,10 +45,18 @@ export default function Home({ initalTeamsData, league }) {
 
 export async function getServerSideProps() {
   // Fetch data from external API
+  const envs = CLIENT_ENVIRONMENT;
+
   const teamsResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/teams`);
   const leagueResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/league`);
   const initalTeamsData = await teamsResponse.json();
   const leagues = await leagueResponse.json();
   // Pass data to the page via props
-  return { props: { initalTeamsData, league: leagues["data"][0] } };
+  return {
+    props: {
+      initalTeamsData,
+      league: leagues["data"][0],
+      clientenvs: envs,
+    },
+  };
 }
