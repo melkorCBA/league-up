@@ -9,18 +9,23 @@ import {
 } from "../lib/util";
 
 export default function Admin({ initalTeamsData, league, clientenvs }) {
-  // add envs to session
-  setClientenvsInSession(clientenvs);
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [passcode, setPasscode] = useState("");
+  const [initClientenvs, setclientenvs] = useState(false);
   useEffect(() => {
+    if (!initClientenvs) {
+      // add envs to session
+      setClientenvsInSession(clientenvs);
+      setclientenvs(true);
+    }
     session.set("passcode", passcode);
+
     if (
       session.get("passcode") &&
       session.get("passcode") === ENVIRONMENT.AdminPasscode
     ) {
       setIsLoggedIn(true);
+
       return;
     }
     setIsLoggedIn(false);
@@ -55,7 +60,6 @@ export default function Admin({ initalTeamsData, league, clientenvs }) {
 
 export async function getServerSideProps() {
   const envs = CLIENT_ENVIRONMENT;
-
   const teamsResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/teams`);
   const leagueResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/league`);
   const initalTeamsData = await teamsResponse.json();

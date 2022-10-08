@@ -1,12 +1,19 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useEffect } from "react";
 import Table from "../components/table";
-import { ENVIRONMENT, setClientenvsInSession } from "../lib/util";
+import {
+  ENVIRONMENT,
+  setClientenvsInSession,
+  CLIENT_ENVIRONMENT,
+} from "../lib/util";
 import styles from "../styles/Home.module.css";
 
-export default function Home({ initalTeamsData, league }) {
-  // add envs to session
-  setClientenvsInSession(clientenvs);
+export default function Home({ initalTeamsData, league, clientenvs }) {
+  useEffect(() => {
+    // add envs to session
+    setClientenvsInSession(clientenvs);
+  }, []);
   return (
     <div className={styles.container}>
       <Head>

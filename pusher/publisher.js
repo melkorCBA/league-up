@@ -4,7 +4,7 @@ import { ENVIRONMENT } from "../lib/util";
 export const getPublisher = () => {
   return new Pusher({
     appId: ENVIRONMENT.PusherAppId,
-    key: ENVIRONMENT.PusherAPIKey,
+    key: ENVIRONMENT.PusherApiKey,
     secret: ENVIRONMENT.PusherSecret,
     cluster: "ap2",
     useTLS: true,

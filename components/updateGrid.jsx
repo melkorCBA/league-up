@@ -57,7 +57,7 @@ const UpdateGrid = ({ data, league }) => {
                 <td className="teamName">
                   <input
                     value={d["teamName"]}
-                    onChange={(e) => onUpdate("teamName", e.target.value)}
+                    onChange={(e) => onUpdate(i, "teamName", e.target.value)}
                   />
                 </td>
 
