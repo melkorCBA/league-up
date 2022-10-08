@@ -12,6 +12,7 @@
     "dockerpush": "sh -c 'docker push $0'",
     "heroku-login": "heroku login",
     "heroku-clogin": "heroku container:login",
+    "heroku-create": "heroku create",
     "heroku-release": "sh -c 'heroku container:release web -a $0'",
     "release-evening-forest": "sh heroku-evening-forest-69342.sh",
     "release-intense-island": "sh heroku-intense-island-29243.sh",

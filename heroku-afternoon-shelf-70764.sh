@@ -3,7 +3,7 @@
 echo 'setting node path';
 PATH="C:/Program Files/nodejs:$PATH";
 
-instance="ntense-island-29243";
+instance="afternoon-shelf-70764";
 
 # build
 echo 'building image for' $instance;
