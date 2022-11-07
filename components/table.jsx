@@ -48,7 +48,7 @@ const Table = ({ data }) => {
               <td>{d.draw}</td>
               <td>{d.loss}</td>
               <td>{d.pts}</td>
-              <td>{d.nr}</td>
+              <td>{d.nr?.toFixed(2)}</td>
             </tr>
           ))}
         </tbody>

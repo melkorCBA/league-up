@@ -14,6 +14,7 @@ const UpdateGrid = ({ data, league }) => {
     onLeaugeNameUpdate,
     leagueName,
     updateLeague,
+    unsyncTeamMatches,
   } = useTeam(data, league);
   return (
     <>
@@ -109,6 +110,12 @@ const UpdateGrid = ({ data, league }) => {
                     onClick={() => removeTeam(i)}
                   >
                     delete
+                  </button>
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={() => unsyncTeamMatches(i)}
+                  >
+                    unSync
                   </button>
                 </td>
               </tr>

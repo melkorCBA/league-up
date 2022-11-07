@@ -1,6 +1,9 @@
 .container {
   padding: 0 2rem;
 }
+.inputText {
+  width: 100%;
+}
 
 .main {
   min-height: 100vh;

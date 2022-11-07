@@ -3,6 +3,7 @@ import Logo from "../../models/logo";
 import dbConnect from "../../lib/dbConnect";
 import { errorHandler, validators } from "../../lib/errorHandler";
 import { getPublisher, trigger } from "../../pusher/publisher";
+
 export default async function handler(req, res) {
   const { method } = req;
   const publisher = getPublisher();
@@ -13,10 +14,12 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           // validators.headers.header("authorization", "Auth header is missing"),
         ]);
-        const teams = await Team.find({ isActive: true }).sort({
-          pts: "desc",
-          nr: "desc",
+        const teams = await Team.find({ isActive: true });
+        teams.sort((team1, team2) => {
+          if (team2.pts - team1.pts !== 0) return team2.pts - team1.pts;
+          return team2.nr - team1.nr;
         });
+
         res.status(200).json({ data: teams });
       } catch (err) {
         errorHandler(err, res);
@@ -28,11 +31,13 @@ export default async function handler(req, res) {
       try {
         await validators.attach(req, res, [
           validators.body.field("teamName", "team name is required"),
+          validators.body.field("abrev", "team short name(abrev) is required"),
         ]);
-        const { teamName, logoURL } = req.body;
+        const { teamName, logoURL, abrev } = req.body;
         const team = new Team({
           teamName,
           logoURL,
+          abrev,
         });
 
         // set logo

@@ -30,6 +30,8 @@ const useTeam = (initialTeams, initialLeague) => {
 
   const updateTeam = async (index) => await patchTeam(teams[index]);
   const removeTeam = async (index) => await deleteTeam(teams[index]["_id"]);
+  const unsyncTeamMatches = async (index) =>
+    await changeSycnStatus(teams[index]["_id"], false);
 
   const patchTeam = async (team) => {
     const URL = `${ENVIRONMENT.BaseApiURL}/teams/${team["_id"]}`;
@@ -97,6 +99,22 @@ const useTeam = (initialTeams, initialLeague) => {
     setNewTeam(nt);
   };
 
+  //change Team's All Matches SycnStatus
+  const changeSycnStatus = async (teamId, status) => {
+    const URL = `${ENVIRONMENT.BaseApiURL}/teams/${teamId}/matches/syncAll`;
+    try {
+      const payload = {
+        syncStatus: !!status,
+      };
+
+      await axios.patch(URL, payload);
+      setSuccess("sycn all matches associated with the team");
+      await reFeatchTeams();
+    } catch (err) {
+      setErrors([err["message"]]);
+    }
+  };
+
   return {
     teams,
     onUpdate,
@@ -108,6 +126,7 @@ const useTeam = (initialTeams, initialLeague) => {
     onLeaugeNameUpdate,
     leagueName: league["name"],
     updateLeague,
+    unsyncTeamMatches,
   };
 };
 

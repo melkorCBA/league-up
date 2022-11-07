@@ -1,8 +1,8 @@
-import Team from "../../../models/team";
-import Logo from "../../../models/logo";
-import dbConnect from "../../../lib/dbConnect";
-import { errorHandler, validators } from "../../../lib/errorHandler";
-import { getPublisher, trigger } from "../../../pusher/publisher";
+import Team from "../../../../models/team";
+import Logo from "../../../../models/logo";
+import dbConnect from "../../../../lib/dbConnect";
+import { errorHandler, validators } from "../../../../lib/errorHandler";
+import { getPublisher, trigger } from "../../../../pusher/publisher";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -32,11 +32,12 @@ export default async function handler(req, res) {
         const { id } = req.query;
         const team = await Team.findById(id);
         if (!team) {
-          res.status(200).json({ status: "record not found", data: null });
+          res.status(400).json({ status: "record not found", data: null });
           return;
         }
         const {
           teamName,
+          abrev,
           logoURL,
           pld,
           win,
@@ -46,9 +47,14 @@ export default async function handler(req, res) {
           nr,
           isQualified,
           isActive,
+          runsScored,
+          runsConceded,
+          oversFaced,
+          oversBowled,
         } = req.body;
         const payload = {
           teamName,
+          abrev,
           logoURL,
           pld,
           win,
@@ -58,6 +64,10 @@ export default async function handler(req, res) {
           nr,
           isQualified,
           isActive,
+          runsScored,
+          runsConceded,
+          oversFaced,
+          oversBowled,
         };
         Object.keys(payload).forEach((key) => {
           if (payload[key] !== undefined) {
