@@ -8,6 +8,13 @@ body {
   background-size: 1500px;
   background-position: left;
   background-color: #000000;
+  opacity: 0.9;
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 a {
@@ -41,7 +48,7 @@ input {
   }
   body {
     color: rgb(255, 248, 248);
-    background: rgb(0, 0, 0);
+    /* background: rgb(0, 0, 0); */
   }
 }
 
@@ -84,4 +91,58 @@ div.is-disabled {
 
 .hand-pointer:hover {
   cursor: pointer;
+}
+
+.horizontal-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+.vertical-center {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+@media only screen and (min-height: 600px) {
+  .dashBoard-container {
+    height: 100%;
+
+    min-height: 700px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .dashBoard-container {
+    height: 100%;
+
+    min-height: 720px;
+  }
+}
+
+.current-score-text-sm {
+  font-size: 4em;
+}
+.current-score-text-lg {
+  font-size: 8em;
+}
+
+.live-icon {
+  width: 24px;
+  height: 24px;
+  mask: url(https://img.icons8.com/youtube-live) no-repeat center / contain;
+  -webkit-mask: url(https://img.icons8.com/youtube-live) no-repeat center /
+    contain;
+}
+
+.on-live {
+  background-color: orange; /* defines the background color of the image */
+}
+.on-live:hover {
+  background-color: rgb(236, 213, 77);
+}
+
+.offline {
+  background-color: rgb(0, 0, 0);
+}
+
+.offline:hover {
+  background-color: orange;
 }

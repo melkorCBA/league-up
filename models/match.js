@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { TOSS_STATUS, BATFIRST_STATUS, WIN_STATUS } from "../lib/util";
 
 const MatchTeamSchema = new mongoose.Schema({
   team: { type: mongoose.Types.ObjectId, ref: "Team" },
@@ -28,19 +29,19 @@ const MatchSchema = new mongoose.Schema(
     },
     toss: {
       type: String, // 0 - toss yet to be, 1 - team 1 won, 2 - team 2 won
-      enum: ["0", "1", "2"],
+      enum: TOSS_STATUS.ALL_TO_ARRAY,
       message: "{VALUE} is not supported",
       default: "0",
     },
     bat1st: {
       type: String, // 0 - yet to be, 1 - team 1 bat 1st, 2 - team 2 bat 1st
-      enum: ["0", "1", "2"],
+      enum: BATFIRST_STATUS.ALL_TO_ARRAY,
       message: "{VALUE} is not supported",
       default: "0",
     },
     won: {
       type: String, // -1  - yet to be 0 - draw, 1 - team 1 won, 2 - team 2 won
-      enum: ["-1", "0", "1", "2"],
+      enum: WIN_STATUS.ALL_TO_ARRAY,
       message: "{VALUE} is not supported",
       default: "-1",
     },

@@ -1,9 +1,10 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import useDeleteMatch from "../hooks/useMatchDelete";
 import Switch from "./Switch";
 
-const MatchCard = ({ matchData, matchNumber }) => {
+const MatchCard = ({ matchData, matchNumber, isOnLive, onLiveChnage }) => {
   const { match, updateMatch } = useDeleteMatch(matchData);
   const onStatusChnage = (status) => {
     updateMatch(status);
@@ -40,6 +41,14 @@ const MatchCard = ({ matchData, matchNumber }) => {
   };
   return (
     <div className="d-flex flex-column  match-card">
+      <div className="d-flex justify-content-center m-2">
+        <div
+          className={`live-icon ${
+            isOnLive ? "on-live" : "offline"
+          } hand-pointer `}
+          onClick={() => onLiveChnage(matchCardData["_id"])}
+        ></div>
+      </div>
       <div
         onClick={() => router.push(`matches/${matchCardData["_id"]}`)}
         className="hand-pointer"

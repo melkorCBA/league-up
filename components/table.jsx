@@ -1,10 +1,9 @@
 import Image from "next/image";
 import React from "react";
-import useData from "../hooks/useData";
-const Table = ({ data }) => {
-  const teams = useData(data);
+
+const Table = ({ teams }) => {
   return (
-    <div>
+    <div className="w-100">
       <table className="table table-dark">
         <thead>
           <tr>
@@ -19,7 +18,7 @@ const Table = ({ data }) => {
           </tr>
         </thead>
         <tbody>
-          {teams.map((d, i) => (
+          {teams?.map((d, i) => (
             <tr key={d._id} className={i < 2 ? "table-primary" : ""}>
               <td>
                 <span>{i + 1}</span>

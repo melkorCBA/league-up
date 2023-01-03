@@ -1,7 +1,7 @@
 import React from "react";
 import MatchCard from "./MatchCard";
 
-const MatchesCardList = ({ matches }) => {
+const MatchesCardList = ({ matches, currentMatchId, updateCurrentMatch }) => {
   return (
     <>
       <h2 className="text-center mt-5">Matches</h2>
@@ -12,6 +12,8 @@ const MatchesCardList = ({ matches }) => {
               matchData={match}
               matchNumber={i + 1}
               className="col-md-3"
+              isOnLive={currentMatchId === match._id}
+              onLiveChnage={updateCurrentMatch}
             />
           </div>
         ))}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import client from "../pusher/client";
+import { CHANNELS, EVENTS } from "../pusher/constants";
 import axios from "axios";
 import { ENVIRONMENT } from "../lib/util";
 
@@ -14,12 +15,16 @@ const useData = (initialData) => {
 
   useEffect(() => {
     const pusherClient = client();
-    const channel = pusherClient.subscribeTochannel("standings-board");
-    pusherClient.subscribeToEvent(channel, "updateTeams", async (data) => {
-      // refetch data
-      console.log("team updated event recevied");
-      await reFeatchTeams();
-    });
+    const channel = pusherClient.subscribeTochannel(CHANNELS.STANDING_BOARD);
+    pusherClient.subscribeToEvent(
+      channel,
+      EVENTS.UPDATE_TEAMS,
+      async (data) => {
+        // refetch data
+        console.log("team updated event recevied");
+        await reFeatchTeams();
+      }
+    );
     return () => {
       pusherClient.unsubscribeToEvent(channel, "updateTeams");
     };

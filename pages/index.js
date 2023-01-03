@@ -1,19 +1,30 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect } from "react";
 import Table from "../components/table";
+import CurrentMatch from "../components/views/CurrentMatch/CurrentMatch";
 import {
   ENVIRONMENT,
   setClientenvsInSession,
   CLIENT_ENVIRONMENT,
+  CONSTANTS,
 } from "../lib/util";
 import styles from "../styles/Home.module.css";
+import useDashboard from "../hooks/useDashboard";
 
-export default function Home({ initalTeamsData, league, clientenvs }) {
-  useEffect(() => {
-    // add envs to session
-    setClientenvsInSession(clientenvs);
-  }, []);
+export default function Home({ initalDashboard, league, clientenvs }) {
+  const { view, teams, currentMatch } = useDashboard({
+    initalDashboard,
+    clientenvs,
+  });
+
+  const dashboardView = () => {
+    if (view === CONSTANTS.VIEWS.STANDINGS) {
+      return <Table teams={teams} />;
+    } else {
+      return <CurrentMatch match={currentMatch} matchView={view} />;
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -22,11 +33,12 @@ export default function Home({ initalTeamsData, league, clientenvs }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container-fluid mt-2">
-        <div className="d-flex justify-content-center my-5">
+      <main className="container-fluid d-flex flex-column align-items-center dashBoard-container">
+        <div className="d-flex justify-content-center w-100 py-4">
           <h1>{league["name"]}</h1>
         </div>
-        <Table data={initalTeamsData.data} />
+
+        {dashboardView()}
       </main>
       {/* 
       <footer className={styles.footer}>
@@ -54,15 +66,15 @@ export async function getServerSideProps() {
   // Fetch data from external API
   const envs = CLIENT_ENVIRONMENT;
 
-  const teamsResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/teams`);
+  const dashboardResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/dashboard`);
   const leagueResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/league`);
-  const initalTeamsData = await teamsResponse.json();
+  const initalDashboardData = await dashboardResponse.json();
   const leagues = await leagueResponse.json();
   // Pass data to the page via props
   return {
     props: {
-      initalTeamsData,
-      league: leagues["data"][0],
+      initalDashboard: initalDashboardData["data"],
+      league: leagues["data"],
       clientenvs: envs,
     },
   };

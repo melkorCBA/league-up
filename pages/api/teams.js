@@ -3,6 +3,7 @@ import Logo from "../../models/logo";
 import dbConnect from "../../lib/dbConnect";
 import { errorHandler, validators } from "../../lib/errorHandler";
 import { getPublisher, trigger } from "../../pusher/publisher";
+import { CHANNELS, EVENTS } from "../../pusher/constants";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -50,7 +51,10 @@ export default async function handler(req, res) {
         // persist logo attachment
         unUsedLogo["isUsed"] = true;
         await unUsedLogo.save();
-        trigger(publisher);
+        trigger(publisher, {
+          channelName: CHANNELS.STANDING_BOARD,
+          eventName: EVENTS.UPDATE_TEAMS,
+        });
         res.status(201).json({ status: "created", data: team });
       } catch (err) {
         errorHandler(err, res);

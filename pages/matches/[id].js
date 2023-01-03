@@ -39,7 +39,7 @@ export async function getServerSideProps(ctx) {
     return {
       props: {
         initalMatcheData: matcheData["data"],
-        league: leagues["data"][0],
+        league: leagues["data"],
         clientenvs: envs,
       },
     };

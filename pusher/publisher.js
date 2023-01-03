@@ -1,5 +1,6 @@
 import Pusher from "pusher";
 import { ENVIRONMENT } from "../lib/util";
+import { CHANNELS, EVENTS } from "./constants";
 
 export const getPublisher = () => {
   return new Pusher({
@@ -15,10 +16,14 @@ export const trigger = (
   { channelName, eventName, message, errorCallback } = {}
 ) =>
   publisher
-    .trigger(channelName ?? "standings-board", eventName ?? "updateTeams", {
-      message: message ?? "",
-    })
+    .trigger(
+      channelName ?? CHANNELS.STANDING_BOARD,
+      eventName ?? EVENTS.UPDATE_TEAMS,
+      {
+        message: message ?? "",
+      }
+    )
     .then((res) => {
-      console.log("team update event published");
+      console.log("update event published:" + eventName);
     })
     .catch((err) => (errorCallback ? errorCallback(err) : console.log(err)));

@@ -1,11 +1,10 @@
-import League from "../../models/league";
+import View from "../../models/view";
 
 import dbConnect from "../../lib/dbConnect";
 import { errorHandler, validators } from "../../lib/errorHandler";
-import { getPublisher, trigger } from "../../pusher/publisher";
+
 export default async function handler(req, res) {
   const { method } = req;
-  const publisher = getPublisher();
   await dbConnect();
   switch (method) {
     case "GET": {
@@ -13,26 +12,30 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           // validators.headers.header("authorization", "Auth header is missing"),
         ]);
-        const league = await League.findOne({});
-        res.status(200).json({ data: league });
+        const { view } = req.query;
+        const views = await View.find(view ? { view } : {});
+        const viewMap = {};
+        views?.forEach(
+          ({ view, viewThumbnailURL, name }) =>
+            (viewMap[view] = { url: viewThumbnailURL, name })
+        );
+        res.status(200).json({ data: viewMap });
       } catch (err) {
         errorHandler(err, res);
       }
 
       break;
     }
-    case "PATCH": {
+    case "POST": {
       try {
         await validators.attach(req, res, [
-          validators.body.field("leagueName", "league name is required"),
+          validators.body.anyfields(["view"], "view must be provided."),
         ]);
-        const { leagueName } = req.body;
-        const league = await League.findOne({});
-        league["name"] = leagueName;
+        const { view } = req.body;
+        const newView = new View({ view });
 
-        await league.save();
-        trigger(publisher);
-        res.status(201).json({ status: "created", data: league });
+        await newView.save();
+        res.status(201).json({ status: "created", data: newView });
       } catch (err) {
         errorHandler(err, res);
       }
