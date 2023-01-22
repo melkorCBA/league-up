@@ -11,25 +11,28 @@ const UpdateGrid = ({ data, league }) => {
     newTeam,
     addTeam,
     removeTeam,
-    onLeaugeNameUpdate,
+    onLeaugeNameChange,
     leagueName,
-    updateLeague,
+    updateLeagueData,
     unsyncTeamMatches,
   } = useTeam(data, league);
   return (
     <>
       <div className="my-2 mx-1 d-flex">
         <label htmlFor="leangueName" className="mx-2">
-          League
+          League Name
         </label>
         <input
           id="leangueName"
           type="text"
           value={leagueName}
-          onChange={(e) => onLeaugeNameUpdate(e.target.value)}
+          onChange={(e) => onLeaugeNameChange(e.target.value)}
           className="w-100 mx-2"
         />
-        <button className="btn btn-outline-secondary" onClick={updateLeague}>
+        <button
+          className="btn btn-outline-secondary"
+          onClick={updateLeagueData}
+        >
           Update
         </button>
       </div>
@@ -39,6 +42,7 @@ const UpdateGrid = ({ data, league }) => {
             <tr>
               <th></th>
               <th>Team</th>
+              <th>Abrev</th>
               <th>Pld</th>
               <th>W</th>
               <th>D</th>
@@ -50,7 +54,10 @@ const UpdateGrid = ({ data, league }) => {
           </thead>
           <tbody>
             {teams?.map((d, i) => (
-              <tr key={d._id} className={"row" + i < 2 ? "table-primary" : ""}>
+              <tr
+                key={d["_id"]}
+                className={"row" + i < 2 ? "table-primary" : ""}
+              >
                 <td>
                   <span>{i + 1}</span>
                 </td>
@@ -59,6 +66,12 @@ const UpdateGrid = ({ data, league }) => {
                   <input
                     value={d["teamName"]}
                     onChange={(e) => onUpdate(i, "teamName", e.target.value)}
+                  />
+                </td>
+                <td className="abrev">
+                  <input
+                    value={d["abrev"]}
+                    onChange={(e) => onUpdate(i, "abrev", e.target.value)}
                   />
                 </td>
 
@@ -129,6 +142,12 @@ const UpdateGrid = ({ data, league }) => {
                 <input
                   value={newTeam["teamName"]}
                   onChange={(e) => onNewTeamChange("teamName", e.target.value)}
+                />
+              </td>
+              <td className="abrev">
+                <input
+                  value={newTeam["abrev"]}
+                  onChange={(e) => onNewTeamChange("abrev", e.target.value)}
                 />
               </td>
 

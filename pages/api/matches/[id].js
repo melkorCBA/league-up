@@ -5,6 +5,11 @@ import dbConnect from "../../../lib/dbConnect";
 import { errorHandler, validators } from "../../../lib/errorHandler";
 import { syncSatndings } from "../../../services/standingsSync-service";
 import { getPublisher, trigger } from "../../../pusher/publisher";
+import {
+  UserMiddleware,
+  checkUserAccess,
+  getUserData,
+} from "../../../lib/middleware";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -17,7 +22,16 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           validators.queryParams.queryParam("id", "match id is required"),
         ]);
+        UserMiddleware(req, res);
         const { id } = req.query;
+        // check user has acces to specified team - league in users's league list ?
+        const hasAccessToMatch = await checkUserAccess.hasMatchAccess(id, {
+          req,
+          res,
+        });
+        if (!hasAccessToMatch) {
+          throw new Unauthorized("User doesn't have access to the match!");
+        }
         const match = await Match.findById(id)
           .populate({
             path: "team1",
@@ -47,7 +61,16 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           validators.queryParams.queryParam("id", "match id is required"),
         ]);
+        UserMiddleware(req, res);
         const { id } = req.query;
+        // check user has acces to specified team - league in users's league list ?
+        const hasAccessToMatch = await checkUserAccess.hasMatchAccess(id, {
+          req,
+          res,
+        });
+        if (!hasAccessToMatch) {
+          throw new Unauthorized("User doesn't have access to the match!");
+        }
         const match = await Match.findById(id)
           .populate({
             path: "team1",
@@ -63,10 +86,7 @@ export default async function handler(req, res) {
               model: "Team",
             },
           });
-        if (!match) {
-          res.status(400).json({ status: "record not found", data: null });
-          return;
-        }
+
         const {
           team1,
           team2,
@@ -129,7 +149,16 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           validators.queryParams.queryParam("id", "match id is required"),
         ]);
+        UserMiddleware(req, res);
         const { id } = req.query;
+        // check user has acces to specified team - league in users's league list ?
+        const hasAccessToMatch = await checkUserAccess.hasMatchAccess(id, {
+          req,
+          res,
+        });
+        if (!hasAccessToMatch) {
+          throw new Unauthorized("User doesn't have access to the match!");
+        }
         const match = await Match.findById(id)
           .populate({
             path: "team1",

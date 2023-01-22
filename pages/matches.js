@@ -10,6 +10,7 @@ import {
 import MatchesCardList from "../components/MatchesCardList";
 import useMatch from "../hooks/useMatch";
 import useCurrentMatch from "../hooks/useCurrentMatch";
+import { axiosClient } from "../lib/apiClient";
 
 export default function Matches({
   initalTeamsData,
@@ -41,18 +42,19 @@ export default function Matches({
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   // Fetch data from external API
   const envs = CLIENT_ENVIRONMENT;
+  const axios = axiosClient(context.req);
 
-  const teamsResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/teams`);
-  const matchesResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/matches`);
-  const leagueResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/league`);
-  const dashboardResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/dashboard`);
-  const initalTeamsData = await teamsResponse.json();
-  const initalmatchesData = await matchesResponse.json();
-  const leagues = await leagueResponse.json();
-  const initalDashboardData = await dashboardResponse.json();
+  const teamsResponse = await axios.get(`api/teams`);
+  const matchesResponse = await axios.get(`api/matches`);
+  const leagueResponse = await axios.get(`api/leagues`);
+  const dashboardResponse = await axios.get(`api/dashboard`);
+  const initalTeamsData = await teamsResponse["data"];
+  const initalmatchesData = await matchesResponse["data"];
+  const leagues = await leagueResponse["data"];
+  const initalDashboardData = await dashboardResponse["data"];
   // Pass data to the page via props
   return {
     props: {

@@ -4,6 +4,11 @@ import dbConnect from "../../../../../lib/dbConnect";
 import { errorHandler, validators } from "../../../../../lib/errorHandler";
 import { getPublisher, trigger } from "../../../../../pusher/publisher";
 import { updateSyncForMatches } from "../../../../../services/standingsSync-service";
+import {
+  UserMiddleware,
+  checkUserAccess,
+  getUserData,
+} from "../../../../../lib/middleware";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -14,14 +19,20 @@ export default async function handler(req, res) {
     case "PATCH": {
       try {
         await validators.attach(req, res, [
-          validators.queryParams.queryParam("id", "cv id is required"),
+          validators.queryParams.queryParam("id", "team id is required"),
         ]);
+        UserMiddleware(req, res);
         const { id } = req.query;
-        const team = await Team.findById(id);
-        if (!team) {
-          res.status(400).json({ status: "record not found", data: null });
-          return;
+        // check user has acces to specified team - league in users's league list ?
+        const hasAccessToTeam = await checkUserAccess.hasTeamAccess(id, {
+          req,
+          res,
+        });
+        if (!hasAccessToTeam) {
+          throw new Unauthorized("User doesn't have access to the team!");
         }
+
+        const team = await Team.findById(id);
         const { syncStatus } = req.body;
 
         const syncedMatchIds = team.syncedMatches;

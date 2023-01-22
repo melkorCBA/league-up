@@ -65,6 +65,8 @@ const TeamSchema = new mongoose.Schema({
     default: 0,
   },
 
+  league: { type: mongoose.Types.ObjectId, ref: "League" },
+
   syncedMatches: [
     {
       type: mongoose.Types.ObjectId,

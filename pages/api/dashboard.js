@@ -4,19 +4,41 @@ import dbConnect from "../../lib/dbConnect";
 import { errorHandler, validators } from "../../lib/errorHandler";
 import { getPublisher, trigger } from "../../pusher/publisher";
 
+import {
+  UserMiddleware,
+  checkUserAccess,
+  getUserData,
+} from "../../lib/middleware";
+
 import { CHANNELS, EVENTS } from "../../pusher/constants";
+import { Unauthorized } from "../../lib/errors";
 
 export default async function handler(req, res) {
   const { method } = req;
   const publisher = getPublisher();
   await dbConnect();
+
   switch (method) {
     case "GET": {
       try {
         await validators.attach(req, res, [
           // validators.headers.header("authorization", "Auth header is missing"),
         ]);
-        const dashBoard = await DashBoard.findOne({});
+        UserMiddleware(req, res);
+        const currentUser = await getUserData({ req, res });
+        const leagueId = currentUser.defaultLeague;
+
+        // check user has acces to specified league - league in users's league list ?
+        const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
+          leagueId,
+          { req, res }
+        );
+        if (!hasAccessToLeague) {
+          throw new Unauthorized(
+            "User doesn't have access to the default league set"
+          );
+        }
+        const dashBoard = await DashBoard.findOne({ league: leagueId });
         res.status(200).json({ data: dashBoard });
       } catch (err) {
         errorHandler(err, res);
@@ -29,7 +51,20 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           //
         ]);
-        const dashboard = new DashBoard({});
+        UserMiddleware(req, res);
+        const currentUser = await getUserData({ req, res });
+        const leagueId = req.query["leagueId"] ?? currentUser.defaultLeague;
+
+        const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
+          leagueId,
+          { req, res }
+        );
+        if (!hasAccessToLeague) {
+          throw new Unauthorized(
+            "User doesn't have access to the default league set"
+          );
+        }
+        const dashboard = new DashBoard({ league: leagueId });
 
         await dashboard.save();
         res.status(201).json({ status: "created", data: dashboard });
@@ -47,13 +82,28 @@ export default async function handler(req, res) {
             "view or currentMatch must be provided"
           ),
         ]);
-        const dashBoard = await DashBoard.findOne({});
+        UserMiddleware(req, res);
+        const currentUser = await getUserData({ req, res });
+        const leagueId = req.query["leagueId"] ?? currentUser.defaultLeague;
+
+        const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
+          leagueId,
+          { req, res }
+        );
+        if (!hasAccessToLeague) {
+          throw new Unauthorized(
+            "User doesn't have access to the default league set"
+          );
+        }
+
+        const dashBoard = await DashBoard.findOne({ league: leagueId });
         if (!dashBoard) {
           res.status(400).json({ status: "record not found", data: null });
           return;
         }
         const { view, currentMatch } = req.body;
-        const payload = { view, currentMatch };
+
+        const payload = { view, currentMatch, league: leagueId };
 
         Object.keys(payload).forEach((key) => {
           if (payload[key] !== undefined) {

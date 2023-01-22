@@ -13,7 +13,15 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           // validators.headers.header("authorization", "Auth header is missing"),
         ]);
-        const matches = await Match.find({ isDeleted: false })
+        // implement thease steps
+        // 1.get user associated with the Token
+        // 2.get the users's default league, if no specific league requested (no league as a query param)
+        // 3.check user has acces to specified league - league in users's league list ?
+        // 4.filter teams for specified leagues
+        const defaultLeagueId = "6341100e204ce73751b4bb4b";
+        const leagueId = req.query["leagueId"] ?? defaultLeagueId;
+        const matches = await Match.find({ isDeleted: false, league: leagueId })
+          .lean()
           .populate({
             path: "team1",
             populate: {
@@ -32,6 +40,13 @@ export default async function handler(req, res) {
             createdAt: "asc",
           });
 
+        matches.forEach((match) => {
+          const team1Abr = match.team1.team.abrev;
+          const team2Abr = match.team2.team.abrev;
+          const matchKey = `${team1Abr} VS ${team2Abr} - ${match._id}`;
+          match["matchKey"] = matchKey;
+        });
+
         res.status(200).json({ data: matches });
       } catch (err) {
         errorHandler(err, res);
@@ -41,6 +56,14 @@ export default async function handler(req, res) {
     }
     case "POST": {
       try {
+        // implement thease steps
+        // 1.get user associated with the Token
+        // 2.get the users's default league, if no specific league requested (no league as a query param)
+        // 3.check user has acces to specified league - league in users's league list ?
+        // 4.filter teams for specified leagues
+        const defaultLeagueId = "6341100e204ce73751b4bb4b";
+        const leagueId = req.query["leagueId"] ?? defaultLeagueId;
+
         await validators.attach(req, res, [
           validators.body.field("team1Id", "team1 id is required"),
           validators.body.field("team2Id", "team2 id is required"),
@@ -51,6 +74,7 @@ export default async function handler(req, res) {
             "same team cannot be the both opponents"
           ),
         ]);
+
         const { team1Id, team2Id } = req.body;
         const team1 = await Team.findById(team1Id);
         if (!team1) {
@@ -72,6 +96,7 @@ export default async function handler(req, res) {
           team2: {
             team: team2,
           },
+          league: leagueId,
         });
         await match.save();
 

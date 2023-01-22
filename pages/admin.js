@@ -12,55 +12,25 @@ import ViewSelector from "../components/views/ViewSelector";
 import CurrentMatch from "../components/views/CurrentMatch/CurrentMatch";
 import useDashboard from "../hooks/useDashboard";
 import { useRouter } from "next/router";
+import { axiosClient } from "../lib/apiClient";
 
 export default function Admin({
   initalTeamsData,
   initalDashboard,
-  league,
+  leagues,
   clientenvs,
   views,
 }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [passcode, setPasscode] = useState("");
-  const [initClientenvs, setclientenvs] = useState(false);
-  const { view, teams, currentMatch, onViewSelectorChnage } = useDashboard({
+  const defaultLeague = leagues?.filter((l) => l.default)[0];
+  const [league, setLeague] = useState(defaultLeague);
+  const { view, teams, currentMatch, updateView } = useDashboard({
     initalDashboard,
     clientenvs,
+    league,
+    initalTeamsData,
   });
   const router = useRouter();
-  useEffect(() => {
-    if (!initClientenvs) {
-      // add envs to session
-      setClientenvsInSession(clientenvs);
-      setclientenvs(true);
-    }
-    session.set("passcode", passcode);
 
-    if (
-      session.get("passcode") &&
-      session.get("passcode") === ENVIRONMENT.AdminPasscode
-    ) {
-      setIsLoggedIn(true);
-
-      return;
-    }
-    setIsLoggedIn(false);
-  }, [passcode]);
-  if (!isLoggedIn) {
-    return (
-      <div className="container">
-        <label>Enter the passcode</label>
-        <div className="w-25">
-          <input
-            className="w-100"
-            type="password"
-            value={passcode}
-            onChange={(e) => setPasscode(e.target.value)}
-          />
-        </div>
-      </div>
-    );
-  }
   return (
     <div className="container-fluid">
       <Head>
@@ -70,13 +40,33 @@ export default function Admin({
       </Head>
       <div className="w-100">
         <h1 className="my-3">Admin Panel</h1>
-        <UpdateGrid data={initalTeamsData.data} league={league} />
+        <div className="d-flex">
+          <label htmlFor="league-selector" className="mx-2">
+            League:
+          </label>
+          <select
+            id="league-selector"
+            aria-label="Default select example"
+            onChange={(e) => {
+              setLeague(leagues.find((l) => l._id === e.target.value));
+            }}
+            value={league["_id"]}
+          >
+            {leagues.map((l) => (
+              <option key={l._id} value={l._id}>
+                {l.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <UpdateGrid data={teams} league={league} />
         <div className="row justify-content-md-center">
           <div className="col-md-8 col-12  dev">
             <ViewSelector
               views={views}
               initlaView={view}
-              onViewSelectorChnage={onViewSelectorChnage}
+              onViewSelectorChnage={updateView}
             />
           </div>
           <div className="col-md-4 col-12 dev">
@@ -102,24 +92,34 @@ export default function Admin({
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   const envs = CLIENT_ENVIRONMENT;
-  const teamsResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/teams`);
-  const leagueResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/league`);
-  const dashboardResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/dashboard`);
-  const viewsResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/views`);
-  const initalTeamsData = await teamsResponse.json();
-  const leagues = await leagueResponse.json();
-  const initalDashboardData = await dashboardResponse.json();
-  const ViewsData = await viewsResponse.json();
-  // Pass data to the page via props
-  return {
-    props: {
-      initalDashboard: initalDashboardData["data"],
-      initalTeamsData,
-      league: leagues["data"],
-      clientenvs: envs,
-      views: ViewsData["data"],
-    },
-  };
+  const axios = axiosClient(context.req);
+  try {
+    const teamsResponse = await axios.get(`api/teams`);
+    const leaguesResponse = await axios.get(`api/leagues`);
+    const dashboardResponse = await axios.get(`api/dashboard`);
+    const viewsResponse = await axios.get(`api/views`);
+    const initalTeamsData = await teamsResponse["data"];
+    const leagues = await leaguesResponse["data"];
+    const initalDashboardData = await dashboardResponse["data"];
+    const ViewsData = await viewsResponse["data"];
+    // Pass data to the page via props
+    return {
+      props: {
+        initalDashboard: initalDashboardData["data"],
+        initalTeamsData: initalTeamsData["data"],
+        leagues: leagues["data"],
+        clientenvs: envs,
+        views: ViewsData["data"],
+      },
+    };
+  } catch (err) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false,
+      },
+    };
+  }
 }

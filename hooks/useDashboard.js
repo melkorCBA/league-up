@@ -1,34 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import client from "../pusher/client";
 import { CHANNELS, EVENTS } from "../pusher/constants";
 import { ENVIRONMENT, CONSTANTS, setClientenvsInSession } from "../lib/util";
 import axios from "axios";
 
-const useDashboard = ({ initalDashboard, clientenvs }) => {
-  console.log(`initDashBoard: ${initalDashboard}`);
-  const { view: initialview, currentMatch: initCurrentMatch } = initalDashboard;
-  const [view, setView] = useState(initialview);
-  const [currentMatchId, setCurrentMatchId] = useState(initCurrentMatch);
-
-  const [teams, setTeams] = useState([]);
+const useDashboard = ({
+  initalDashboard,
+  clientenvs,
+  league,
+  initalTeamsData,
+}) => {
+  const [dashboard, setDashboard] = useState(initalDashboard);
   const [currentMatch, setCurrentMatch] = useState({});
+  const [teams, setTeams] = useState(initalTeamsData);
+
+  const isIntialRenderCycle = (state) => {
+    return initalDashboard[state] === dashboard[state];
+  };
 
   const refetchDashboard = async () => {
-    const response = await axios.get(`${ENVIRONMENT.BaseApiURL}/dashboard`);
+    const { league: leagueId } = dashboard;
+    const response = await axios.get(
+      `${ENVIRONMENT.BaseApiURL}/dashboard?leagueId=${leagueId}`
+    );
     const { data } = response.data;
-    const { view: v, currentMatch: m } = data;
-    setView(v);
-    setCurrentMatchId(m);
-    await dahsboardSwitch({ view: v, currentMatchId: m });
+    setDashboard(data);
+    await dahsboardSwitch(data);
   };
 
   const reFeatchTeams = async () => {
-    const response = await axios.get(`${ENVIRONMENT.BaseApiURL}/teams`);
+    const { league: leagueId } = dashboard;
+    const response = await axios.get(
+      `${ENVIRONMENT.BaseApiURL}/teams?leagueId=${leagueId}`
+    );
     const { data } = response.data;
     setTeams(data);
   };
 
-  const reFetchCurrentMatch = async (currentMatchId) => {
+  const reFetchCurrentMatch = async () => {
+    const currentMatchId = dashboard["currentMatch"];
     const response = await axios.get(
       `${ENVIRONMENT.BaseApiURL}/matches/${currentMatchId}`
     );
@@ -36,18 +46,7 @@ const useDashboard = ({ initalDashboard, clientenvs }) => {
     setCurrentMatch(data);
   };
 
-  const reFetchCurrentMatchV2 = async (matchId) => {
-    if (matchId) {
-      const response = await axios.get(
-        `${ENVIRONMENT.BaseApiURL}/matches/${matchId}`
-      );
-      const { data } = response.data;
-      setCurrentMatch(data);
-      return;
-    }
-  };
-
-  const dahsboardSwitch = async ({ view, currentMatchId }) => {
+  const dahsboardSwitch = async ({ view }) => {
     switch (view) {
       case CONSTANTS.VIEWS.STANDINGS:
         await reFeatchTeams();
@@ -55,33 +54,72 @@ const useDashboard = ({ initalDashboard, clientenvs }) => {
       case CONSTANTS.VIEWS.MATCH_VIEWS.PRE_MATCH:
       case CONSTANTS.VIEWS.MATCH_VIEWS.ON_MATCH:
       case CONSTANTS.VIEWS.MATCH_VIEWS.POST_MATCH:
-        await reFetchCurrentMatch(currentMatchId);
+        await reFetchCurrentMatch();
     }
   };
 
-  const onViewSelectorChnage = async (view) => {
-    await updateDashboadView(view);
-    await dahsboardSwitch({ view, currentMatchId });
+  const updateView = (view) => {
+    setDashboard({ ...dashboard, view });
+    // await updateDashboadView(view);
+    // await dahsboardSwitch({ view });
   };
   const updateDashboadView = async (view) => {
+    const { league: leagueId } = dashboard;
     const response = await axios.patch(`${ENVIRONMENT.BaseApiURL}/dashboard/`, {
       view,
-      currentMatch: currentMatchId,
+      currentMatch: dashboard["currentMatch"],
+      leagueId,
     });
   };
 
   const updateCurrentMatch = async ({ matchId }) => {
-    setCurrentMatchId(matchId);
+    const { league: leagueId } = dashboard;
     const response = await axios.patch(`${ENVIRONMENT.BaseApiURL}/dashboard/`, {
-      view,
+      view: dashboard["view"],
       currentMatch: matchId,
+      leagueId,
     });
-    await reFetchCurrentMatchV2(matchId);
+    setDashboard({ ...dashboard, currentMatch: matchId });
   };
+
+  const updateLeague = async (league) => {
+    const response = await axios.patch(`${ENVIRONMENT.BaseApiURL}/dashboard/`, {
+      view: dashboard["view"],
+      currentMatch: dashboard["currentMatch"],
+      leagueId: league["_id"],
+    });
+    setDashboard({ ...dashboard, league: league["_id"] });
+  };
+
+  useEffect(() => {
+    if (dashboard.league === league["_id"]) return;
+    updateLeague(league);
+  }, [league]);
+
+  useEffect(() => {
+    if (!isIntialRenderCycle("league")) {
+      reFeatchTeams();
+    }
+  }, [dashboard.league]);
+
+  useEffect(() => {
+    if (!isIntialRenderCycle("view")) {
+      updateDashboadView(dashboard.view);
+      dahsboardSwitch(dashboard);
+    }
+  }, [dashboard.view]);
+
+  useEffect(() => {
+    // if (!isIntialRenderCycle("currentMatch")) {
+    //   reFetchCurrentMatch();
+    // }
+    reFetchCurrentMatch();
+  }, [dashboard.currentMatch]);
 
   useEffect(() => {
     // add envs to session
     setClientenvsInSession(clientenvs);
+
     const pusherClient = client();
     const dashBoardChannel = pusherClient.subscribeTochannel(
       CHANNELS.DASHBOARD
@@ -95,7 +133,7 @@ const useDashboard = ({ initalDashboard, clientenvs }) => {
     );
 
     (async () => {
-      await dahsboardSwitch({ view, currentMatchId });
+      await dahsboardSwitch(initalDashboard);
     })();
     pusherClient.subscribeToEvent(
       dashBoardChannel,
@@ -113,7 +151,7 @@ const useDashboard = ({ initalDashboard, clientenvs }) => {
         // refetch data
         console.log("standingsBoard team updated event recevied");
 
-        if (view === CONSTANTS.VIEWS.STANDINGS) {
+        if (dashboard["view"] === CONSTANTS.VIEWS.STANDINGS) {
           await reFeatchTeams();
         }
       }
@@ -125,7 +163,9 @@ const useDashboard = ({ initalDashboard, clientenvs }) => {
         // refetch data
         console.log("current Match update event recevied");
         if (
-          Object.values(CONSTANTS.VIEWS.MATCH_VIEWS).some((v) => v === view)
+          Object.values(CONSTANTS.VIEWS.MATCH_VIEWS).some(
+            (v) => v === dashboard["view"]
+          )
         ) {
           await reFetchCurrentMatch();
         }
@@ -134,10 +174,10 @@ const useDashboard = ({ initalDashboard, clientenvs }) => {
   }, []);
 
   return {
-    view,
+    view: dashboard?.view,
     teams,
     currentMatch,
-    onViewSelectorChnage,
+    updateView,
     updateCurrentMatch,
   };
 };

@@ -64,6 +64,7 @@ const MatchSchema = new mongoose.Schema(
       default: "",
       // accpected format: 5 Wickets, 13 runs, 2 Wickets (DLS)
     },
+    league: { type: mongoose.Types.ObjectId, ref: "League" },
   },
   { timestamps: true }
 );

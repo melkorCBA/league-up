@@ -1,6 +1,5 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-Image;
+import React, { useEffect, useState, useRef } from "react";
 
 const ViewSelectorItem = ({ v, view, setView, viewData }) => {
   return (
@@ -36,9 +35,11 @@ const ViewSelectorItem = ({ v, view, setView, viewData }) => {
 const ViewSelector = ({ views, initlaView, onViewSelectorChnage }) => {
   const dashboardViews = Object.keys(views);
   const [view, setView] = useState(initlaView ?? "std");
-  useEffect(() => {
-    onViewSelectorChnage(view);
-  }, [view]);
+  const onViewChnage = (v) => {
+    setView(v);
+    onViewSelectorChnage(v);
+  };
+
   return (
     <div>
       <h3 className="text-center">View Selector</h3>
@@ -49,7 +50,7 @@ const ViewSelector = ({ views, initlaView, onViewSelectorChnage }) => {
               v={v}
               view={view}
               viewData={views[v]}
-              setView={setView}
+              setView={onViewChnage}
             />
           </div>
         ))}

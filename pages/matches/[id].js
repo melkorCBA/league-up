@@ -6,6 +6,7 @@ import {
 } from "../../lib/util";
 import UpdateMatch from "../../components/UpdateMatch";
 import useUpdateMatch from "../../hooks/useUpdateMatch";
+import { axiosClient } from "../../lib/apiClient";
 
 export default function Match({ initalMatcheData, league, clientenvs }) {
   const { match, updateMatch } = useUpdateMatch(initalMatcheData);
@@ -22,19 +23,17 @@ export default function Match({ initalMatcheData, league, clientenvs }) {
 
 export async function getServerSideProps(ctx) {
   const { id } = ctx.params;
-
+  const axios = axiosClient(ctx.req);
   // Fetch data from external API
   const envs = CLIENT_ENVIRONMENT;
 
   try {
-    const matcheResponse = await fetch(
-      `${ENVIRONMENT.BaseApiURL}/matches/${id}`
-    );
+    const matcheResponse = await axios.get(`api/matches/${id}`);
     if (!matcheResponse.ok) throw new Error(matcheResponse.json()["message"]);
-    const leagueResponse = await fetch(`${ENVIRONMENT.BaseApiURL}/league`);
+    const leagueResponse = await axios.get(`api/leagues`);
 
-    const matcheData = await matcheResponse.json();
-    const leagues = await leagueResponse.json();
+    const matcheData = await matcheResponse["data"];
+    const leagues = await leagueResponse["data"];
     // Pass data to the page via props
     return {
       props: {

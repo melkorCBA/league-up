@@ -42,6 +42,10 @@ input {
   width: 200px;
 }
 
+.abrev input {
+  width: 60px;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -145,4 +149,21 @@ div.is-disabled {
 
 .offline:hover {
   background-color: orange;
+}
+
+@media only screen and (min-height: 600px) {
+  .form-group {
+    width: 100%;
+  }
+  .form-group input {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .form-group {
+    width: 500px;
+  }
+  .form-group input {
+    width: 500px;
+  }
 }

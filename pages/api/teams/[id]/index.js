@@ -4,6 +4,11 @@ import dbConnect from "../../../../lib/dbConnect";
 import { errorHandler, validators } from "../../../../lib/errorHandler";
 import { getPublisher, trigger } from "../../../../pusher/publisher";
 import { CHANNELS, EVENTS } from "../../../../pusher/constants";
+import {
+  UserMiddleware,
+  checkUserAccess,
+  getUserData,
+} from "../../../../lib/middleware";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -16,7 +21,18 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           validators.queryParams.queryParam("id", "cv id is required"),
         ]);
+
+        UserMiddleware(req, res);
         const { id } = req.query;
+        // check user has acces to specified team - league in users's league list ?
+        const hasAccessToTeam = await checkUserAccess.hasTeamAccess(id, {
+          req,
+          res,
+        });
+        if (!hasAccessToTeam) {
+          throw new Unauthorized("User doesn't have access to the team!");
+        }
+
         const team = await Team.findById(id);
         res.status(200).json({ data: team });
       } catch (err) {
@@ -30,12 +46,18 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           validators.queryParams.queryParam("id", "cv id is required"),
         ]);
+        UserMiddleware(req, res);
         const { id } = req.query;
-        const team = await Team.findById(id);
-        if (!team) {
-          res.status(400).json({ status: "record not found", data: null });
-          return;
+        // check user has acces to specified team - league in users's league list ?
+        const hasAccessToTeam = await checkUserAccess.hasTeamAccess(id, {
+          req,
+          res,
+        });
+        if (!hasAccessToTeam) {
+          throw new Unauthorized("User doesn't have access to the team!");
         }
+        const team = await Team.findById(id);
+
         const {
           teamName,
           abrev,
@@ -94,12 +116,17 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           validators.queryParams.queryParam("id", "cv id is required"),
         ]);
+        UserMiddleware(req, res);
         const { id } = req.query;
-        const team = await Team.findById(id);
-        if (!team) {
-          res.status(200).json({ status: "record not found", data: null });
-          return;
+        // check user has acces to specified team - league in users's league list ?
+        const hasAccessToTeam = await checkUserAccess.hasTeamAccess(id, {
+          req,
+          res,
+        });
+        if (!hasAccessToTeam) {
+          throw new Unauthorized("User doesn't have access to the team!");
         }
+        const team = await Team.findById(id);
 
         const logoId = team["logoID"];
         await Team.deleteOne({ _id: id });

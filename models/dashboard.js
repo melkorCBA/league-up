@@ -20,6 +20,7 @@ const DashBoardSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: "Match",
   },
+  league: { type: mongoose.Types.ObjectId, ref: "League" },
 });
 export default mongoose.models.DashBoard ||
   mongoose.model("DashBoard", DashBoardSchema);
