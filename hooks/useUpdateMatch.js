@@ -8,7 +8,7 @@ const useUpdateMatch = (initalMatcheData) => {
   const { setErrors, setSuccess } = useError();
 
   const updateMatch = async (matchId, matchToUpdate) => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/matches/${matchId}`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/matches/${matchId}`;
     try {
       const payload = {
         team1: {
@@ -40,7 +40,7 @@ const useUpdateMatch = (initalMatcheData) => {
   const reFeatchMatch = async (matchId) => {
     try {
       const response = await axios.get(
-        `${ENVIRONMENT.BaseApiURL}/matches/${matchId}`
+        `${ENVIRONMENT().BaseApiURL}/matches/${matchId}`
       );
       const { data } = response.data;
       setMatch(data);

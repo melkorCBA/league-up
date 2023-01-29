@@ -2,7 +2,7 @@ import Pusher from "pusher-js";
 import { ENVIRONMENT } from "../lib/util";
 
 const getPusher = () =>
-  new Pusher(ENVIRONMENT.PusherApiKey, {
+  new Pusher(ENVIRONMENT().PusherApiKey, {
     cluster: "ap2",
     encrypted: false,
   });

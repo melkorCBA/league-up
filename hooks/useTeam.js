@@ -42,7 +42,7 @@ const useTeam = (initialTeams, initialLeague) => {
     await changeSycnStatus(teams[index]["_id"], false);
 
   const patchTeam = async (team) => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/teams/${team["_id"]}`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/teams/${team["_id"]}`;
     try {
       await axios.patch(URL, team);
       setSuccess("team updated");
@@ -53,7 +53,7 @@ const useTeam = (initialTeams, initialLeague) => {
   };
 
   const deleteTeam = async (id) => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/teams/${id}`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/teams/${id}`;
     try {
       await axios.delete(URL);
       setSuccess("team deleted");
@@ -64,7 +64,7 @@ const useTeam = (initialTeams, initialLeague) => {
   };
 
   const updateLeagueData = async () => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/league`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/league`;
     try {
       await axios.patch(URL, {
         leagueName: league["name"],
@@ -80,7 +80,7 @@ const useTeam = (initialTeams, initialLeague) => {
   const reFeatchTeams = async () => {
     const { _id: leagueId } = league;
     // const response = await axios.get(
-    //   `${ENVIRONMENT.BaseApiURL}/teams?leagueId=${leagueId}`
+    //   `${ENVIRONMENT().BaseApiURL}/teams?leagueId=${leagueId}`
     // );
 
     // const { data } = response.data;
@@ -88,7 +88,7 @@ const useTeam = (initialTeams, initialLeague) => {
   };
 
   const addTeam = async () => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/teams`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/teams`;
     try {
       const payload = {};
       Object.keys(newTeam).forEach((key) => {
@@ -118,7 +118,7 @@ const useTeam = (initialTeams, initialLeague) => {
 
   //change Team's All Matches SycnStatus
   const changeSycnStatus = async (teamId, status) => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/teams/${teamId}/matches/syncAll`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/teams/${teamId}/matches/syncAll`;
     try {
       const payload = {
         syncStatus: !!status,

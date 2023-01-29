@@ -8,7 +8,7 @@ const useData = (initialData) => {
   const [data, setData] = useState(initialData);
 
   const reFeatchTeams = async () => {
-    const response = await axios.get(`${ENVIRONMENT.BaseApiURL}/teams`);
+    const response = await axios.get(`${ENVIRONMENT().BaseApiURL}/teams`);
     const { data } = response.data;
     setData(data);
   };

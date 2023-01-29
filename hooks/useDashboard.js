@@ -21,7 +21,7 @@ const useDashboard = ({
   const refetchDashboard = async () => {
     const { league: leagueId } = dashboard;
     const response = await axios.get(
-      `${ENVIRONMENT.BaseApiURL}/dashboard?leagueId=${leagueId}`
+      `${ENVIRONMENT().BaseApiURL()}/dashboard?leagueId=${leagueId}`
     );
     const { data } = response.data;
     setDashboard(data);
@@ -31,7 +31,7 @@ const useDashboard = ({
   const reFeatchTeams = async () => {
     const { league: leagueId } = dashboard;
     const response = await axios.get(
-      `${ENVIRONMENT.BaseApiURL}/teams?leagueId=${leagueId}`
+      `${ENVIRONMENT().BaseApiURL}/teams?leagueId=${leagueId}`
     );
     const { data } = response.data;
     setTeams(data);
@@ -40,7 +40,7 @@ const useDashboard = ({
   const reFetchCurrentMatch = async () => {
     const currentMatchId = dashboard["currentMatch"];
     const response = await axios.get(
-      `${ENVIRONMENT.BaseApiURL}/matches/${currentMatchId}`
+      `${ENVIRONMENT().BaseApiURL}/matches/${currentMatchId}`
     );
     const { data } = response.data;
     setCurrentMatch(data);
@@ -65,29 +65,38 @@ const useDashboard = ({
   };
   const updateDashboadView = async (view) => {
     const { league: leagueId } = dashboard;
-    const response = await axios.patch(`${ENVIRONMENT.BaseApiURL}/dashboard/`, {
-      view,
-      currentMatch: dashboard["currentMatch"],
-      leagueId,
-    });
+    const response = await axios.patch(
+      `${ENVIRONMENT().BaseApiURL}/dashboard/`,
+      {
+        view,
+        currentMatch: dashboard["currentMatch"],
+        leagueId,
+      }
+    );
   };
 
   const updateCurrentMatch = async ({ matchId }) => {
     const { league: leagueId } = dashboard;
-    const response = await axios.patch(`${ENVIRONMENT.BaseApiURL}/dashboard/`, {
-      view: dashboard["view"],
-      currentMatch: matchId,
-      leagueId,
-    });
+    const response = await axios.patch(
+      `${ENVIRONMENT().BaseApiURL}/dashboard/`,
+      {
+        view: dashboard["view"],
+        currentMatch: matchId,
+        leagueId,
+      }
+    );
     setDashboard({ ...dashboard, currentMatch: matchId });
   };
 
   const updateLeague = async (league) => {
-    const response = await axios.patch(`${ENVIRONMENT.BaseApiURL}/dashboard/`, {
-      view: dashboard["view"],
-      currentMatch: dashboard["currentMatch"],
-      leagueId: league["_id"],
-    });
+    const response = await axios.patch(
+      `${ENVIRONMENT().BaseApiURL}/dashboard/`,
+      {
+        view: dashboard["view"],
+        currentMatch: dashboard["currentMatch"],
+        leagueId: league["_id"],
+      }
+    );
     setDashboard({ ...dashboard, league: league["_id"] });
   };
 

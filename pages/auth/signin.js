@@ -11,7 +11,7 @@ export default function Signin({ clientenvs }) {
   const [password, setPassword] = useState("");
   const { doRequest } = UseRequest(
     {
-      url: `${ENVIRONMENT.BaseApiURL}/auth/signin`,
+      url: `${ENVIRONMENT().BaseApiURL}/auth/signin`,
       method: RequestMethods.POST,
       body: { email, password },
       onSuccess: () => Router.push("/admin"),
@@ -65,6 +65,7 @@ export default function Signin({ clientenvs }) {
 export async function getServerSideProps() {
   // Fetch data from external API
   const envs = CLIENT_ENVIRONMENT;
+
   return {
     props: {
       clientenvs: envs,

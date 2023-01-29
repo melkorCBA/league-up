@@ -15,7 +15,7 @@ const useMatch = (initalMatches) => {
   }, [initalMatches, matches]);
 
   const addNewMatch = async (teams) => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/matches`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/matches`;
     try {
       const payload = {
         team1Id: teams[0]._id,
@@ -31,7 +31,7 @@ const useMatch = (initalMatches) => {
   };
 
   const updateMatch = async (matchId, matchToUpdate) => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/matches/${matchId}`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/matches/${matchId}`;
     try {
       const payload = {
         team1: {
@@ -62,7 +62,7 @@ const useMatch = (initalMatches) => {
 
   const reFeatchMatches = async () => {
     try {
-      const response = await axios.get(`${ENVIRONMENT.BaseApiURL}/matches`);
+      const response = await axios.get(`${ENVIRONMENT().BaseApiURL}/matches`);
       const { data } = response.data;
       setMatches(data);
     } catch (err) {

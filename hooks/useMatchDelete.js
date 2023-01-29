@@ -9,7 +9,7 @@ const useDeleteMatch = (initalMatcheData) => {
 
   const updateMatch = async (status) => {
     setMatch({ ...match, isDeleted: status });
-    const URL = `${ENVIRONMENT.BaseApiURL}/matches/${match["_id"]}`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/matches/${match["_id"]}`;
     try {
       const payload = {
         isDeleted: status,
@@ -27,7 +27,7 @@ const useDeleteMatch = (initalMatcheData) => {
   const reFeatchMatch = async (matchId) => {
     try {
       const response = await axios.get(
-        `${ENVIRONMENT.BaseApiURL}/matches/${matchId}`
+        `${ENVIRONMENT().BaseApiURL}/matches/${matchId}`
       );
       const { data } = response.data;
       setMatch(data);

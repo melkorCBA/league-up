@@ -7,7 +7,7 @@ import { ENVIRONMENT } from "../../lib/util";
 const SignOut = () => {
   const { doRequest } = UseRequest(
     {
-      url: `${ENVIRONMENT.BaseApiURL}/auth/signout`,
+      url: `${ENVIRONMENT().BaseApiURL}/auth/signout`,
       method: RequestMethods.POST,
       body: {},
       onSuccess: () => Router.push("/"),

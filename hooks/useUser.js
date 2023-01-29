@@ -11,14 +11,14 @@ const useUser = (initialUserDashboard) => {
   const { setErrors, setSuccess } = useError();
 
   const getUser = async () => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/auth/user`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/auth/user`;
     const response = await axios.get(URL);
     const { data } = response;
     setUser(data["data"]);
   };
 
   const getUserLeagues = async () => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/leagues`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/leagues`;
     const response = await axios.get(URL);
     const { data } = response;
     setUserLeagues(data["data"]);
@@ -26,14 +26,14 @@ const useUser = (initialUserDashboard) => {
 
   const getMatches = async () => {
     const { league: leagueId } = dashboard;
-    const URL = `${ENVIRONMENT.BaseApiURL}/matches?leagueId=${leagueId}`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/matches?leagueId=${leagueId}`;
     const response = await axios.get(URL);
     const { data } = response;
     setMatches(data["data"]);
   };
 
   const addLeague = async ({ leagueName }) => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/leagues`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/leagues`;
     try {
       const response = await axios.post(URL, { name: leagueName });
       const { data } = response;
@@ -53,7 +53,7 @@ const useUser = (initialUserDashboard) => {
   };
 
   const saveDashbaord = async () => {
-    const URL = `${ENVIRONMENT.BaseApiURL}/dashboard`;
+    const URL = `${ENVIRONMENT().BaseApiURL}/dashboard`;
     try {
       await axios.post(URL, {
         league: dashboard["league"],

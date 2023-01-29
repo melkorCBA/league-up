@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useError } from "../contexts/errorContext";
+import { ENVIRONMENT } from "../lib/util";
 
 const RequestMethods = Object.freeze({
   POST: "post",

@@ -6,16 +6,19 @@ const useCurrentMatch = (initalCurrentMatchId) => {
   const [currentMatchId, setCurrentMatchId] = useState(initalCurrentMatchId);
 
   //   const getCurrentMatchId = async () => {
-  //     const response = await axios.get(`${ENVIRONMENT.BaseApiURL}/dashboard`);
+  //     const response = await axios.get(`${ENVIRONMENT().BaseApiURL}/dashboard`);
   //     const { data } = response.data;
   //     const { currentMatch: matchId } = data;
   //     return matchId;
   //   };
 
   const updateCurrentMatch = async () => {
-    const response = await axios.patch(`${ENVIRONMENT.BaseApiURL}/dashboard`, {
-      currentMatch: currentMatchId,
-    });
+    const response = await axios.patch(
+      `${ENVIRONMENT().BaseApiURL}/dashboard`,
+      {
+        currentMatch: currentMatchId,
+      }
+    );
   };
 
   useEffect(() => {
