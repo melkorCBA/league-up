@@ -3,13 +3,14 @@
 echo 'setting node path';
 PATH="C:/Program Files/nodejs:$PATH";
 
+instance="melkorcba/standingsapp";
+
 # build
 echo 'building image for' $instance;
-docker build -t melkorcba/standingsapp .
+docker build -t $instance .
 # # push
-echo 'pushing image to' $instance;
-docker push melkorcba/standingsapp
-# # # release
-# echo 'releasing image to' $instance;
-# npm.cmd run -s heroku-release $instance;
+echo 'pushing image to dockerhub ' $instance;
+docker push $instance
+
+
 
