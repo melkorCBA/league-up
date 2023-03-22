@@ -82,7 +82,7 @@ export default function Admin({
                 className="btn btn-outline-warning btn-block w-100"
                 onClick={() => router.push(`matches`)}
               >
-                Update
+                Matches
               </button>
             </div>
           </div>

@@ -29,7 +29,8 @@ export async function getServerSideProps(ctx) {
 
   try {
     const matcheResponse = await axios.get(`api/matches/${id}`);
-    if (!matcheResponse.ok) throw new Error(matcheResponse.json()["message"]);
+    if (!matcheResponse.status === 200)
+      throw new Error(matcheResponse["message"]);
     const leagueResponse = await axios.get(`api/leagues`);
 
     const matcheData = await matcheResponse["data"];
