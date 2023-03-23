@@ -6,15 +6,23 @@ import {
   ENVIRONMENT,
   CLIENT_ENVIRONMENT,
 } from "../../lib/util";
+import { ACTIONS, useStore } from "../../contexts/storeContext";
 export default function Signin({ clientenvs }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { dispatch } = useStore();
   const { doRequest } = UseRequest(
     {
       url: `${ENVIRONMENT().BaseApiURL}/auth/signin`,
       method: RequestMethods.POST,
       body: { email, password },
-      onSuccess: () => Router.push("/admin"),
+      onSuccess: () => {
+        dispatch({
+          type: ACTIONS.LoginUser,
+          payload: { isLogin: true, username: email },
+        });
+        Router.push("/admin");
+      },
     },
     {}
   );

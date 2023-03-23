@@ -167,3 +167,17 @@ div.is-disabled {
     width: 500px;
   }
 }
+
+.porfile-menu {
+  left: -100px !important;
+  background-color: #4d5154;
+  border-color: #4d5154;
+}
+
+.porfile-menu .dropdown-item {
+  color: white;
+}
+
+.porfile-menu .dropdown-item:hover {
+  color: black;
+}
