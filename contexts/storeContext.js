@@ -33,7 +33,7 @@ const reducer = (state, action) => {
 
 const initialStore = {
   isLogin: false,
-  username: "",
+  currentUser: {},
 };
 
 export const StoreProvider = (props) => {

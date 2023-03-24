@@ -4,21 +4,26 @@ import { ErrorProvider } from "../contexts/errorContext";
 import Toaster from "../components/toaster";
 import Navbar from "../components/Navbar";
 import { useEffect } from "react";
-import { StoreProvider } from "../contexts/storeContext";
-StoreProvider;
+import { useStore, StoreProvider, ACTIONS } from "../contexts/storeContext";
+import useUser from "../hooks/useUser";
+import { userService } from "../services/api-service";
+import Container from "../components/Container";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap");
   }, []);
+
   return (
     <div>
       <StoreProvider>
-        <ErrorProvider>
-          <Toaster />
-          <Navbar />
-          <Component {...pageProps} />
-        </ErrorProvider>
+        <Container>
+          <ErrorProvider>
+            <Toaster />
+            <Navbar />
+            <Component {...pageProps} />
+          </ErrorProvider>
+        </Container>
       </StoreProvider>
     </div>
   );

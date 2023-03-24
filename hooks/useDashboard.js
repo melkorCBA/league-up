@@ -21,7 +21,7 @@ const useDashboard = ({
   const refetchDashboard = async () => {
     const { league: leagueId } = dashboard;
     const response = await axios.get(
-      `${ENVIRONMENT().BaseApiUR}/dashboard?leagueId=${leagueId}`
+      `${ENVIRONMENT().BaseApiURL}/dashboard?leagueId=${leagueId}`
     );
     const { data } = response.data;
     setDashboard(data);

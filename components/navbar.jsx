@@ -12,7 +12,7 @@ const hideNavbar = (router) => {
 
 const GetNavbar = (router) => {
   const { store } = useStore();
-  const { isLogin, username } = store;
+  const { isLogin, currentUser } = store;
   const showForLoggedInUser = (prop) => {
     if (!isLogin) return "";
     return prop;

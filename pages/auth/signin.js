@@ -17,11 +17,8 @@ export default function Signin({ clientenvs }) {
       method: RequestMethods.POST,
       body: { email, password },
       onSuccess: () => {
-        dispatch({
-          type: ACTIONS.LoginUser,
-          payload: { isLogin: true, username: email },
-        });
-        Router.push("/admin");
+        // to do a navgation with page refresh
+        window.location.href = "/admin";
       },
     },
     {}

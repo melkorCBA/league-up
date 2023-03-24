@@ -13,11 +13,8 @@ const SignOut = () => {
       method: RequestMethods.POST,
       body: {},
       onSuccess: () => {
-        dispatch({
-          type: ACTIONS.LogoutUser,
-          payload: { username: "" },
-        });
-        Router.push("/");
+        // to do a navgation with page refresh
+        window.location.href = "/";
       },
     },
     {}

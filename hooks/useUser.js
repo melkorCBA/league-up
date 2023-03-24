@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { ENVIRONMENT } from "../lib/util";
-import axios from "axios";
 import { useError } from "../contexts/errorContext";
+import {
+  userService,
+  leagueService,
+  matchService,
+  dashboardService,
+} from "../services/api-service";
 
 const useUser = (initialUserDashboard) => {
   const [user, setUser] = useState({});
@@ -11,33 +16,25 @@ const useUser = (initialUserDashboard) => {
   const { setErrors, setSuccess } = useError();
 
   const getUser = async () => {
-    const URL = `${ENVIRONMENT().BaseApiURL}/auth/user`;
-    const response = await axios.get(URL);
-    const { data } = response;
-    setUser(data["data"]);
+    const user = await userService.getUser();
+    setUser(user);
   };
 
   const getUserLeagues = async () => {
-    const URL = `${ENVIRONMENT().BaseApiURL}/leagues`;
-    const response = await axios.get(URL);
-    const { data } = response;
-    setUserLeagues(data["data"]);
+    const userLeagues = await leagueService.getLeagues();
+    setUserLeagues(userLeagues);
   };
 
   const getMatches = async () => {
     const { league: leagueId } = dashboard;
-    const URL = `${ENVIRONMENT().BaseApiURL}/matches?leagueId=${leagueId}`;
-    const response = await axios.get(URL);
-    const { data } = response;
-    setMatches(data["data"]);
+    const matchesForLeague = await matchService.getMatchesForLeague(leagueId);
+    setMatches(matchesForLeague);
   };
 
   const addLeague = async ({ leagueName }) => {
-    const URL = `${ENVIRONMENT().BaseApiURL}/leagues`;
     try {
-      const response = await axios.post(URL, { name: leagueName });
-      const { data } = response;
-      setUserLeagues([...userLeagues, data["data"]]);
+      const updatedLeague = await leagueService.addLeague({ leagueName });
+      setUserLeagues([...userLeagues, updatedLeague]);
       setSuccess("New League added");
     } catch (err) {
       setErrors(["Adding a New League Faild!", err["message"]]);
@@ -53,9 +50,8 @@ const useUser = (initialUserDashboard) => {
   };
 
   const saveDashbaord = async () => {
-    const URL = `${ENVIRONMENT().BaseApiURL}/dashboard`;
     try {
-      await axios.post(URL, {
+      await dashboardService.updateDashboard({
         league: dashboard["league"],
         currentMatch: dashboard["currentMatch"],
       });
