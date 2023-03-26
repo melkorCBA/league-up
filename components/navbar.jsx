@@ -70,7 +70,7 @@ const GetNavbar = (router) => {
               <li>
                 <a
                   className="dropdown-item"
-                  onClick={() => router.push("auth/user")}
+                  onClick={() => router.push("/auth/user")}
                 >
                   Porfile
                 </a>
@@ -80,7 +80,7 @@ const GetNavbar = (router) => {
               <li>
                 <a
                   className="dropdown-item"
-                  onClick={() => router.push("auth/signout")}
+                  onClick={() => router.push("/auth/signout")}
                 >
                   Signout
                 </a>
@@ -90,7 +90,7 @@ const GetNavbar = (router) => {
               <li>
                 <a
                   className="dropdown-item"
-                  onClick={() => router.push("auth/signin")}
+                  onClick={() => router.push("/auth/signin")}
                 >
                   Signin
                 </a>

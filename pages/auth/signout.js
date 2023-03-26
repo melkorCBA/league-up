@@ -23,7 +23,7 @@ const SignOut = () => {
   useEffect(() => {
     doRequest();
   }, []);
-  return <div>Signing Out</div>;
+  return "";
 };
 
 export default SignOut;
