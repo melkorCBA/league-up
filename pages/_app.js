@@ -4,9 +4,7 @@ import { ErrorProvider } from "../contexts/errorContext";
 import Toaster from "../components/toaster";
 import Navbar from "../components/Navbar";
 import { useEffect } from "react";
-import { useStore, StoreProvider, ACTIONS } from "../contexts/storeContext";
-import useUser from "../hooks/useUser";
-import { userService } from "../services/api-service";
+import { StoreProvider } from "../contexts/storeContext";
 import Container from "../components/Container";
 
 function MyApp({ Component, pageProps }) {
