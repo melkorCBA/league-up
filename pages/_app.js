@@ -5,7 +5,7 @@ import Toaster from "../components/toaster";
 import { useEffect } from "react";
 import { StoreProvider } from "../contexts/storeContext";
 import Container from "../components/Container";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/NavigationBar";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {

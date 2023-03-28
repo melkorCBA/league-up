@@ -10,7 +10,7 @@ const hideNavbar = (router) => {
   return false;
 };
 
-const GetNavbar = (router) => {
+const Navbar = (router) => {
   const { store } = useStore();
   const { isLogin, currentUser } = store;
   const showForLoggedInUser = (prop) => {
@@ -103,10 +103,10 @@ const GetNavbar = (router) => {
   );
 };
 
-const Navbar = () => {
+const NavigationBar = () => {
   const router = useRouter();
   if (hideNavbar(router)) return "";
-  return GetNavbar(router);
+  return Navbar(router);
 };
 
-export default Navbar;
+export default NavigationBar;
