@@ -2,10 +2,10 @@ import bootstrap from "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/globals.css";
 import { ErrorProvider } from "../contexts/errorContext";
 import Toaster from "../components/toaster";
-import Navbar from "../components/Navbar";
 import { useEffect } from "react";
 import { StoreProvider } from "../contexts/storeContext";
 import Container from "../components/Container";
+import Navbar from "../components/Navbar";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
