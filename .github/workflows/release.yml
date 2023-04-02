@@ -25,4 +25,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print version
-        run: echo "The version is ${{env.VERSION}}
+        run: echo "The version is $VERSION"
