@@ -1,9 +1,6 @@
 name: "Release Standing App"
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - "release/*"
 
 env:
   VERSION: "latest"
@@ -12,13 +9,13 @@ env:
 
 jobs:
   set_version:
-    if: startsWith(github.ref, 'refs/heads/release/') && github.ref != 'refs/heads/release'
+    if: startsWith(github.ref, 'refs/heads/release/')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Set version as environment variable
-        run: echo "export VERSION=${{ github.ref }} " >> $GITHUB_ENV
+        run: echo "export VERSION=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
         shell: bash
   print_version:
     needs: set_version
