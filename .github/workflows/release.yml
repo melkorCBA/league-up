@@ -4,8 +4,6 @@ on:
 
 env:
   VERSION: "latest"
-  IMAGE_NAME: standings-board
-  IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board
 
 jobs:
   set_version:
