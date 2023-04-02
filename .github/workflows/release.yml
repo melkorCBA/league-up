@@ -1,0 +1,28 @@
+name: "Release Standing App"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "release/*"
+
+env:
+  VERSION: "latest"
+  IMAGE_NAME: standings-board
+  IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board
+
+jobs:
+  set_version:
+    if: startsWith(github.ref, 'refs/heads/release/') && github.ref != 'refs/heads/release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set version as environment variable
+        run: echo "export VERSION=${{ github.ref }} " >> $GITHUB_ENV
+        shell: bash
+  print_version:
+    needs: set_version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print version
+        run: echo "The version is ${{env.VERSION}}
