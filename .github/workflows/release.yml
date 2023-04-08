@@ -5,10 +5,10 @@ on:
 
 env:
   VERSION: ${{ github.event.release.tag_name }}
-  BASE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board
+  IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board:${{github.event.release.tag_name}}
 
 jobs:
-  set_version:
+  version_info:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to release branch
@@ -16,25 +16,20 @@ jobs:
         with:
           ref: release
 
-      - name: tag release
-        id: tag_release
-        uses: mathieudutour/github-tag-action@v6.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: ${{github.event.release.tag_name}}
-          tag_prefix: v
+      - name: release tag
+        run: echo "${{env.VERSION}}"
 
-      - name: Set release tag
-        run: echo "VERSION=${{steps.tag_release.outputs.new_tag}}" >> $GITHUB_ENV
+      - name: new image tag
+        run: echo "${{env.IMAGE_TAG}}"
 
   build:
-    needs: set_version
+    needs: version_info
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to release tag
         uses: actions/checkout@v3
         with:
-          ref: ${{env.VERSION}}
+          ref: release
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -44,21 +39,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build image artifact
-        id: build-image-artifact
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          tags: ${{ env.BASE_TAG}}@${{env.VERSION}}
-          outputs: type=docker,dest=/tmp/${{ env.BASE_TAG}}@${{env.VERSION}}.tar
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.build-image-artifact.outputs.metadata }}
-          path: /tmp/${{ env.BASE_TAG}}@${{env.VERSION}}.tar
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: ${{ env.BASE_TAG}}@${{env.VERSION}}
+          tags: ${{ env.IMAGE_TAG}}
