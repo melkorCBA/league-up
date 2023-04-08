@@ -42,18 +42,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build image artifact
-        id: build-image-artifact
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          tags: ${{ env.IMAGE_TAG}}
-          outputs: type=docker,dest=/tmp/${{ env.IMAGE_TAG}}.tar
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.build-image-artifact.outputs.metadata }}
-          path: /tmp/${{ env.IMAGE_TAG }}.tar
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
