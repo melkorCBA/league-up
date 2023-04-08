@@ -1,0 +1,13 @@
+name: Cloud Release
+on:
+  workflow_dispatch:
+
+env:
+  VERSION: ${{ github.event.ref }}
+
+jobs:
+  version_info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: release tag
+        run: echo "${{env.VERSION}}"
