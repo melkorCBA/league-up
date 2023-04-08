@@ -5,11 +5,10 @@ on:
 
 env:
   VERSION: ${{ github.event.release.tag_name }}
-  BASE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board
-  IMAGE_TAG:
+  IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board:${{github.event.release.tag_name}}
 
 jobs:
-  set_version_info:
+  version_info:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to release branch
@@ -17,16 +16,14 @@ jobs:
         with:
           ref: release
 
-      - name: Set release tag
-        run: echo "VERSION=${{github.event.release.tag_name}}" >> $GITHUB_ENV
-      - run: echo "${{env.VERSION}}"
+      - name: release tag
+        run: echo "${{env.VERSION}}"
 
-      - name: Set image tag
-        run: echo "IMAGE_TAG=${{env.BASE_TAG}}:${{env.VERSION}}" >> $GITHUB_ENV
-      - run: echo "${{env.IMAGE_TAG}}"
+      - name: new image tag
+        run: echo "${{env.IMAGE_TAG}}"
 
   build:
-    needs: set_version_info
+    needs: version_info
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to release tag
