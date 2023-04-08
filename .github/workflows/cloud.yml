@@ -2,8 +2,13 @@ name: Cloud Release
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
 env:
   VERSION: ${{ github.event.ref }}
+  IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board:${{github.event.ref}}
+  REGISTRY: docker.io/library
 
 jobs:
   version_info:
@@ -11,3 +16,19 @@ jobs:
     steps:
       - name: release tag
         run: echo "${{env.VERSION}}"
+      - run: echo "${{env.IMAGE_TAG}}"
+  azure_container_release:
+    needs: version_info
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Az CLI login"
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          containerAppName: ${{secrets.AZURE_CONTAINER_APP_NAME}}
+          imageToDeploy: ${{env.REGISTRY}}/${{env.IMAGE_TAG}}
