@@ -33,3 +33,4 @@ jobs:
         with:
           containerAppName: ${{secrets.AZURE_CONTAINER_APP_NAME}}
           imageToDeploy: ${{env.REGISTRY}}/${{env.IMAGE_TAG}}
+          resourceGroup: ${{secrets.AZURE_RESOURE_GROUP_NAME}}
