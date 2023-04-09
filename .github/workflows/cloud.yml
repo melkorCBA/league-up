@@ -8,7 +8,6 @@ permissions:
 env:
   VERSION: ${{ github.ref_name }}
   IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board:${{github.ref_name}}
-  REGISTRY: docker.io/library
 
 jobs:
   version_info:
@@ -32,5 +31,5 @@ jobs:
         uses: azure/container-apps-deploy-action@v1
         with:
           containerAppName: ${{secrets.AZURE_CONTAINER_APP_NAME}}
-          imageToDeploy: ${{env.REGISTRY}}/${{env.IMAGE_TAG}}
+          imageToDeploy: ${{env.IMAGE_TAG}}
           resourceGroup: ${{secrets.AZURE_RESOURE_GROUP_NAME}}
