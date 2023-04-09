@@ -20,6 +20,7 @@ jobs:
   azure_container_release:
     needs: version_info
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: "Az CLI login"
         uses: azure/login@v1
