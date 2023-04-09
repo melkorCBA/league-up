@@ -6,8 +6,8 @@ permissions:
   id-token: write
   contents: read
 env:
-  VERSION: ${{ github.event.ref }}
-  IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board:${{github.event.ref}}
+  VERSION: ${{ github.ref_name }}
+  IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board:${{github.ref_name}}
   REGISTRY: docker.io/library
 
 jobs:
