@@ -6,9 +6,8 @@ permissions:
   id-token: write
   contents: read
 env:
-  VERSION: ${{ github.event.ref }}
-  IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board:${{github.event.ref}}
-  REGISTRY: docker.io/library
+  VERSION: ${{ github.ref_name }}
+  IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board:${{github.ref_name}}
 
 jobs:
   version_info:
@@ -20,6 +19,7 @@ jobs:
   azure_container_release:
     needs: version_info
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: "Az CLI login"
         uses: azure/login@v1
@@ -31,4 +31,5 @@ jobs:
         uses: azure/container-apps-deploy-action@v1
         with:
           containerAppName: ${{secrets.AZURE_CONTAINER_APP_NAME}}
-          imageToDeploy: ${{env.REGISTRY}}/${{env.IMAGE_TAG}}
+          imageToDeploy: ${{env.IMAGE_TAG}}
+          resourceGroup: ${{secrets.AZURE_RESOURE_GROUP_NAME}}

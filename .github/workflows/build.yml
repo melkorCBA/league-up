@@ -2,7 +2,7 @@ name: "Build Standing App"
 on:
   push:
     branches:
-      - "feature/*"
+      - "main"
 
 jobs:
   build:
