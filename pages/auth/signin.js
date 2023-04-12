@@ -7,10 +7,11 @@ import {
   CLIENT_ENVIRONMENT,
 } from "../../lib/util";
 import { ACTIONS, useStore } from "../../contexts/storeContext";
+import useLoading from "../../hooks/useLoading";
 export default function Signin({ clientenvs }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { dispatch } = useStore();
+  const { start, end } = useLoading();
   const { doRequest } = UseRequest(
     {
       url: `${ENVIRONMENT().BaseApiURL}/auth/signin`,
@@ -18,7 +19,11 @@ export default function Signin({ clientenvs }) {
       body: { email, password },
       onSuccess: () => {
         // to do a navgation with page refresh
+        end();
         window.location.href = "/admin";
+      },
+      onError: () => {
+        end();
       },
     },
     {}
@@ -31,6 +36,7 @@ export default function Signin({ clientenvs }) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    start();
     await doRequest();
   };
   return (

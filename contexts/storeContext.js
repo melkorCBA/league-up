@@ -5,6 +5,7 @@ export const StoreContext = createContext(null);
 export const ACTIONS = Object.freeze({
   LoginUser: "LoginUser",
   LogoutUser: "LogoutUser",
+  SetLodingStatus: "SetLodingStatus",
 });
 
 const reducer = (state, action) => {
@@ -24,6 +25,12 @@ const reducer = (state, action) => {
         isLogin: false,
       };
     }
+    case ACTIONS.SetLodingStatus: {
+      return {
+        ...state,
+        loading: payload["loading"],
+      };
+    }
     default:
       return {
         ...state,
@@ -34,6 +41,7 @@ const reducer = (state, action) => {
 const initialStore = {
   isLogin: false,
   currentUser: {},
+  loading: false,
 };
 
 export const StoreProvider = (props) => {
