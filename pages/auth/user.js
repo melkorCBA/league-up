@@ -69,7 +69,9 @@ const User = ({ initalDashboard, clientenvs }) => {
           </select>
         </div>
         <div>
-          <button onClick={saveDashbaord}>Save</button>
+          <button className="btn btn-secondary" onClick={saveDashbaord}>
+            Save
+          </button>
         </div>
       </div>
 

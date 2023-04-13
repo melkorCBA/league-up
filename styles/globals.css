@@ -66,7 +66,7 @@ input {
 }
 
 .boarder-yelllow {
-  border: 0.5px solid rgb(255, 230, 0);
+  border: 0.5px solid #464c51;
 }
 
 .match-card {
@@ -149,7 +149,7 @@ div.is-disabled {
 }
 
 .offline {
-  background-color: rgb(0, 0, 0);
+  background-color: white;
 }
 
 .offline:hover {
@@ -185,4 +185,30 @@ div.is-disabled {
 
 .porfile-menu .dropdown-item:hover {
   color: black;
+}
+
+.dropdown-menu {
+  background-color: #4d5154;
+  border-color: #4d5154;
+}
+
+.dropdown-menu .dropdown-item {
+  color: white;
+}
+.dropdown-menu .dropdown-item:hover {
+  color: black;
+}
+
+.form-control {
+  background-color: #212529;
+  color: white;
+}
+.form-control:focus {
+  background-color: #212529;
+  color: white;
+  border-color: white;
+}
+.update-grid table thead tr th {
+  text-align: center;
+  color: white;
 }

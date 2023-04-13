@@ -22,9 +22,11 @@ const ViewSelectorItem = ({ v, view, setView, viewData }) => {
           }}
         >
           <label
-            className={v === view ? "btn btn-warning" : "btn-outline-warning"}
+            className={
+              v === view ? "btn btn-secondary" : "btn-outline-secondary"
+            }
           >
-            Select
+            {v === view ? "Selected" : "Select"}
           </label>
         </button>
       </div>

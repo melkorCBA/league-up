@@ -13,6 +13,7 @@ import CurrentMatch from "../components/views/CurrentMatch/CurrentMatch";
 import useDashboard from "../hooks/useDashboard";
 import { useRouter } from "next/router";
 import { axiosClient } from "../lib/apiClient";
+import DropdownSelect from "../components/shared/DropdownSelect";
 
 export default function Admin({
   initalTeamsData,
@@ -39,12 +40,29 @@ export default function Admin({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="w-100">
-        <h1 className="my-3">Admin Panel</h1>
-        <div className="d-flex">
-          <label htmlFor="league-selector" className="mx-2">
-            League:
+        <div className="my-3 d-flex gap-2">
+          <h1>Admin Panel</h1>
+          <span className="align-self-center badge bg-white text-dark">
+            current league : {defaultLeague.name}
+          </span>
+        </div>
+
+        <div className="d-flex gap-4">
+          <label
+            htmlFor="admin-league-selector-dropdown"
+            className="mx-2align-self-center pt-1"
+          >
+            Leagues:
           </label>
-          <select
+          <DropdownSelect
+            id="admin-league-selector-dropdown"
+            value={league}
+            items={leagues}
+            onChange={(item) => setLeague(item)}
+            ukey={"_id"}
+            displayKey={"name"}
+          />
+          {/* <select
             id="league-selector"
             aria-label="Default select example"
             onChange={(e) => {
@@ -57,7 +75,7 @@ export default function Admin({
                 {l.name}
               </option>
             ))}
-          </select>
+          </select> */}
         </div>
 
         <UpdateGrid data={teams} league={league} />
@@ -79,7 +97,7 @@ export default function Admin({
               />
               <button
                 hidden={view === CONSTANTS.VIEWS.STANDINGS}
-                className="btn btn-outline-warning btn-block w-100"
+                className="btn btn-outline-secondary btn-block w-100"
                 onClick={() => router.push(`matches`)}
               >
                 Matches

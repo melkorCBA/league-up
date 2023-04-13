@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "../styles/Home.module.css";
-import Switch from "./Switch";
+import Switch from "./shared/Switch";
 
 const MatchTeam = ({ teamAbrev, initialData, onChange, isDisabled }) => {
   const [team, setTeam] = useState(initialData);
@@ -138,7 +138,7 @@ const UpdateMatch = ({ league, match, updateMatch }) => {
       <div className="row justify-content-md-center">
         <div className="col-md-10 py-2">
           <button
-            className="btn btn-warning w-100"
+            className="btn btn-secondary w-100"
             disabled={!matchMeta["lockedForSync"]}
             onClick={onUpdate}
           >

@@ -67,7 +67,7 @@ const NewMatch = ({ teams, addNewMatch }) => {
       </div>
       <div>
         <button
-          className="btn btn-warning w-100"
+          className="btn btn-secondary w-100"
           onClick={() => addNewMatch(selectedteams)}
           disabled={!isValidSelections()}
         >
