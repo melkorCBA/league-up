@@ -4,10 +4,15 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  background-color: #000000;
+}
+.standings-container {
   background: url("../public/back1.Jpeg");
   background-size: 1500px;
+  background-size: 1500px;
   background-position: left;
-  background-color: #000000;
+
   opacity: 0.9;
   position: absolute;
   z-index: -1;

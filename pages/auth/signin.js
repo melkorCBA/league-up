@@ -12,15 +12,17 @@ export default function Signin({ clientenvs }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { start, end } = useLoading();
+
   const { doRequest } = UseRequest(
     {
       url: `${ENVIRONMENT().BaseApiURL}/auth/signin`,
       method: RequestMethods.POST,
       body: { email, password },
       onSuccess: () => {
-        // to do a navgation with page refresh
-        end();
+        // to do a navgation with page refresh to update login states in the store
+
         window.location.href = "/admin";
+        end();
       },
       onError: () => {
         end();
