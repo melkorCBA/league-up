@@ -3,6 +3,11 @@ import client from "../pusher/client";
 import { CHANNELS, EVENTS } from "../pusher/constants";
 import { ENVIRONMENT, CONSTANTS, setClientenvsInSession } from "../lib/util";
 import axios from "axios";
+import {
+  dashboardService,
+  matchService,
+  teamService,
+} from "../services/api-service";
 
 const useDashboard = ({
   initalDashboard,
@@ -20,29 +25,20 @@ const useDashboard = ({
 
   const refetchDashboard = async () => {
     const { league: leagueId } = dashboard;
-    const response = await axios.get(
-      `${ENVIRONMENT().BaseApiURL}/dashboard?leagueId=${leagueId}`
-    );
-    const { data } = response.data;
+    const data = await dashboardService.getDashboard({ leagueId });
     setDashboard(data);
     await dahsboardSwitch(data);
   };
 
   const reFeatchTeams = async () => {
     const { league: leagueId } = dashboard;
-    const response = await axios.get(
-      `${ENVIRONMENT().BaseApiURL}/teams?leagueId=${leagueId}`
-    );
-    const { data } = response.data;
+    const data = await teamService.getTeams({ leagueId });
     setTeams(data);
   };
 
   const reFetchCurrentMatch = async () => {
     const currentMatchId = dashboard["currentMatch"];
-    const response = await axios.get(
-      `${ENVIRONMENT().BaseApiURL}/matches/${currentMatchId}`
-    );
-    const { data } = response.data;
+    const data = await matchService.getMatch(currentMatchId);
     setCurrentMatch(data);
   };
 
@@ -65,38 +61,30 @@ const useDashboard = ({
   };
   const updateDashboadView = async (view) => {
     const { league: leagueId } = dashboard;
-    const response = await axios.patch(
-      `${ENVIRONMENT().BaseApiURL}/dashboard/`,
-      {
-        view,
-        currentMatch: dashboard["currentMatch"],
-        leagueId,
-      }
-    );
+    await dashboardService.updateDashboard({
+      leagueId,
+      view,
+      currentMatch: dashboard["currentMatch"],
+    });
   };
 
   const updateCurrentMatch = async ({ matchId }) => {
     const { league: leagueId } = dashboard;
-    const response = await axios.patch(
-      `${ENVIRONMENT().BaseApiURL}/dashboard/`,
-      {
-        view: dashboard["view"],
-        currentMatch: matchId,
-        leagueId,
-      }
-    );
+    await dashboardService.updateDashboard({
+      view: dashboard["view"],
+      currentMatch: matchId,
+      leagueId,
+    });
     setDashboard({ ...dashboard, currentMatch: matchId });
   };
 
   const updateLeague = async (league) => {
-    const response = await axios.patch(
-      `${ENVIRONMENT().BaseApiURL}/dashboard/`,
-      {
-        view: dashboard["view"],
-        currentMatch: dashboard["currentMatch"],
-        leagueId: league["_id"],
-      }
-    );
+    await dashboardService.updateDashboard({
+      view: dashboard["view"],
+      currentMatch: dashboard["currentMatch"],
+      leagueId: league["_id"],
+    });
+
     setDashboard({ ...dashboard, league: league["_id"] });
   };
 

@@ -52,7 +52,7 @@ const useUser = (initialUserDashboard) => {
   const saveDashbaord = async () => {
     try {
       await dashboardService.updateDashboard({
-        league: dashboard["league"],
+        leagueId: dashboard["league"],
         currentMatch: dashboard["currentMatch"],
       });
       setSuccess("Dashboard Saved!");

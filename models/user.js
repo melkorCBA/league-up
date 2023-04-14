@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Password } from "../lib/util";
+import { findLeagueById, hasLeagueAccess } from "./user.extend";
 
 /* PetSchema will correspond to a collection in your MongoDB database. */
 const UserSchema = new mongoose.Schema(
@@ -44,5 +45,15 @@ UserSchema.pre("save", async function (done) {
   }
   done();
 });
+UserSchema.method("findLeagueById", findLeagueById);
+UserSchema.method("hasLeagueAccess", hasLeagueAccess);
+// UserSchema.methods.doesLeagueExist = function (leagueId) {
+//   if (this.leagues.find((l) => l.equals(leagueId))) return true;
+//   return false;
+// };
+// UserSchema.static.doesLeagueExist = function (leagueId) {
+//   if (this.leagues.find((l) => l.equals(leagueId))) return true;
+//   return false;
+// };
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);
