@@ -22,8 +22,8 @@ export default function Admin({
   clientenvs,
   views,
 }) {
-  const defaultLeague = leagues?.filter((l) => l.default)[0];
-  const [league, setLeague] = useState(defaultLeague);
+  const leagueInView = leagues?.filter((l) => l.default)[0];
+  const [league, setLeague] = useState(leagueInView);
   const { view, teams, currentMatch, updateView } = useDashboard({
     initalDashboard,
     clientenvs,
@@ -43,7 +43,7 @@ export default function Admin({
         <div className="my-3 d-flex gap-2">
           <h1>Admin Panel</h1>
           <span className="align-self-center badge bg-white text-dark">
-            current league : {defaultLeague.name}
+            current league : {leagueInView.name}
           </span>
         </div>
 
@@ -62,20 +62,6 @@ export default function Admin({
             ukey={"_id"}
             displayKey={"name"}
           />
-          {/* <select
-            id="league-selector"
-            aria-label="Default select example"
-            onChange={(e) => {
-              setLeague(leagues.find((l) => l._id === e.target.value));
-            }}
-            value={league["_id"]}
-          >
-            {leagues.map((l) => (
-              <option key={l._id} value={l._id}>
-                {l.name}
-              </option>
-            ))}
-          </select> */}
         </div>
 
         <UpdateGrid data={teams} league={league} />

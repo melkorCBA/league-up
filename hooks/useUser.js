@@ -73,7 +73,7 @@ const useUser = (initialUserDashboard) => {
   return {
     user,
     leagues: userLeagues,
-    defaultLeague: {
+    leagueInView: {
       value: dashboard["league"],
       onChnage: onDashboardChange("league"),
     },

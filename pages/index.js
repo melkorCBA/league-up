@@ -19,8 +19,8 @@ export default function Home({
   clientenvs,
   initalTeamsData,
 }) {
-  const defaultLeague = leagues?.filter((l) => l.default)[0];
-  const [league, setLeague] = useState(defaultLeague);
+  const leagueInView = leagues?.filter((l) => l.default)[0];
+  const [league, setLeague] = useState(leagueInView);
   const { view, teams, currentMatch } = useDashboard({
     initalDashboard,
     clientenvs,

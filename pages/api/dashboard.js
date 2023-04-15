@@ -26,7 +26,7 @@ export default async function handler(req, res) {
         ]);
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
-        const leagueId = req.query["leagueId"] ?? currentUser.defaultLeague;
+        const leagueId = req.query["leagueId"] ?? currentUser.leagueInView;
 
         // check user has acces to specified league - league in users's league list ?
         const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
         ]);
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
-        const leagueId = req.query["leagueId"] ?? currentUser.defaultLeague;
+        const leagueId = req.query["leagueId"] ?? currentUser.leagueInView;
 
         const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
           leagueId,
@@ -84,7 +84,7 @@ export default async function handler(req, res) {
         ]);
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
-        const leagueId = req.query["leagueId"] ?? currentUser.defaultLeague;
+        const leagueId = req.query["leagueId"] ?? currentUser.leagueInView;
 
         const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
           leagueId,

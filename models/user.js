@@ -19,7 +19,8 @@ const UserSchema = new mongoose.Schema(
         ref: "League",
       },
     ],
-    defaultLeague: {
+
+    leagueInView: {
       type: mongoose.Types.ObjectId,
       ref: "League",
     },
