@@ -43,7 +43,7 @@ export default function Admin({
         <div className="my-3 d-flex gap-2">
           <h1>Admin Panel</h1>
           <span className="align-self-center badge bg-white text-dark">
-            current league : {leagueInView.name}
+            league in View : {leagueInView.name}
           </span>
         </div>
 

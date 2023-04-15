@@ -17,7 +17,7 @@ export const trigger = (
 ) =>
   publisher
     .trigger(
-      channelName ?? CHANNELS.STANDING_BOARD,
+      channelName ?? CHANNELS.STANDINGS,
       eventName ?? EVENTS.UPDATE_TEAMS,
       {
         message: message ?? "",

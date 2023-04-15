@@ -1,8 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import client from "../pusher/client";
 import { CHANNELS, EVENTS } from "../pusher/constants";
-import { ENVIRONMENT, CONSTANTS, setClientenvsInSession } from "../lib/util";
-import axios from "axios";
+import { CONSTANTS, setClientenvsInSession } from "../lib/util";
 import {
   dashboardService,
   matchService,
@@ -123,7 +122,7 @@ const useDashboard = ({
     );
 
     const standingsBoardChannel = pusherClient.subscribeTochannel(
-      CHANNELS.STANDING_BOARD
+      CHANNELS.STANDINGS
     );
     const currentMatchChannel = pusherClient.subscribeTochannel(
       CHANNELS.CURRENT_MATCH

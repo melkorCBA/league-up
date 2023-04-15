@@ -88,7 +88,7 @@ export default async function handler(req, res) {
         await team.save();
         if (unUsedLogo) await unUsedLogo.save();
         trigger(publisher, {
-          channelName: CHANNELS.STANDING_BOARD,
+          channelName: CHANNELS.STANDINGS,
           eventName: EVENTS.UPDATE_TEAMS,
         });
         res.status(201).json({ status: "created", data: team });

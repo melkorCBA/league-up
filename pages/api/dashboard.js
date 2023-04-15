@@ -112,10 +112,11 @@ export default async function handler(req, res) {
         });
 
         await dashBoard.save();
-        trigger(publisher, {
-          channelName: CHANNELS.DASHBOARD,
-          eventName: EVENTS.UPDATE_DASHBOARD,
-        });
+        dashboardUpdateTriger(publisher, payload);
+        // trigger(publisher, {
+        //   channelName: CHANNELS.DASHBOARD,
+        //   eventName: EVENTS.UPDATE_DASHBOARD,
+        // });
         res.status(201).json({ status: "updated", data: dashBoard });
       } catch (err) {
         errorHandler(err, res);
@@ -127,5 +128,22 @@ export default async function handler(req, res) {
     default:
       res.status(400).json({ success: false });
       break;
+  }
+}
+
+function dashboardUpdateTriger(publisher, payload) {
+  if (payload.currentMatch) {
+    trigger(publisher, {
+      channelName: CHANNELS.DASHBOARD,
+      eventName: EVENTS.DASHBOARD.UPDATE_CURRENT_MATCH,
+    });
+    return;
+  }
+  if (payload.view) {
+    trigger(publisher, {
+      channelName: CHANNELS.DASHBOARD,
+      eventName: EVENTS.DASHBOARD.UPDATE_VIEW,
+    });
+    return;
   }
 }

@@ -1,16 +1,16 @@
-import League from "../../models/league";
-import User from "../../models/user";
+import League from "../../../models/league";
+import User from "../../../models/user";
 
-import dbConnect from "../../lib/dbConnect";
-import { errorHandler, validators } from "../../lib/errorHandler";
-import { getPublisher, trigger } from "../../pusher/publisher";
+import dbConnect from "../../../lib/dbConnect";
+import { errorHandler, validators } from "../../../lib/errorHandler";
+import { getPublisher, trigger } from "../../../pusher/publisher";
 
 import mongoose from "mongoose";
 import {
   UserMiddleware,
   checkUserAccess,
   getUserData,
-} from "../../lib/middleware";
+} from "../../../lib/middleware";
 
 export default async function handler(req, res) {
   const { method } = req;

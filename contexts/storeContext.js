@@ -6,6 +6,8 @@ export const ACTIONS = Object.freeze({
   LoginUser: "LoginUser",
   LogoutUser: "LogoutUser",
   SetLodingStatus: "SetLodingStatus",
+  SetLeagueSelected: "SetLeagueSelected",
+  SetLeagueInView: "SetLeagueInView",
 });
 
 const reducer = (state, action) => {
@@ -31,6 +33,18 @@ const reducer = (state, action) => {
         loading: payload["loading"],
       };
     }
+    case ACTIONS.SetLeagueSelected: {
+      return {
+        ...state,
+        leagueSelected: payload["leagueSelected"],
+      };
+    }
+    case ACTIONS.SetLeagueInView: {
+      return {
+        ...state,
+        leagueSelected: payload["SetLeagueInView"],
+      };
+    }
     default:
       return {
         ...state,
@@ -42,6 +56,8 @@ const initialStore = {
   isLogin: false,
   currentUser: {},
   loading: false,
+  leagueSelected: {},
+  leagueInView: {},
 };
 
 export const StoreProvider = (props) => {
