@@ -14,24 +14,37 @@ import useDashboard from "../hooks/useDashboard";
 import { useRouter } from "next/router";
 import { axiosClient } from "../lib/apiClient";
 import DropdownSelect from "../components/shared/DropdownSelect";
+import {
+  leagueService,
+  viewService,
+  dashboardService,
+  teamService,
+  matchService,
+} from "../services/api-service";
+import useModal from "../hooks/useModal";
+import Modal from "../components/shared/Modal";
 
-export default function Admin({
-  initalTeamsData,
-  initalDashboard,
-  leagues,
-  clientenvs,
-  views,
-}) {
-  const leagueInView = leagues?.filter((l) => l.default)[0];
-  const [league, setLeague] = useState(leagueInView);
-  const { view, teams, currentMatch, updateView } = useDashboard({
-    initalDashboard,
+export default function Admin({ initialData, clientenvs }) {
+  //const leagueInView = leagues?.filter((l) => l.default)[0];
+
+  const {
+    leagueSelected,
+    leagueInView,
+    teams,
+    view,
+    updateLeagueSelected,
+    updateView,
+    matchInView,
+    updateLeagueInView,
+  } = useDashboard({
+    initialData,
     clientenvs,
-    league,
-    initalTeamsData,
   });
   const router = useRouter();
-
+  const { open, close } = useModal();
+  const openUserDashboardModal = () => {
+    open("UserDashboardModal");
+  };
   return (
     <div className="container-fluid container-admin">
       <Head>
@@ -42,9 +55,40 @@ export default function Admin({
       <div className="w-100">
         <div className="my-3 d-flex gap-2">
           <h1>Admin Panel</h1>
-          <span className="align-self-center badge bg-white text-dark">
+          <span
+            className="align-self-center badge bg-white text-dark"
+            onClick={openUserDashboardModal}
+          >
             league in View : {leagueInView.name}
           </span>
+          <Modal
+            Header={() => (
+              <div>
+                <h4>Update League in View</h4>
+              </div>
+            )}
+            Body={() => (
+              <div>
+                <div className="d-flex gap-2">
+                  <label className="align-self-center">League in View:</label>
+                  <DropdownSelect
+                    id="admin-league-selector-dropdown"
+                    value={leagueInView}
+                    items={initialData.leagues}
+                    onChange={(item) => updateLeagueInView(item)}
+                    ukey={"_id"}
+                    displayKey={"name"}
+                  />
+                </div>
+              </div>
+            )}
+            Buttons={() => (
+              <div className="d-flex gap-2">
+                <button className="btn btn-outline-secondary">Cancel</button>
+                <button className="btn btn-secondary">Update</button>
+              </div>
+            )}
+          />
         </div>
 
         <div className="d-flex gap-4">
@@ -56,20 +100,20 @@ export default function Admin({
           </label>
           <DropdownSelect
             id="admin-league-selector-dropdown"
-            value={league}
-            items={leagues}
-            onChange={(item) => setLeague(item)}
+            value={leagueSelected}
+            items={initialData.leagues}
+            onChange={(item) => updateLeagueSelected(item)}
             ukey={"_id"}
             displayKey={"name"}
           />
         </div>
 
-        <UpdateGrid data={teams} league={league} />
+        <UpdateGrid data={teams} league={leagueSelected} />
         <div className="row justify-content-md-center">
           <div className="col-md-8 col-12">
             <ViewSelector
-              views={views}
-              initlaView={view}
+              views={initialData.views}
+              view={view}
               onViewSelectorChnage={updateView}
             />
           </div>
@@ -77,7 +121,7 @@ export default function Admin({
             <h3 className="text-center">Current Preview</h3>
             <div className="m-1">
               <CurrentMatch
-                match={currentMatch}
+                match={matchInView}
                 matchView={view}
                 miniView={true}
               />
@@ -100,22 +144,28 @@ export async function getServerSideProps(context) {
   const envs = CLIENT_ENVIRONMENT;
   const axios = axiosClient(context.req);
   try {
-    const teamsResponse = await axios.get(`api/teams`);
-    const leaguesResponse = await axios.get(`api/leagues`);
-    const dashboardResponse = await axios.get(`api/dashboard`);
-    const viewsResponse = await axios.get(`api/views`);
-    const initalTeamsData = await teamsResponse["data"];
-    const leagues = await leaguesResponse["data"];
-    const initalDashboardData = await dashboardResponse["data"];
-    const ViewsData = await viewsResponse["data"];
+    const dashboard = await dashboardService.getDashboard({}, axios);
+    const teams = await teamService.getTeams({}, axios);
+    const leagueInView = await leagueService.getLeague(dashboard.league, axios);
+    const matchInView = await matchService.getMatch(
+      dashboard.currentMatch,
+      axios
+    );
+    const leagues = await leagueService.getLeagues(axios);
+    const views = await viewService.getViews(axios);
+
     // Pass data to the page via props
     return {
       props: {
-        initalDashboard: initalDashboardData["data"],
-        initalTeamsData: initalTeamsData["data"],
-        leagues: leagues["data"],
+        initialData: {
+          leagues,
+          teams,
+          dashboard,
+          leagueInView,
+          matchInView,
+          views,
+        },
         clientenvs: envs,
-        views: ViewsData["data"],
       },
     };
   } catch (err) {

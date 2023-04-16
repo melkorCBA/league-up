@@ -22,9 +22,9 @@ export default async function handler(req, res) {
         if (!exsistingUser) {
           throw new BadRequest("Invalid User!.");
         }
-        const { leagueInView } = exsistingUser;
+        const { leagueInView: leagueInViewId } = exsistingUser;
         // get dashboard
-        const dashboard = await DashBoard.findOne({ league: leagueInView });
+        const dashboard = await DashBoard.findOne({ league: leagueInViewId });
         if (!dashboard) {
           throw new NotFound("No dashboard set in view!.");
         }
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     case "PATCH": {
       try {
         await validators.attach(req, res, [
-          validators.body.field("leagueInView", "leagueInView is required"),
+          validators.body.field("leagueInViewId", "leagueInView is required"),
         ]);
         UserMiddleware(req, res);
         const currentUserId = CookieSession.get("currentUser", { req, res });
@@ -46,18 +46,18 @@ export default async function handler(req, res) {
         if (!exsistingUser) {
           throw new BadRequest("Invalid User!.");
         }
-        const { leagueInView } = req.body;
-        if (!exsistingUser.hasLeagueAccess(leagueInView)) {
+        const { leagueInViewId } = req.body;
+        if (!exsistingUser.hasLeagueAccess(leagueInViewId)) {
           throw new Forbidden("User does not have to access to this league");
         }
-        exsistingUser.leagueInView = leagueInView;
+        exsistingUser.leagueInView = leagueInViewId;
         await exsistingUser.save();
         trigger(publisher, {
           channelName: CHANNELS.DASHBOARD,
           eventName: EVENTS.DASHBOARD.UPDATE_LEAGUE_IN_VIEW,
         });
         // get dashboard
-        const dashboard = await DashBoard.findOne({ league: leagueInView });
+        const dashboard = await DashBoard.findOne({ league: leagueInViewId });
         if (!dashboard) {
           throw new NotFound("No dashboard set in view!.");
         }

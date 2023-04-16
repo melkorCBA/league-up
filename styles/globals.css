@@ -198,6 +198,10 @@ div.is-disabled {
 .dropdown-menu .dropdown-item:hover {
   color: black;
 }
+.dropdown-menu .dropdown-selected {
+  background-color: #e9ecef;
+  color: black;
+}
 
 .form-control {
   background-color: #212529;
@@ -212,3 +216,48 @@ div.is-disabled {
   text-align: center;
   color: white;
 }
+.modal-container {
+  position: fixed;
+  inset: 0; /* inset sets all 4 values (top right bottom left) much like how we set padding, margin etc., */
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease-in;
+  overflow: hidden;
+  z-index: 999;
+  padding: 40px 20px 20px;
+}
+
+.modal-container .modal-content {
+  width: 600px;
+  height: auto;
+  background-color: #212529;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  position: absolute;
+  top: 25vh;
+  padding: 12px;
+  border-radius: 0.3rem;
+}
+
+.modal-container .modal-content .modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.modal-container .modal-content .modal-header,
+.modal-body,
+.modal-footer {
+  width: 100%;
+}
+
+/* .modal-container .modal-content .modal-header .close {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+} */

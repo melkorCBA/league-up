@@ -14,7 +14,10 @@ const DropdownSelect = ({ id, value, items, onChange, ukey, displayKey }) => {
       <ul className="dropdown-menu" aria-labelledby={id}>
         {items.map((item) => (
           <li
-            className="dropdown-item"
+            className={
+              "dropdown-item" +
+              `${item[ukey] === value[ukey] ? " dropdown-selected" : ""}`
+            }
             key={item[ukey]}
             onClick={() => onChange(item)}
           >

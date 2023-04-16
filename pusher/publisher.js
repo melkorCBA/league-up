@@ -24,6 +24,6 @@ export const trigger = (
       }
     )
     .then((res) => {
-      console.log("update event published:" + eventName);
+      console.log("event:" + eventName);
     })
     .catch((err) => (errorCallback ? errorCallback(err) : console.log(err)));

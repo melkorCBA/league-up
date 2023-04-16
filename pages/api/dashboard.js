@@ -27,7 +27,6 @@ export default async function handler(req, res) {
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
         const leagueId = req.query["leagueId"] ?? currentUser.leagueInView;
-
         // check user has acces to specified league - league in users's league list ?
         const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
           leagueId,
@@ -103,7 +102,7 @@ export default async function handler(req, res) {
         }
         const { view, currentMatch } = req.body;
 
-        const payload = { view, currentMatch, league: leagueId };
+        const payload = { view, currentMatch };
 
         Object.keys(payload).forEach((key) => {
           if (payload[key] !== undefined) {
@@ -113,10 +112,6 @@ export default async function handler(req, res) {
 
         await dashBoard.save();
         dashboardUpdateTriger(publisher, payload);
-        // trigger(publisher, {
-        //   channelName: CHANNELS.DASHBOARD,
-        //   eventName: EVENTS.UPDATE_DASHBOARD,
-        // });
         res.status(201).json({ status: "updated", data: dashBoard });
       } catch (err) {
         errorHandler(err, res);

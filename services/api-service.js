@@ -26,9 +26,9 @@ export const userService = {
     const response = await getAxios(axiosClient).get(URL);
     return getData(response);
   },
-  updateUserDashboard: async ({ leagueInView }, axiosClient = null) => {
+  updateUserDashboard: async ({ leagueInViewId }, axiosClient = null) => {
     const URL = `${ENVIRONMENT().BaseApiURL}/auth/user/dashboard`;
-    const response = await getAxios(axiosClient).patch(URL, { leagueInView });
+    const response = await getAxios(axiosClient).patch(URL, { leagueInViewId });
     return getData(response);
   },
 };
@@ -66,7 +66,7 @@ export const dashboardService = {
   ) => {
     const URL = `${ENVIRONMENT().BaseApiURL}/dashboard?leagueId=${leagueId}`;
     const payload = getCleanPayload({ currentMatch, view });
-    const response = await getAxios(axiosClient).post(URL, payload);
+    const response = await getAxios(axiosClient).patch(URL, payload);
     return getData(response);
   },
 };
@@ -88,6 +88,14 @@ export const teamService = {
   getTeams: async ({ leagueId }, axiosClient = null) => {
     let URL = `${ENVIRONMENT().BaseApiURL}/teams`;
     if (leagueId) URL += `?leagueId=${leagueId}`;
+    const response = await getAxios(axiosClient).get(URL);
+    return getData(response);
+  },
+};
+
+export const viewService = {
+  getViews: async (axiosClient = null) => {
+    const URL = `${ENVIRONMENT().BaseApiURL}/views`;
     const response = await getAxios(axiosClient).get(URL);
     return getData(response);
   },
