@@ -8,9 +8,11 @@ import {
   teamService,
   userService,
 } from "../services/api-service";
+import { ACTIONS, useStore } from "../contexts/storeContext";
 
 const useDashboard = ({ initialData, clientenvs }) => {
-  const [leagueInView, setLeagueInView] = useState(initialData.leagueInView);
+  const { store, dispatch } = useStore();
+  // const [leagueInView, setLeagueInView] = useState(initialData.leagueInView);
   const [leagueSelected, setLeagueSelected] = useState(
     initialData.leagueInView
   );
@@ -37,6 +39,14 @@ const useDashboard = ({ initialData, clientenvs }) => {
     },
   };
   useEffect(() => {
+    dispatch({
+      type: ACTIONS.SetLeagueInView,
+      payload: { leagueInView: initialData.leagueInView },
+    });
+    dispatch({
+      type: ACTIONS.SetLeagues,
+      payload: { leagues: initialData.leagues },
+    });
     // add envs to session
     setClientenvsInSession(clientenvs);
   }, []);
@@ -64,21 +74,15 @@ const useDashboard = ({ initialData, clientenvs }) => {
   const updateLeagueSelected = (league) => {
     setLeagueSelected(league);
   };
-  const updateLeagueInView = async () => {
-    const { _id: leagueId } = leagueSelected;
-    await userService.updateUserDashboard({ leagueInViewId: leagueId });
-    setLeagueInView(leagueSelected);
-  };
 
   return {
-    leagueInView,
+    leagueInView: store.leagueInView,
     leagueSelected,
     view: dashboard?.view,
     teams,
     matchInView,
     updateView,
     updateLeagueSelected,
-    updateLeagueInView,
   };
 };
 

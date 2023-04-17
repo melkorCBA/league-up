@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ACTIONS, useStore } from "../../contexts/storeContext";
+import useModal from "../../hooks/useModal";
 
 const Portal = ({ children, containerId }) => {
   const [container, setContainer] = useState(null);
@@ -28,20 +29,16 @@ const Portal = ({ children, containerId }) => {
   return createPortal(children, container);
 };
 
-const Modal = ({ Header, Body, Buttons }) => {
-  const { store, dispatch } = useStore();
-  const { modal } = store;
-  const close = () => {
-    dispatch({ type: ACTIONS.CloseModal });
-  };
+const Modal = ({ identifier, Header, Body, Buttons }) => {
+  const { modals, close } = useModal();
 
   const onBackdropClick = ({ target: element }) => {
     if (element && element.classList.contains("modal-container")) {
-      close();
+      close(identifier);
     }
   };
 
-  if (!modal.active) return null;
+  if (!modals[identifier]) return null;
   return (
     <Portal containerId="portal-modal-container">
       <div className="modal-container" onClick={onBackdropClick}>
@@ -53,12 +50,12 @@ const Modal = ({ Header, Body, Buttons }) => {
               className="btn btn-outline-secondary btn-sm"
               data-dismiss="modal"
               aria-label="Close"
-              onClick={close}
+              onClick={() => close(identifier)}
             >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div className="modal-body px-1 py-2">
+          <div className="modal-body px-1 py-4">
             <Body />
           </div>
           <div className="modal-footer">

@@ -23,6 +23,7 @@ import {
 } from "../services/api-service";
 import useModal from "../hooks/useModal";
 import Modal from "../components/shared/Modal";
+import LegaueInViewModal from "../components/modals/LegaueInViewModal";
 
 export default function Admin({ initialData, clientenvs }) {
   //const leagueInView = leagues?.filter((l) => l.default)[0];
@@ -41,7 +42,7 @@ export default function Admin({ initialData, clientenvs }) {
     clientenvs,
   });
   const router = useRouter();
-  const { open, close } = useModal();
+  const { open } = useModal();
   const openUserDashboardModal = () => {
     open("UserDashboardModal");
   };
@@ -59,36 +60,9 @@ export default function Admin({ initialData, clientenvs }) {
             className="align-self-center badge bg-white text-dark"
             onClick={openUserDashboardModal}
           >
-            league in View : {leagueInView.name}
+            league in View : {leagueInView?.name}
           </span>
-          <Modal
-            Header={() => (
-              <div>
-                <h4>Update League in View</h4>
-              </div>
-            )}
-            Body={() => (
-              <div>
-                <div className="d-flex gap-2">
-                  <label className="align-self-center">League in View:</label>
-                  <DropdownSelect
-                    id="admin-league-selector-dropdown"
-                    value={leagueInView}
-                    items={initialData.leagues}
-                    onChange={(item) => updateLeagueInView(item)}
-                    ukey={"_id"}
-                    displayKey={"name"}
-                  />
-                </div>
-              </div>
-            )}
-            Buttons={() => (
-              <div className="d-flex gap-2">
-                <button className="btn btn-outline-secondary">Cancel</button>
-                <button className="btn btn-secondary">Update</button>
-              </div>
-            )}
-          />
+          <LegaueInViewModal />
         </div>
 
         <div className="d-flex gap-4">
@@ -98,14 +72,16 @@ export default function Admin({ initialData, clientenvs }) {
           >
             Leagues:
           </label>
-          <DropdownSelect
-            id="admin-league-selector-dropdown"
-            value={leagueSelected}
-            items={initialData.leagues}
-            onChange={(item) => updateLeagueSelected(item)}
-            ukey={"_id"}
-            displayKey={"name"}
-          />
+          <div>
+            <DropdownSelect
+              id="admin-league-selector-dropdown"
+              value={leagueSelected}
+              items={initialData.leagues}
+              onChange={(item) => updateLeagueSelected(item)}
+              ukey={"_id"}
+              displayKey={"name"}
+            />
+          </div>
         </div>
 
         <UpdateGrid data={teams} league={leagueSelected} />

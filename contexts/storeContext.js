@@ -10,6 +10,7 @@ export const ACTIONS = Object.freeze({
   SetLeagueInView: "SetLeagueInView",
   OpenModal: "OpenModal",
   CloseModal: "CloseModal",
+  SetLeagues: "SetLeagues",
 });
 
 const reducer = (state, action) => {
@@ -44,26 +45,34 @@ const reducer = (state, action) => {
     case ACTIONS.SetLeagueInView: {
       return {
         ...state,
-        leagueSelected: payload["SetLeagueInView"],
+        leagueInView: payload["leagueInView"],
       };
     }
     case ACTIONS.OpenModal: {
       const { identifier } = payload;
       return {
         ...state,
-        modal: {
-          identifier,
-          active: true,
+        modals: {
+          ...state.modals,
+          [identifier]: true,
         },
       };
     }
     case ACTIONS.CloseModal: {
+      const { identifier } = payload;
       return {
         ...state,
-        modal: {
-          identifier: null,
-          active: false,
+        modals: {
+          ...state.modals,
+          [identifier]: false,
         },
+      };
+    }
+    case ACTIONS.SetLeagues: {
+      const { leagues } = payload;
+      return {
+        ...state,
+        leagues,
       };
     }
     default:
@@ -79,10 +88,10 @@ const initialStore = {
   loading: false,
   leagueSelected: {},
   leagueInView: {},
-  modal: {
-    active: false,
-    identifier: null,
+  modals: {
+    // [identifier]: [status],
   },
+  leagues: [],
 };
 
 export const StoreProvider = (props) => {

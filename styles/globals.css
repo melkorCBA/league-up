@@ -187,22 +187,6 @@ div.is-disabled {
   color: black;
 }
 
-.dropdown-menu {
-  background-color: #4d5154;
-  border-color: #4d5154;
-}
-
-.dropdown-menu .dropdown-item {
-  color: white;
-}
-.dropdown-menu .dropdown-item:hover {
-  color: black;
-}
-.dropdown-menu .dropdown-selected {
-  background-color: #e9ecef;
-  color: black;
-}
-
 .form-control {
   background-color: #212529;
   color: white;
@@ -261,3 +245,30 @@ div.is-disabled {
   color: #000;
   text-shadow: 0 1px 0 #fff;
 } */
+
+.form-select {
+  background-color: #212529;
+  color: white;
+}
+.form-select:hover {
+  cursor: pointer;
+}
+.form-select:focus {
+  background-color: #212529;
+  color: white;
+  border-color: white;
+}
+
+.form-select-item {
+  background-color: #4d5154;
+  color: white;
+}
+.form-select-item:hover {
+  background-color: #e9ecef;
+  color: black;
+  cursor: pointer;
+}
+.form-select-item.form-select-item-selected {
+  background-color: #e9ecef;
+  color: black;
+}
