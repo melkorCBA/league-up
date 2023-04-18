@@ -1,18 +1,28 @@
 import { ACTIONS, useStore } from "../contexts/storeContext";
 
-const useModal = () => {
+const useModal = (identifier) => {
   const { store, dispatch } = useStore();
-  const open = (identifier) => {
+
+  const open = () => {
     dispatch({ type: ACTIONS.OpenModal, payload: { identifier } });
   };
-  const close = (identifier) => {
+  const close = () => {
     dispatch({ type: ACTIONS.CloseModal, payload: { identifier } });
+  };
+
+  const setData = (data) => {
+    dispatch({ type: ACTIONS.SetModalData, payload: { identifier, data } });
+  };
+  const getData = () => {
+    return store.modals[identifier].data;
   };
 
   return {
     open,
     close,
-    modals: store.modals,
+    setData,
+    getData,
+    modal: store.modals[identifier],
   };
 };
 export default useModal;

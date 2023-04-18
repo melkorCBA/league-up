@@ -11,6 +11,7 @@ export const ACTIONS = Object.freeze({
   OpenModal: "OpenModal",
   CloseModal: "CloseModal",
   SetLeagues: "SetLeagues",
+  SetModalData: "SetModalData",
 });
 
 const reducer = (state, action) => {
@@ -54,7 +55,10 @@ const reducer = (state, action) => {
         ...state,
         modals: {
           ...state.modals,
-          [identifier]: true,
+          [identifier]: {
+            ...state.modals[identifier],
+            status: true,
+          },
         },
       };
     }
@@ -64,7 +68,24 @@ const reducer = (state, action) => {
         ...state,
         modals: {
           ...state.modals,
-          [identifier]: false,
+          [identifier]: {
+            ...state.modals[identifier],
+            status: false,
+          },
+        },
+      };
+    }
+    case ACTIONS.SetModalData: {
+      const { identifier, data } = payload;
+
+      return {
+        ...state,
+        modals: {
+          ...state.modals,
+          [identifier]: {
+            ...state.modals[identifier],
+            data,
+          },
         },
       };
     }
@@ -89,7 +110,7 @@ const initialStore = {
   leagueSelected: {},
   leagueInView: {},
   modals: {
-    // [identifier]: [status],
+    // [identifier]: { [status], [data]},
   },
   leagues: [],
 };

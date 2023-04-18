@@ -1,32 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Modal from "../shared/Modal";
 import { ACTIONS, useStore } from "../../contexts/storeContext";
-import { userService } from "../../services/api-service";
+import { matchService, userService } from "../../services/api-service";
 import DropdownSelect from "../shared/DropdownSelect";
+import useModal from "../../hooks/useModal";
 
 userService;
 
 const LegaueInViewModal = () => {
-  const { store, dispatch } = useStore();
-  const { leagueInView, leagues } = store;
-  const [form, setForm] = useState({});
-  useEffect(() => {
-    setForm({ ...form, leagueInView });
-  }, []);
-  const updateLeagueInView = (league) => {
-    setForm({ ...form, leagueInView: league });
-  };
-  const update = async () => {
-    dispatch({
-      type: ACTIONS.SetLeagueInView,
-      payload: { leagueInView: league },
+  const { store } = useStore();
+  const { modal, setData } = useModal("UserDashboardModal");
+  const { leagues } = store;
+
+  const setFromFields = (fields) => {
+    setData({
+      ...modal.data,
+      form: {
+        ...modal.data?.form,
+        ...fields,
+      },
     });
-    const { _id: leagueId } = store.leagueSelected;
-    await userService.updateUserDashboard({ leagueInViewId: leagueId });
+  };
+
+  const getFromField = (filed) => {
+    return modal.data?.form[filed];
+  };
+
+  const intFrom = async () => {
+    const { _id: leagueId } = store.leagueInView;
+    const matches = await matchService.getMatchesForLeague(leagueId);
+    setFromFields({ matches, leagueInView: store.leagueInView });
+  };
+
+  const update = () => {};
+  const onClose = () => {};
+  const onOpen = () => {
+    intFrom();
   };
   return (
     <>
       <Modal
+        onOpen={onOpen}
+        onClose={onClose}
         identifier="UserDashboardModal"
         Header={() => (
           <div>
@@ -40,9 +55,9 @@ const LegaueInViewModal = () => {
               <div className="col-6">
                 <DropdownSelect
                   id="admin-leagueInView-selector-dropdown"
-                  value={form.leagueInView}
+                  value={getFromField("leagueInView")}
                   items={leagues}
-                  onChange={(item) => updateLeagueInView(item)}
+                  onChange={(item) => setFromFields({ leagueInView: item })}
                   ukey={"_id"}
                   displayKey={"name"}
                 />

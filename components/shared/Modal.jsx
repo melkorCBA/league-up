@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { ACTIONS, useStore } from "../../contexts/storeContext";
 import useModal from "../../hooks/useModal";
 
-const Portal = ({ children, containerId }) => {
+const Portal = ({ children, containerId, onClose, onOpen }) => {
   const [container, setContainer] = useState(null);
   const getModalContainer = (containerId) => {
     if (document.getElementById(containerId))
@@ -13,7 +13,12 @@ const Portal = ({ children, containerId }) => {
     document.body.appendChild(container);
     return container;
   };
-
+  useEffect(() => {
+    if (onOpen) onOpen();
+    return () => {
+      if (onClose) onClose();
+    };
+  }, []);
   useLayoutEffect(() => {
     const hostContainer = getModalContainer(containerId);
     setContainer(hostContainer);
@@ -29,8 +34,8 @@ const Portal = ({ children, containerId }) => {
   return createPortal(children, container);
 };
 
-const Modal = ({ identifier, Header, Body, Buttons }) => {
-  const { modals, close } = useModal();
+const Modal = ({ identifier, Header, Body, Buttons, onClose, onOpen }) => {
+  const { modal, close } = useModal(identifier);
 
   const onBackdropClick = ({ target: element }) => {
     if (element && element.classList.contains("modal-container")) {
@@ -38,9 +43,13 @@ const Modal = ({ identifier, Header, Body, Buttons }) => {
     }
   };
 
-  if (!modals[identifier]) return null;
+  if (!modal || !modal.status) return null;
   return (
-    <Portal containerId="portal-modal-container">
+    <Portal
+      containerId="portal-modal-container"
+      onClose={onClose}
+      onOpen={onOpen}
+    >
       <div className="modal-container" onClick={onBackdropClick}>
         <div className="modal-content">
           <div className="modal-header pb-2 mb-2">

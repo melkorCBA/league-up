@@ -12,7 +12,6 @@ import { ACTIONS, useStore } from "../contexts/storeContext";
 
 const useDashboard = ({ initialData, clientenvs }) => {
   const { store, dispatch } = useStore();
-  // const [leagueInView, setLeagueInView] = useState(initialData.leagueInView);
   const [leagueSelected, setLeagueSelected] = useState(
     initialData.leagueInView
   );

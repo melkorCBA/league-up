@@ -6,54 +6,35 @@ const DropdownSelect = ({ id, value, items, onChange, ukey, displayKey }) => {
     items.forEach((i) => map.set(i[ukey], i));
     return map;
   }, [items, ukey]);
+  const getCurrentSelectedValue = useCallback(() => {
+    return value ? value[ukey] : "";
+  }, [value, items, ukey]);
 
   const getItem = useCallback((k) => getMap().get(k), [items, ukey]);
-  // return (
-  //   <div className="dropdown">
-  //     <button
-  //       className="btn btn btn-outline-secondary dropdown-toggle"
-  //       type="button"
-  //       id={id}
-  //       data-bs-toggle="dropdown"
-  //       aria-expanded="false"
-  //     >
-  //       {value[displayKey]}
-  //     </button>
-
-  //     <ul className="dropdown-menu" aria-labelledby={id}>
-  //       {items.map((item) => (
-  //         <li
-  //           className={
-  //             "dropdown-item" +
-  //             `${item[ukey] === value[ukey] ? " dropdown-selected" : ""}`
-  //           }
-  //           key={item[ukey]}
-  //           onClick={() => onChange(item)}
-  //         >
-  //           {item[displayKey]}
-  //         </li>
-  //       ))}
-  //     </ul>
-  //   </div>
-  // );
 
   return (
     <select
       id={id}
       className="form-select form-select-sm"
       aria-label=".form-select-sm example"
-      value={value[ukey]}
+      value={getCurrentSelectedValue()}
       onChange={(e) => {
         onChange(getItem(e.target.value));
       }}
     >
+      {value === undefined ? <option value="">None</option> : null}
+
       {items.map((item) => (
         <option
           key={item[ukey]}
           value={item[ukey]}
           className={
             "form-select-item" +
-            `${item[ukey] === value[ukey] ? " form-select-item-selected" : ""}`
+            `${
+              item[ukey] === getCurrentSelectedValue()
+                ? " form-select-item-selected"
+                : ""
+            }`
           }
         >
           {item[displayKey]}

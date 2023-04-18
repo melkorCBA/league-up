@@ -42,9 +42,9 @@ export default function Admin({ initialData, clientenvs }) {
     clientenvs,
   });
   const router = useRouter();
-  const { open } = useModal();
+  const { open } = useModal("UserDashboardModal");
   const openUserDashboardModal = () => {
-    open("UserDashboardModal");
+    open();
   };
   return (
     <div className="container-fluid container-admin">
