@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import useDeleteMatch from "../hooks/useMatchDelete";
-import Switch from "./Switch";
+import Switch from "./shared/Switch";
 
 const MatchCard = ({ matchData, matchNumber, isOnLive, onLiveChnage }) => {
   const { match, updateMatch } = useDeleteMatch(matchData);

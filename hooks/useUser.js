@@ -52,7 +52,7 @@ const useUser = (initialUserDashboard) => {
   const saveDashbaord = async () => {
     try {
       await dashboardService.updateDashboard({
-        league: dashboard["league"],
+        leagueId: dashboard["league"],
         currentMatch: dashboard["currentMatch"],
       });
       setSuccess("Dashboard Saved!");
@@ -73,7 +73,7 @@ const useUser = (initialUserDashboard) => {
   return {
     user,
     leagues: userLeagues,
-    defaultLeague: {
+    leagueInView: {
       value: dashboard["league"],
       onChnage: onDashboardChange("league"),
     },

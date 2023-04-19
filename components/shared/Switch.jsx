@@ -31,13 +31,13 @@ const Switch = ({
   useEffect(() => {
     for (const k of values) {
       if (refs.current[k] === undefined) break;
+      refs.current[k].classList.add("text-white");
       if (k === state) {
-        refs.current[k].classList.add("bg-warning");
-        refs.current[k].classList.remove("text-light");
+        refs.current[k].classList.add("bg-secondary");
         refs.current[k].textContent = lablesMap[k];
       } else {
-        refs.current[k].classList.remove("bg-warning");
-        refs.current[k].classList.add("text-light");
+        refs.current[k].classList.remove("bg-secondary");
+
         refs.current[k].textContent = lablesMap[k];
       }
     }

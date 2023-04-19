@@ -7,18 +7,25 @@ import {
   CLIENT_ENVIRONMENT,
 } from "../../lib/util";
 import { ACTIONS, useStore } from "../../contexts/storeContext";
+import useLoading from "../../hooks/useLoading";
 export default function Signin({ clientenvs }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { dispatch } = useStore();
+  const { start, end } = useLoading();
+
   const { doRequest } = UseRequest(
     {
       url: `${ENVIRONMENT().BaseApiURL}/auth/signin`,
       method: RequestMethods.POST,
       body: { email, password },
       onSuccess: () => {
-        // to do a navgation with page refresh
+        // to do a navgation with page refresh to update login states in the store
+
         window.location.href = "/admin";
+        end();
+      },
+      onError: () => {
+        end();
       },
     },
     {}
@@ -31,6 +38,7 @@ export default function Signin({ clientenvs }) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    start();
     await doRequest();
   };
   return (
@@ -60,7 +68,7 @@ export default function Signin({ clientenvs }) {
             />
           </div>
 
-          <button className="btn btn-warning mt-3">Sign In</button>
+          <button className="btn btn-secondary mt-3">Sign In</button>
         </div>
       </form>
     </div>

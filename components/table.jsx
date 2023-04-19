@@ -28,8 +28,8 @@ const Table = ({ teams }) => {
                 <Image
                   alt={d.teamName}
                   src={d.logoURL}
-                  width={"40px"}
-                  height={"40px"}
+                  width={40}
+                  height={40}
                 />
 
                 <div className="mx-2">{d.teamName}</div>

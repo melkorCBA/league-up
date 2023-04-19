@@ -2,10 +2,12 @@ import bootstrap from "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/globals.css";
 import { ErrorProvider } from "../contexts/errorContext";
 import Toaster from "../components/toaster";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { StoreProvider } from "../contexts/storeContext";
 import Container from "../components/Container";
 import Navbar from "../components/NavigationBar";
+import { AnimatePresence } from "framer-motion";
+import Layout from "../components/Layout";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -19,7 +21,11 @@ function MyApp({ Component, pageProps }) {
           <ErrorProvider>
             <Toaster />
             <Navbar />
-            <Component {...pageProps} />
+            <AnimatePresence mode="wait" initial={false}>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </AnimatePresence>
           </ErrorProvider>
         </Container>
       </StoreProvider>

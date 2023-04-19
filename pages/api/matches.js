@@ -18,8 +18,8 @@ export default async function handler(req, res) {
         // 2.get the users's default league, if no specific league requested (no league as a query param)
         // 3.check user has acces to specified league - league in users's league list ?
         // 4.filter teams for specified leagues
-        const defaultLeagueId = "6341100e204ce73751b4bb4b";
-        const leagueId = req.query["leagueId"] ?? defaultLeagueId;
+        const leagueInViewId = "6341100e204ce73751b4bb4b";
+        const leagueId = req.query["leagueId"] ?? leagueInViewId;
         const matches = await Match.find({ isDeleted: false, league: leagueId })
           .lean()
           .populate({
@@ -61,8 +61,8 @@ export default async function handler(req, res) {
         // 2.get the users's default league, if no specific league requested (no league as a query param)
         // 3.check user has acces to specified league - league in users's league list ?
         // 4.filter teams for specified leagues
-        const defaultLeagueId = "6341100e204ce73751b4bb4b";
-        const leagueId = req.query["leagueId"] ?? defaultLeagueId;
+        const leagueInViewId = "6341100e204ce73751b4bb4b";
+        const leagueId = req.query["leagueId"] ?? leagueInViewId;
 
         await validators.attach(req, res, [
           validators.body.field("team1Id", "team1 id is required"),

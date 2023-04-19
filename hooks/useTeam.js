@@ -108,9 +108,9 @@ const useTeam = (initialTeams, initialLeague) => {
   };
 
   const onNewTeamChange = (key, value) => {
-    if (value === "") {
-      return;
-    }
+    // if (value === "") {
+    //   return;
+    // }
     const nt = { ...newTeam };
     nt[key] = value;
     setNewTeam(nt);

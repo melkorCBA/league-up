@@ -19,7 +19,7 @@ const useCurretUser = () => {
 
 const Container = (props) => {
   useCurretUser();
-  return <>{props.children}</>;
+  return <div className="host-container">{props.children}</div>;
 };
 
 export default Container;

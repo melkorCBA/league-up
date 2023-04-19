@@ -4,10 +4,15 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  background-color: #000000;
+}
+.standings-container {
   background: url("../public/back1.Jpeg");
   background-size: 1500px;
+  background-size: 1500px;
   background-position: left;
-  background-color: #000000;
+
   opacity: 0.9;
   position: absolute;
   z-index: -1;
@@ -61,7 +66,7 @@ input {
 }
 
 .boarder-yelllow {
-  border: 0.5px solid rgb(255, 230, 0);
+  border: 0.5px solid #464c51;
 }
 
 .match-card {
@@ -144,7 +149,7 @@ div.is-disabled {
 }
 
 .offline {
-  background-color: rgb(0, 0, 0);
+  background-color: white;
 }
 
 .offline:hover {
@@ -180,4 +185,100 @@ div.is-disabled {
 
 .porfile-menu .dropdown-item:hover {
   color: black;
+}
+
+.form-control {
+  background-color: #212529;
+  color: white;
+}
+.form-control:focus {
+  background-color: #212529;
+  color: white;
+  border-color: white;
+}
+.update-grid table thead tr th {
+  text-align: center;
+  color: white;
+}
+.modal-container {
+  position: fixed;
+  inset: 0; /* inset sets all 4 values (top right bottom left) much like how we set padding, margin etc., */
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease-in;
+  overflow: hidden;
+  z-index: 999;
+  padding: 40px 20px 20px;
+}
+
+.modal-container .modal-content {
+  width: 700px;
+  height: auto;
+  min-height: 270px;
+  background-color: #212529;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  position: absolute;
+  top: 25vh;
+  padding: 12px;
+  border-radius: 0.3rem;
+}
+
+.modal-container .modal-content .modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.modal-container .modal-content .modal-header,
+.modal-body,
+.modal-footer {
+  width: 100%;
+}
+
+/* .modal-container .modal-content .modal-header .close {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+} */
+
+.form-select {
+  background-color: #212529;
+  color: white;
+}
+.form-select:hover {
+  cursor: pointer;
+}
+.form-select:focus {
+  background-color: #212529;
+  color: white;
+  border-color: white;
+}
+
+.form-select-item {
+  background-color: #4d5154;
+  color: white;
+}
+.form-select-item:hover {
+  background-color: #e9ecef;
+  color: black;
+  cursor: pointer;
+}
+.form-select-item.form-select-item-selected {
+  background-color: #e9ecef;
+  color: black;
+}
+
+.league-in-view-update-btn:hover {
+  cursor: pointer;
+  border: 0.01px solid white;
+}
+.league-in-view-update-btn:focus {
+  cursor: pointer;
+  border: 0.01px solid white;
 }
