@@ -26,8 +26,7 @@ export default async function handler(req, res) {
         ]);
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
-        const leagueId = currentUser.defaultLeague;
-
+        const leagueId = req.query["leagueId"] ?? currentUser.leagueInView;
         // check user has acces to specified league - league in users's league list ?
         const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
           leagueId,
@@ -53,7 +52,7 @@ export default async function handler(req, res) {
         ]);
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
-        const leagueId = req.query["leagueId"] ?? currentUser.defaultLeague;
+        const leagueId = req.query["leagueId"] ?? currentUser.leagueInView;
 
         const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
           leagueId,
@@ -84,7 +83,7 @@ export default async function handler(req, res) {
         ]);
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
-        const leagueId = req.query["leagueId"] ?? currentUser.defaultLeague;
+        const leagueId = req.query["leagueId"] ?? currentUser.leagueInView;
 
         const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
           leagueId,
@@ -103,7 +102,7 @@ export default async function handler(req, res) {
         }
         const { view, currentMatch } = req.body;
 
-        const payload = { view, currentMatch, league: leagueId };
+        const payload = { view, currentMatch };
 
         Object.keys(payload).forEach((key) => {
           if (payload[key] !== undefined) {
@@ -112,10 +111,7 @@ export default async function handler(req, res) {
         });
 
         await dashBoard.save();
-        trigger(publisher, {
-          channelName: CHANNELS.DASHBOARD,
-          eventName: EVENTS.UPDATE_DASHBOARD,
-        });
+        dashboardUpdateTriger(publisher, payload);
         res.status(201).json({ status: "updated", data: dashBoard });
       } catch (err) {
         errorHandler(err, res);
@@ -127,5 +123,22 @@ export default async function handler(req, res) {
     default:
       res.status(400).json({ success: false });
       break;
+  }
+}
+
+function dashboardUpdateTriger(publisher, payload) {
+  if (payload.currentMatch) {
+    trigger(publisher, {
+      channelName: CHANNELS.DASHBOARD,
+      eventName: EVENTS.DASHBOARD.UPDATE_CURRENT_MATCH,
+    });
+    return;
+  }
+  if (payload.view) {
+    trigger(publisher, {
+      channelName: CHANNELS.DASHBOARD,
+      eventName: EVENTS.DASHBOARD.UPDATE_VIEW,
+    });
+    return;
   }
 }

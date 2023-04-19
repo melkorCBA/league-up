@@ -12,7 +12,7 @@ const RequestMethods = Object.freeze({
 });
 
 const UseRequest = (
-  { url, method, body, onSuccess },
+  { url, method, body, onSuccess, onError },
   { onSuccessMsg, onErrorMsg }
 ) => {
   const { setErrors, setSuccess } = useError();
@@ -27,6 +27,7 @@ const UseRequest = (
       }
       return response.data;
     } catch (err) {
+      if (onError) onError(err);
       setErrors([onErrorMsg ?? err["message"]]);
     }
   };

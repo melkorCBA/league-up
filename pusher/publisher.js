@@ -17,13 +17,13 @@ export const trigger = (
 ) =>
   publisher
     .trigger(
-      channelName ?? CHANNELS.STANDING_BOARD,
+      channelName ?? CHANNELS.STANDINGS,
       eventName ?? EVENTS.UPDATE_TEAMS,
       {
         message: message ?? "",
       }
     )
     .then((res) => {
-      console.log("update event published:" + eventName);
+      console.log("event:" + eventName);
     })
     .catch((err) => (errorCallback ? errorCallback(err) : console.log(err)));

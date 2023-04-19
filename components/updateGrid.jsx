@@ -17,17 +17,14 @@ const UpdateGrid = ({ data, league }) => {
     unsyncTeamMatches,
   } = useTeam(data, league);
   return (
-    <>
-      <div className="my-2 mx-1 d-flex">
-        <label htmlFor="leangueName" className="mx-2">
-          League Name
-        </label>
+    <div className="update-grid">
+      <div className="my-3 d-flex gap-2">
         <input
           id="leangueName"
           type="text"
           value={leagueName}
           onChange={(e) => onLeaugeNameChange(e.target.value)}
-          className="w-100 mx-2"
+          className="w-100 form-control"
         />
         <button
           className="btn btn-outline-secondary"
@@ -37,7 +34,7 @@ const UpdateGrid = ({ data, league }) => {
         </button>
       </div>
       <div className="row w-100 mx-auto">
-        <table className="table table-dark">
+        <table className="table">
           <thead>
             <tr>
               <th></th>
@@ -64,12 +61,14 @@ const UpdateGrid = ({ data, league }) => {
 
                 <td className="teamName">
                   <input
+                    className="form-control"
                     value={d["teamName"]}
                     onChange={(e) => onUpdate(i, "teamName", e.target.value)}
                   />
                 </td>
                 <td className="abrev">
                   <input
+                    className="form-control"
                     value={d["abrev"]}
                     onChange={(e) => onUpdate(i, "abrev", e.target.value)}
                   />
@@ -77,36 +76,42 @@ const UpdateGrid = ({ data, league }) => {
 
                 <td>
                   <input
+                    className="form-control"
                     value={d["pld"]}
                     onChange={(e) => onUpdate(i, "pld", e.target.value)}
                   />
                 </td>
                 <td>
                   <input
+                    className="form-control"
                     value={d["win"]}
                     onChange={(e) => onUpdate(i, "win", e.target.value)}
                   />
                 </td>
                 <td>
                   <input
+                    className="form-control"
                     value={d["draw"]}
                     onChange={(e) => onUpdate(i, "draw", e.target.value)}
                   />
                 </td>
                 <td>
                   <input
+                    className="form-control"
                     value={d["loss"]}
                     onChange={(e) => onUpdate(i, "loss", e.target.value)}
                   />
                 </td>
                 <td>
                   <input
+                    className="form-control"
                     value={d["pts"]}
                     onChange={(e) => onUpdate(i, "pts", e.target.value)}
                   />
                 </td>
                 <td>
                   <input
+                    className="form-control"
                     value={d["nr"]}
                     onChange={(e) => onUpdate(i, "nr", e.target.value)}
                   />
@@ -140,51 +145,67 @@ const UpdateGrid = ({ data, league }) => {
 
               <td className="teamName">
                 <input
+                  className="form-control"
                   value={newTeam["teamName"]}
                   onChange={(e) => onNewTeamChange("teamName", e.target.value)}
+                  placeholder="team name here.."
                 />
               </td>
               <td className="abrev">
                 <input
+                  className="form-control"
                   value={newTeam["abrev"]}
                   onChange={(e) => onNewTeamChange("abrev", e.target.value)}
+                  placeholder="abrv"
                 />
               </td>
 
               <td>
                 <input
+                  className="form-control"
                   value={newTeam["pld"]}
                   onChange={(e) => onNewTeamChange("pld", e.target.value)}
+                  placeholder="games played"
                 />
               </td>
               <td>
                 <input
+                  className="form-control"
                   value={newTeam["win"]}
                   onChange={(e) => onNewTeamChange("win", e.target.value)}
+                  placeholder="games won"
                 />
               </td>
               <td>
                 <input
+                  className="form-control"
                   value={newTeam["draw"]}
                   onChange={(e) => onNewTeamChange("draw", e.target.value)}
+                  placeholder="games drawn"
                 />
               </td>
               <td>
                 <input
+                  className="form-control"
                   value={newTeam["loss"]}
                   onChange={(e) => onNewTeamChange("loss", e.target.value)}
+                  placeholder="games lost"
                 />
               </td>
               <td>
                 <input
+                  className="form-control"
                   value={newTeam["pts"]}
                   onChange={(e) => onNewTeamChange("pts", e.target.value)}
+                  placeholder="points"
                 />
               </td>
               <td>
                 <input
+                  className="form-control"
                   value={newTeam["nr"]}
                   onChange={(e) => onNewTeamChange("nr", e.target.value)}
+                  placeholder="net runrate"
                 />
               </td>
               <td>
@@ -199,7 +220,7 @@ const UpdateGrid = ({ data, league }) => {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 

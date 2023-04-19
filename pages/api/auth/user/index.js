@@ -1,9 +1,9 @@
-import User from "../../../models/user";
+import User from "../../../../models/user";
 
-import dbConnect from "../../../lib/dbConnect";
-import { errorHandler } from "../../../lib/errorHandler";
-import { UserMiddleware, CookieSession } from "../../../lib/middleware";
-import { BadRequest } from "../../../lib/errors";
+import dbConnect from "../../../../lib/dbConnect";
+import { errorHandler } from "../../../../lib/errorHandler";
+import { UserMiddleware, CookieSession } from "../../../../lib/middleware";
+import { BadRequest } from "../../../../lib/errors";
 
 export default async function handler(req, res) {
   const { method } = req;

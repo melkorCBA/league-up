@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
-        const leagueId = req.query["leagueId"] ?? currentUser.defaultLeague;
+        const leagueId = req.query["leagueId"] ?? currentUser.leagueInView;
 
         // check user has acces to specified league - league in users's league list ?
         const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
@@ -57,7 +57,7 @@ export default async function handler(req, res) {
 
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
-        const leagueId = req.body["leagueId"] ?? currentUser.defaultLeague;
+        const leagueId = req.body["leagueId"] ?? currentUser.leagueInView;
 
         // check user has acces to specified league - league in users's league list ?
         const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(
@@ -88,7 +88,7 @@ export default async function handler(req, res) {
         await team.save();
         if (unUsedLogo) await unUsedLogo.save();
         trigger(publisher, {
-          channelName: CHANNELS.STANDING_BOARD,
+          channelName: CHANNELS.STANDINGS,
           eventName: EVENTS.UPDATE_TEAMS,
         });
         res.status(201).json({ status: "created", data: team });

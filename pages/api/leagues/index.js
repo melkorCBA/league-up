@@ -1,16 +1,16 @@
-import League from "../../models/league";
-import User from "../../models/user";
+import League from "../../../models/league";
+import User from "../../../models/user";
 
-import dbConnect from "../../lib/dbConnect";
-import { errorHandler, validators } from "../../lib/errorHandler";
-import { getPublisher, trigger } from "../../pusher/publisher";
+import dbConnect from "../../../lib/dbConnect";
+import { errorHandler, validators } from "../../../lib/errorHandler";
+import { getPublisher, trigger } from "../../../pusher/publisher";
 
 import mongoose from "mongoose";
 import {
   UserMiddleware,
   checkUserAccess,
   getUserData,
-} from "../../lib/middleware";
+} from "../../../lib/middleware";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -27,14 +27,14 @@ export default async function handler(req, res) {
 
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res }, "leagues");
-        const defaultLeagueId = currentUser.defaultLeague;
+        const leagueInViewId = currentUser.leagueInView;
 
         const userLeagues = currentUser.leagues;
         const leagues = [];
 
         for (const league of userLeagues) {
           const { _id, name } = league;
-          if (league["_id"].equals(mongoose.Types.ObjectId(defaultLeagueId))) {
+          if (league["_id"].equals(mongoose.Types.ObjectId(leagueInViewId))) {
             leagues.push({ _id, name, default: true });
             continue;
           }

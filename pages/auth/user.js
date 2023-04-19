@@ -7,7 +7,7 @@ const User = ({ initalDashboard, clientenvs }) => {
   const {
     user,
     leagues,
-    defaultLeague,
+    leagueInView,
     matches,
     currentMatch,
     saveDashbaord,
@@ -37,7 +37,7 @@ const User = ({ initalDashboard, clientenvs }) => {
           <select
             className="custom-select"
             onChange={(e) => {
-              defaultLeague.onChnage(e.target.value);
+              leagueInView.onChnage(e.target.value);
             }}
           >
             {leagues &&
@@ -69,7 +69,9 @@ const User = ({ initalDashboard, clientenvs }) => {
           </select>
         </div>
         <div>
-          <button onClick={saveDashbaord}>Save</button>
+          <button className="btn btn-secondary" onClick={saveDashbaord}>
+            Save
+          </button>
         </div>
       </div>
 

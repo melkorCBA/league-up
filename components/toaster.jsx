@@ -3,17 +3,12 @@ import { useError } from "../contexts/errorContext";
 
 const Toaster = () => {
   const { errors, success, setErrors, setSuccess } = useError();
-  useEffect(() => {
-    setTimeout(() => {
-      console.log("Error state update");
-      if (errors && errors.lenght > 0) {
-        setErrors([]);
-      }
-      if (success !== "" && success.length > 0) {
-        setSuccess("");
-      }
-    }, 5000);
-  }, [errors, setErrors, setSuccess, success]);
+
+  const close = () => {
+    setErrors([]);
+    setSuccess("");
+  };
+
   if (errors && errors?.length > 0) {
     return (
       <div
@@ -21,9 +16,19 @@ const Toaster = () => {
         role="alert"
         aria-live="assertive"
         aria-atomic="true"
+        data-autohide="true"
       >
         <div className="toast-header bg-warning text-light">
           <strong className="me-auto">Oh Snap!</strong>
+          <button
+            type="button"
+            className="btn ml-2 mb-1 close"
+            data-dismiss="toast"
+            aria-label="Close"
+            onClick={close}
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div className="toast-body">
           <ul>
@@ -44,6 +49,15 @@ const Toaster = () => {
       >
         <div className="toast-header bg-success text-light">
           <strong className="me-auto">Success!</strong>
+          <button
+            type="button"
+            className="btn ml-2 mb-1 close"
+            data-dismiss="toast"
+            aria-label="Close"
+            onClick={close}
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div className="toast-body">{success}</div>
       </div>

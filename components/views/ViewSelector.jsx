@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
 
-const ViewSelectorItem = ({ v, view, setView, viewData }) => {
+const ViewSelectorItem = ({ value, selectedView, setView, viewData }) => {
   return (
     <div className="d-flex flex-column align-items-center p-1">
       <div>{viewData["name"]}</div>
@@ -16,15 +16,19 @@ const ViewSelectorItem = ({ v, view, setView, viewData }) => {
       <div>
         <button
           className="btn"
-          id={`btn-check-outlined-${v}`}
+          id={`btn-check-outlined-${value}`}
           onClick={() => {
-            setView(v);
+            setView(value);
           }}
         >
           <label
-            className={v === view ? "btn btn-warning" : "btn-outline-warning"}
+            className={
+              value === selectedView
+                ? "btn btn-secondary"
+                : "btn-outline-secondary"
+            }
           >
-            Select
+            {value === selectedView ? "Selected" : "Select"}
           </label>
         </button>
       </div>
@@ -32,11 +36,9 @@ const ViewSelectorItem = ({ v, view, setView, viewData }) => {
   );
 };
 
-const ViewSelector = ({ views, initlaView, onViewSelectorChnage }) => {
+const ViewSelector = ({ views, view, onViewSelectorChnage }) => {
   const dashboardViews = Object.keys(views);
-  const [view, setView] = useState(initlaView ?? "std");
   const onViewChnage = (v) => {
-    setView(v);
     onViewSelectorChnage(v);
   };
 
@@ -47,8 +49,8 @@ const ViewSelector = ({ views, initlaView, onViewSelectorChnage }) => {
         {dashboardViews.map((v, i) => (
           <div key={i} className="w-100">
             <ViewSelectorItem
-              v={v}
-              view={view}
+              value={v}
+              selectedView={view}
               viewData={views[v]}
               setView={onViewChnage}
             />
