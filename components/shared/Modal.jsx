@@ -44,6 +44,20 @@ const Modal = ({ identifier, Header, Body, Buttons, onClose, onOpen }) => {
   };
 
   if (!modal || !modal.status) return null;
+  if (modal.isLoading)
+    return (
+      <Portal containerId="portal-modal-container">
+        <div className="modal-container">
+          <div className="modal-content">
+            <div className="d-flex justify-content-center  align-items-center">
+              <div className="spinner-border text-secondary" role="status">
+                <span className="sr-only"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Portal>
+    );
   return (
     <Portal
       containerId="portal-modal-container"
@@ -52,7 +66,7 @@ const Modal = ({ identifier, Header, Body, Buttons, onClose, onOpen }) => {
     >
       <div className="modal-container" onClick={onBackdropClick}>
         <div className="modal-content">
-          <div className="modal-header pb-2 mb-2">
+          <div className="modal-header pb-2 mb-2 px-1">
             <Header />
             <button
               type="button"
@@ -67,7 +81,7 @@ const Modal = ({ identifier, Header, Body, Buttons, onClose, onOpen }) => {
           <div className="modal-body px-1 py-4">
             <Body />
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer px-1">
             <Buttons />
           </div>
         </div>

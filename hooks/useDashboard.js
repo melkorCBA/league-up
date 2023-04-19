@@ -39,12 +39,16 @@ const useDashboard = ({ initialData, clientenvs }) => {
   };
   useEffect(() => {
     dispatch({
-      type: ACTIONS.SetLeagueInView,
+      type: ACTIONS.SetLeagues,
+      payload: { leagues: initialData.leagues },
+    });
+    dispatch({
+      type: ACTIONS.SetInView_League,
       payload: { leagueInView: initialData.leagueInView },
     });
     dispatch({
-      type: ACTIONS.SetLeagues,
-      payload: { leagues: initialData.leagues },
+      type: ACTIONS.SetInView_Match,
+      payload: { matchInView: initialData.matchInView },
     });
     // add envs to session
     setClientenvsInSession(clientenvs);
@@ -75,7 +79,7 @@ const useDashboard = ({ initialData, clientenvs }) => {
   };
 
   return {
-    leagueInView: store.leagueInView,
+    leagueInView: store.inView.leagueInView,
     leagueSelected,
     view: dashboard?.view,
     teams,

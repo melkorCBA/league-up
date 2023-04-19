@@ -17,11 +17,19 @@ const useModal = (identifier) => {
     return store.modals[identifier].data;
   };
 
+  const setLoading = (isLoading) => {
+    dispatch({
+      type: ACTIONS.SetModalLoadingStatus,
+      payload: { identifier, isLoading },
+    });
+  };
+
   return {
     open,
     close,
     setData,
     getData,
+    setLoading,
     modal: store.modals[identifier],
   };
 };

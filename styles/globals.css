@@ -215,8 +215,9 @@ div.is-disabled {
 }
 
 .modal-container .modal-content {
-  width: 600px;
+  width: 700px;
   height: auto;
+  min-height: 270px;
   background-color: #212529;
   color: #fff;
   display: flex;
@@ -271,4 +272,13 @@ div.is-disabled {
 .form-select-item.form-select-item-selected {
   background-color: #e9ecef;
   color: black;
+}
+
+.league-in-view-update-btn:hover {
+  cursor: pointer;
+  border: 0.01px solid white;
+}
+.league-in-view-update-btn:focus {
+  cursor: pointer;
+  border: 0.01px solid white;
 }

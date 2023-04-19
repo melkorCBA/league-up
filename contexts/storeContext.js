@@ -7,11 +7,13 @@ export const ACTIONS = Object.freeze({
   LogoutUser: "LogoutUser",
   SetLodingStatus: "SetLodingStatus",
   SetLeagueSelected: "SetLeagueSelected",
-  SetLeagueInView: "SetLeagueInView",
   OpenModal: "OpenModal",
   CloseModal: "CloseModal",
+  SetModalLoadingStatus: "SetModalLoadingStatus",
   SetLeagues: "SetLeagues",
   SetModalData: "SetModalData",
+  SetInView_League: "SetInView_League",
+  SetInView_Match: "SetInView_Match",
 });
 
 const reducer = (state, action) => {
@@ -43,12 +45,6 @@ const reducer = (state, action) => {
         leagueSelected: payload["leagueSelected"],
       };
     }
-    case ACTIONS.SetLeagueInView: {
-      return {
-        ...state,
-        leagueInView: payload["leagueInView"],
-      };
-    }
     case ACTIONS.OpenModal: {
       const { identifier } = payload;
       return {
@@ -58,6 +54,7 @@ const reducer = (state, action) => {
           [identifier]: {
             ...state.modals[identifier],
             status: true,
+            isLoading: false,
           },
         },
       };
@@ -71,6 +68,20 @@ const reducer = (state, action) => {
           [identifier]: {
             ...state.modals[identifier],
             status: false,
+            isLoading: false,
+          },
+        },
+      };
+    }
+    case ACTIONS.SetModalLoadingStatus: {
+      const { identifier, isLoading } = payload;
+      return {
+        ...state,
+        modals: {
+          ...state.modals,
+          [identifier]: {
+            ...state.modals[identifier],
+            isLoading,
           },
         },
       };
@@ -96,6 +107,26 @@ const reducer = (state, action) => {
         leagues,
       };
     }
+    case ACTIONS.SetInView_League: {
+      const { leagueInView } = payload;
+      return {
+        ...state,
+        inView: {
+          ...state.inView,
+          leagueInView,
+        },
+      };
+    }
+    case ACTIONS.SetInView_Match: {
+      const { matchInView } = payload;
+      return {
+        ...state,
+        inView: {
+          ...state.inView,
+          matchInView,
+        },
+      };
+    }
     default:
       return {
         ...state,
@@ -110,9 +141,13 @@ const initialStore = {
   leagueSelected: {},
   leagueInView: {},
   modals: {
-    // [identifier]: { [status], [data]},
+    // [identifier]: { [status], [data] , [isLoading]},
   },
   leagues: [],
+  inView: {
+    leagueInView: {},
+    matchInView: {},
+  },
 };
 
 export const StoreProvider = (props) => {

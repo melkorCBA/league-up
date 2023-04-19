@@ -57,7 +57,8 @@ export default function Admin({ initialData, clientenvs }) {
         <div className="my-3 d-flex gap-2">
           <h1>Admin Panel</h1>
           <span
-            className="align-self-center badge bg-white text-dark"
+            title="click update league-in-view details"
+            className="align-self-center badge bg-white text-dark league-in-view-update-btn"
             onClick={openUserDashboardModal}
           >
             league in View : {leagueInView?.name}
