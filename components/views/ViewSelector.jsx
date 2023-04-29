@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 
 const ViewSelectorItem = ({ value, selectedView, setView, viewData }) => {
   return (
-    <div className="d-flex flex-column align-items-center p-1">
+    <div className="d-flex col-md-3 col-sm-6 flex-column align-items-center p-1">
       <div>{viewData["name"]}</div>
       <div className="view-selector-preview my-2">
         <Image
@@ -45,16 +45,15 @@ const ViewSelector = ({ views, view, onViewSelectorChnage }) => {
   return (
     <div>
       <h3 className="text-center">View Selector</h3>
-      <div className="d-flex gap-2">
+      <div className="row">
         {dashboardViews.map((v, i) => (
-          <div key={i} className="w-100">
-            <ViewSelectorItem
-              value={v}
-              selectedView={view}
-              viewData={views[v]}
-              setView={onViewChnage}
-            />
-          </div>
+          <ViewSelectorItem
+            key={i}
+            value={v}
+            selectedView={view}
+            viewData={views[v]}
+            setView={onViewChnage}
+          />
         ))}
       </div>
     </div>

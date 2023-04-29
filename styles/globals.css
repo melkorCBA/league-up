@@ -217,6 +217,7 @@ div.is-disabled {
 .modal-container .modal-content {
   width: 700px;
   height: auto;
+  max-width: 90vw;
   min-height: 270px;
   background-color: #212529;
   color: #fff;

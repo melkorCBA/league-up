@@ -1,6 +1,13 @@
 .container {
   padding: 0 2rem;
 }
+
+@media only screen and (max-width: 435px) {
+  .container {
+    padding: 0 0 !important;
+  }
+}
+
 .inputText {
   width: 100%;
 }
