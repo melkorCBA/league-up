@@ -283,3 +283,9 @@ div.is-disabled {
   cursor: pointer;
   border: 0.01px solid white;
 }
+
+.not-found-container {
+  position: absolute;
+  top: 25vh;
+  width: 100%;
+}
