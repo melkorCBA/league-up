@@ -82,6 +82,14 @@ export const matchService = {
     const response = await getAxios(axiosClient).get(URL);
     return getData(response);
   },
+  addMatch: async ({ leagueId, team1Id, team2Id }, axiosClient = null) => {
+    const URL = `${ENVIRONMENT().BaseApiURL}/matches?leagueId=${leagueId}`;
+    const response = await getAxios(axiosClient).post(URL, {
+      team1Id,
+      team2Id,
+    });
+    return getData(response);
+  },
 };
 
 export const teamService = {

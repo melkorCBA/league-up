@@ -105,7 +105,12 @@ export default function Admin({ initialData, clientenvs }) {
               <button
                 hidden={view === CONSTANTS.VIEWS.STANDINGS}
                 className="btn btn-outline-secondary btn-block w-100"
-                onClick={() => router.push(`matches`)}
+                onClick={() =>
+                  router.push({
+                    pathname: "/matches",
+                    query: { leagueId: leagueSelected?._id },
+                  })
+                }
               >
                 Matches
               </button>
