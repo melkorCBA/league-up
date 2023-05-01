@@ -68,7 +68,7 @@ export async function getServerSideProps(context) {
     leagueId = userDashboard.league;
   }
 
-  const teams = await teamService.getTeams({ leagueId }, axios);
+  const teams = await teamService.getTeams(leagueId, axios);
   const matches = await matchService.getMatchesForLeague(leagueId, axios);
   const dashboard = await dashboardService.getDashboard({ leagueId }, axios);
   const league = await leagueService.getLeague(leagueId, axios);

@@ -28,7 +28,7 @@ const useDashboard = ({ initialData, clientenvs }) => {
     },
     teams: async () => {
       const { _id: leagueId } = leagueSelected;
-      const data = await teamService.getTeams({ leagueId });
+      const data = await teamService.getTeams(leagueId);
       setTeams(data);
     },
     matchInView: async () => {

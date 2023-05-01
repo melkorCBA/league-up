@@ -3,6 +3,7 @@ import Match from "../../models/match";
 
 import dbConnect from "../../lib/dbConnect";
 import { errorHandler, validators } from "../../lib/errorHandler";
+import { UserMiddleware, getUserData } from "../../lib/middleware";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -13,13 +14,9 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           // validators.headers.header("authorization", "Auth header is missing"),
         ]);
-        // implement thease steps
-        // 1.get user associated with the Token
-        // 2.get the users's default league, if no specific league requested (no league as a query param)
-        // 3.check user has acces to specified league - league in users's league list ?
-        // 4.filter teams for specified leagues
-        const leagueInViewId = "6341100e204ce73751b4bb4b";
-        const leagueId = req.query["leagueId"] ?? leagueInViewId;
+        UserMiddleware(req, res);
+        const currentUser = await getUserData({ req, res });
+        const leagueId = req.body["leagueId"] ?? currentUser.leagueInView;
         const matches = await Match.find({ isDeleted: false, league: leagueId })
           .lean()
           .populate({
@@ -56,13 +53,9 @@ export default async function handler(req, res) {
     }
     case "POST": {
       try {
-        // implement thease steps
-        // 1.get user associated with the Token
-        // 2.get the users's default league, if no specific league requested (no league as a query param)
-        // 3.check user has acces to specified league - league in users's league list ?
-        // 4.filter teams for specified leagues
-        const leagueInViewId = "6341100e204ce73751b4bb4b";
-        const leagueId = req.query["leagueId"] ?? leagueInViewId;
+        UserMiddleware(req, res);
+        const currentUser = await getUserData({ req, res });
+        const leagueId = req.body["leagueId"] ?? currentUser.leagueInView;
 
         await validators.attach(req, res, [
           validators.body.field("team1Id", "team1 id is required"),
