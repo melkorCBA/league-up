@@ -55,7 +55,7 @@ export default async function handler(req, res) {
       try {
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
-        const leagueId = req.body["leagueId"] ?? currentUser.leagueInView;
+        const leagueId = req.query["leagueId"] ?? currentUser.leagueInView;
 
         await validators.attach(req, res, [
           validators.body.field("team1Id", "team1 id is required"),
