@@ -3,8 +3,9 @@ import { getHashMap } from "../lib/util";
 import { useError } from "../contexts/errorContext";
 import { ENVIRONMENT } from "../lib/util";
 import axios from "axios";
+import { matchService } from "../services/api-service";
 
-const useMatch = (initalMatches) => {
+const useMatch = (initalMatches, league) => {
   const [matches, setMatches] = useState(initalMatches);
   const hMap = getHashMap(initalMatches, "_id");
   const [matchesMap, setMatchesMap] = useState(hMap);
@@ -15,14 +16,13 @@ const useMatch = (initalMatches) => {
   }, [initalMatches, matches]);
 
   const addNewMatch = async (teams) => {
-    const URL = `${ENVIRONMENT().BaseApiURL}/matches`;
     try {
       const payload = {
         team1Id: teams[0]._id,
         team2Id: teams[1]._id,
       };
-
-      await axios.post(URL, payload);
+      const { _id: leagueId } = league;
+      await matchService.addMatch({ leagueId, ...payload });
       setSuccess("match added");
       await reFeatchMatches();
     } catch (err) {
@@ -62,8 +62,8 @@ const useMatch = (initalMatches) => {
 
   const reFeatchMatches = async () => {
     try {
-      const response = await axios.get(`${ENVIRONMENT().BaseApiURL}/matches`);
-      const { data } = response.data;
+      const { _id: leagueId } = league;
+      const data = await matchService.getMatchesForLeague(leagueId);
       setMatches(data);
     } catch (err) {
       setErrors([err["message"]]);

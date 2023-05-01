@@ -217,6 +217,7 @@ div.is-disabled {
 .modal-container .modal-content {
   width: 700px;
   height: auto;
+  max-width: 90vw;
   min-height: 270px;
   background-color: #212529;
   color: #fff;
@@ -281,4 +282,10 @@ div.is-disabled {
 .league-in-view-update-btn:focus {
   cursor: pointer;
   border: 0.01px solid white;
+}
+
+.not-found-container {
+  position: absolute;
+  top: 25vh;
+  width: 100%;
 }

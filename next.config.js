@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["melkorwebjobstorage.blob.core.windows.net"],
+    domains: [process.env.BaseURL, process.env.ImageBlobURL],
   },
   output: "standalone",
   publicRuntimeConfig: {

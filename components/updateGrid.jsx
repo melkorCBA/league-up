@@ -33,7 +33,7 @@ const UpdateGrid = ({ data, league }) => {
           Update
         </button>
       </div>
-      <div className="row w-100 mx-auto">
+      <div className="row w-100 mx-auto table-responsive-sm">
         <table className="table">
           <thead>
             <tr>

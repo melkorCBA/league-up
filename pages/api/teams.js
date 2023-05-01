@@ -57,7 +57,7 @@ export default async function handler(req, res) {
 
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
-        const leagueId = req.body["leagueId"] ?? currentUser.leagueInView;
+        const leagueId = req.query["leagueId"] ?? currentUser.leagueInView;
 
         // check user has acces to specified league - league in users's league list ?
         const hasAccessToLeague = await checkUserAccess.hasLeagueAccess(

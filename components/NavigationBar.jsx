@@ -13,7 +13,12 @@ const Navbar = () => {
 
         <ul className="navbar-nav me-auto">
           <li className="nav-item">
-            <Link className="nav-link" href="/">
+            <Link
+              className="nav-link"
+              href="/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               Standings
             </Link>
           </li>

@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     case "GET": {
       try {
         await validators.attach(req, res, [
-          validators.queryParams.queryParam("id", "cv id is required"),
+          validators.queryParams.queryParam("id", "team id is required"),
         ]);
 
         UserMiddleware(req, res);
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
     case "PATCH": {
       try {
         await validators.attach(req, res, [
-          validators.queryParams.queryParam("id", "cv id is required"),
+          validators.queryParams.queryParam("id", "team id is required"),
         ]);
         UserMiddleware(req, res);
         const { id } = req.query;
@@ -114,7 +114,7 @@ export default async function handler(req, res) {
     case "DELETE": {
       try {
         await validators.attach(req, res, [
-          validators.queryParams.queryParam("id", "cv id is required"),
+          validators.queryParams.queryParam("id", "team id is required"),
         ]);
         UserMiddleware(req, res);
         const { id } = req.query;

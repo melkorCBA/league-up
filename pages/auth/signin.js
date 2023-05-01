@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { UseRequest, RequestMethods } from "../../hooks/useRequest";
+import { axiosClient } from "../../lib/apiClient";
 import Router from "next/router";
 import {
   setClientenvsInSession,
@@ -8,6 +9,7 @@ import {
 } from "../../lib/util";
 import { ACTIONS, useStore } from "../../contexts/storeContext";
 import useLoading from "../../hooks/useLoading";
+import { userService } from "../../services/api-service";
 export default function Signin({ clientenvs }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +24,9 @@ export default function Signin({ clientenvs }) {
         // to do a navgation with page refresh to update login states in the store
 
         window.location.href = "/admin";
-        end();
+        //end();
+        // here end is not called because when using href will unmount the componet (run cleanup code in useEffect)
+        // before it's navigated out
       },
       onError: () => {
         end();
@@ -75,9 +79,21 @@ export default function Signin({ clientenvs }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   // Fetch data from external API
   const envs = CLIENT_ENVIRONMENT;
+  const axios = axiosClient(context.req);
+  try {
+    await userService.getUser(axios);
+    return {
+      redirect: {
+        destination: "/admin",
+        permanent: false,
+      },
+    };
+  } catch (err) {
+    // will do nothing because it'll create a loop
+  }
 
   return {
     props: {
