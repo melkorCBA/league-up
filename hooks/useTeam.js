@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ENVIRONMENT } from "../lib/util";
 import { useError } from "../contexts/errorContext";
+import { leagueService, teamService } from "../services/api-service";
 
 const useTeam = (initialTeams, initialLeague) => {
   const [teams, setTeams] = useState(initialTeams);
@@ -42,9 +43,9 @@ const useTeam = (initialTeams, initialLeague) => {
     await changeSycnStatus(teams[index]["_id"], false);
 
   const patchTeam = async (team) => {
-    const URL = `${ENVIRONMENT().BaseApiURL}/teams/${team["_id"]}`;
     try {
-      await axios.patch(URL, team);
+      const { _id: teamId } = team;
+      await teamService.updateTeam(teamId, team);
       setSuccess("team updated");
       await reFeatchTeams();
     } catch (err) {
@@ -52,10 +53,9 @@ const useTeam = (initialTeams, initialLeague) => {
     }
   };
 
-  const deleteTeam = async (id) => {
-    const URL = `${ENVIRONMENT().BaseApiURL}/teams/${id}`;
+  const deleteTeam = async (teamId) => {
     try {
-      await axios.delete(URL);
+      await teamService.deleteTeam(teamId);
       setSuccess("team deleted");
       await reFeatchTeams();
     } catch (err) {
@@ -64,12 +64,10 @@ const useTeam = (initialTeams, initialLeague) => {
   };
 
   const updateLeagueData = async () => {
-    const URL = `${ENVIRONMENT().BaseApiURL}/league`;
     try {
-      await axios.patch(URL, {
-        leagueName: league["name"],
-        leagueId: league["_id"],
-      });
+      const { _id: leagueId } = league;
+      const { name: leagueName } = league;
+      await leagueService.updateLeague(leagueId, { leagueName });
       setSuccess("league name updated");
       await reFeatchTeams();
     } catch (err) {
@@ -78,27 +76,24 @@ const useTeam = (initialTeams, initialLeague) => {
   };
 
   const reFeatchTeams = async () => {
-    const { _id: leagueId } = league;
-    // const response = await axios.get(
-    //   `${ENVIRONMENT().BaseApiURL}/teams?leagueId=${leagueId}`
-    // );
-
-    // const { data } = response.data;
-    // setTeams(data);
+    try {
+      const { _id: leagueId } = league;
+      const data = await teamService.getTeams(leagueId);
+      setTeams(data);
+    } catch (err) {
+      etErrors([err["message"]]);
+    }
   };
 
   const addTeam = async () => {
-    const URL = `${ENVIRONMENT().BaseApiURL}/teams`;
     try {
-      const payload = {};
-      Object.keys(newTeam).forEach((key) => {
-        if (newTeam[key] !== "") {
-          payload[key] = newTeam[key];
-        }
-      });
-      // attaching leagueId,
-      payload["leagueId"] = league["_id"];
-      await axios.post(URL, payload);
+      const { _id: leagueId } = league;
+      const payload = {
+        teamName: newTeam.teamName,
+        logoURL: newTeam.logoURL,
+        abrev: newTeam.abrev,
+      };
+      await teamService.addTeam(leagueId, payload);
       setSuccess("team added");
       setNewTeam(emptyTeam);
       await reFeatchTeams();
@@ -108,9 +103,6 @@ const useTeam = (initialTeams, initialLeague) => {
   };
 
   const onNewTeamChange = (key, value) => {
-    // if (value === "") {
-    //   return;
-    // }
     const nt = { ...newTeam };
     nt[key] = value;
     setNewTeam(nt);
@@ -118,13 +110,11 @@ const useTeam = (initialTeams, initialLeague) => {
 
   //change Team's All Matches SycnStatus
   const changeSycnStatus = async (teamId, status) => {
-    const URL = `${ENVIRONMENT().BaseApiURL}/teams/${teamId}/matches/syncAll`;
     try {
       const payload = {
         syncStatus: !!status,
       };
-
-      await axios.patch(URL, payload);
+      await teamService.syncMatches(teamId, payload);
       setSuccess("sycn all matches associated with the team");
       await reFeatchTeams();
     } catch (err) {

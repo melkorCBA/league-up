@@ -24,6 +24,6 @@ export const trigger = (
       }
     )
     .then((res) => {
-      console.log("event:" + eventName);
+      console.log("event:" + eventName ?? EVENTS.UPDATE_TEAMS);
     })
     .catch((err) => (errorCallback ? errorCallback(err) : console.log(err)));

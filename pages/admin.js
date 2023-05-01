@@ -105,7 +105,12 @@ export default function Admin({ initialData, clientenvs }) {
               <button
                 hidden={view === CONSTANTS.VIEWS.STANDINGS}
                 className="btn btn-outline-secondary btn-block w-100"
-                onClick={() => router.push(`matches`)}
+                onClick={() =>
+                  router.push({
+                    pathname: "/matches",
+                    query: { leagueId: leagueSelected?._id },
+                  })
+                }
               >
                 Matches
               </button>
@@ -122,7 +127,7 @@ export async function getServerSideProps(context) {
   const axios = axiosClient(context.req);
   try {
     const dashboard = await dashboardService.getDashboard({}, axios);
-    const teams = await teamService.getTeams({}, axios);
+    const teams = await teamService.getTeams(null, axios);
     const leagueInView = await leagueService.getLeague(dashboard.league, axios);
     const matchInView = await matchService.getMatch(
       dashboard.currentMatch,
