@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: [process.env.BaseURL, process.env.ImageBlobURL],
+    domains: process.env.ResourceDomains.split(" "),
   },
   output: "standalone",
   publicRuntimeConfig: {
