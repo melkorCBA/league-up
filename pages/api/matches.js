@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         ]);
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
-        const leagueId = req.body["leagueId"] ?? currentUser.leagueInView;
+        const leagueId = req.query["leagueId"] ?? currentUser.leagueInView;
         const matches = await Match.find({ isDeleted: false, league: leagueId })
           .lean()
           .populate({
