@@ -43,7 +43,7 @@ const DoubbleHeader = ({ showLogo, team1, team2 }) => {
           </div>
         )}
 
-        <h3 className="text-center">{teams.getName(team1)}</h3>
+        <h3 className="text-center">{teams.getName(team2)}</h3>
       </div>
     </div>
   );
