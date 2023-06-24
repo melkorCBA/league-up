@@ -1,11 +1,11 @@
-name: "Create Standing App Release"
+name: "Create LeagueUP Release"
 on:
   release:
     types: [created]
 
 env:
   VERSION: ${{ github.event.release.tag_name }}
-  IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/standings-board:${{github.event.release.tag_name}}
+  IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:${{github.event.release.tag_name}}
 
 jobs:
   version_info:
