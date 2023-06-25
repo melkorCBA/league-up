@@ -47,7 +47,7 @@ export default function Signin({ clientenvs }) {
   };
   return (
     <div className="container pt-5">
-      <h1 className="text-center mb-3">Standing Admin</h1>
+      <h1 className="text-center mb-3">LeagueUp Admin</h1>
 
       <form onSubmit={onSubmit}>
         <div className="d-flex flex-column align-items-center">

@@ -80,8 +80,8 @@ const MatchCard = ({ matchData, matchNumber, isOnLive, onLiveChnage }) => {
       <div>{whoWon()}</div>
       <Switch
         label=""
-        valueLabels={["off", "on"]}
-        values={[true, false]}
+        valueLabels={["Active", "Inactive"]}
+        values={[false, true]}
         defultValue={match.isDeleted}
         onChange={(v) => onStatusChnage(v)}
       />
