@@ -1,4 +1,4 @@
-name: "Build Standing App"
+name: "Build LeagueUp"
 on:
   pull_request:
     types: [opened, reopened]

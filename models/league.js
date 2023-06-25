@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const LeagueSchema = new mongoose.Schema({
   name: {
     type: String,
-    default: "Standing 2022",
+    default: `LeagueUp ${new Date().getFullYear()}`,
   },
 });
 export default mongoose.models.League || mongoose.model("League", LeagueSchema);

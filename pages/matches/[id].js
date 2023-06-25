@@ -47,7 +47,7 @@ export async function getServerSideProps(ctx) {
     return {
       redirect: {
         permanent: false,
-        destination: "/notFound",
+        destination: "/404",
         basePath: false,
       },
     };

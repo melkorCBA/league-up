@@ -2,25 +2,35 @@ import React from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import AcountDropdown from "./AccountDropdown";
+import useLoginUser from "../hooks/useLoginUser";
 
 const Navbar = () => {
+  const { showForLoggedInUser } = useLoginUser();
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <Link className="navbar-brand" href="/admin">
-          Admin
-        </Link>
+        {showForLoggedInUser(
+          <>
+            <Link className="navbar-brand" href="/admin">
+              Admin
+            </Link>
+          </>
+        )}
 
         <ul className="navbar-nav me-auto">
           <li className="nav-item">
-            <Link
-              className="nav-link"
-              href="/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Standings
-            </Link>
+            {showForLoggedInUser(
+              <>
+                <Link
+                  className="nav-link"
+                  href="/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Standings
+                </Link>
+              </>
+            )}
           </li>
         </ul>
         <AcountDropdown />
