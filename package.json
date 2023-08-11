@@ -14,7 +14,6 @@
     "bootstrap": "^5.2.0",
     "cookies-next": "^2.1.1",
     "framer-motion": "^10.11.6",
-    "i": "^0.3.7",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.5.4",
     "next": "^13.3.0",
@@ -25,10 +24,12 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/react": "18.2.20",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "8.23.0",
-    "eslint-config-next": "^13.3.0"
+    "eslint-config-next": "^13.3.0",
+    "typescript": "^5.1.6"
   },
   "config": {
     "commitizen": {
