@@ -1,9 +1,15 @@
 import mongoose from "mongoose";
 import { CONSTANTS } from "../lib/util";
 const { VIEWS } = CONSTANTS;
-
 /* PetSchema will correspond to a collection in your MongoDB database. */
-const DashBoardSchema = new mongoose.Schema({
+
+interface IView {
+  view: String;
+  name: String;
+  viewThumbnailURL: String;
+}
+
+const ViewSchema = new mongoose.Schema<IView>({
   view: {
     type: String, // std - standings view, premat - before match view for currentMatch, mat - on going match view for currentMatch, postmat - after match view for currentMatch,
     enum: [
@@ -16,11 +22,15 @@ const DashBoardSchema = new mongoose.Schema({
     default: "std",
   },
 
-  currentMatch: {
-    type: mongoose.Types.ObjectId,
-    ref: "Match",
+  name: {
+    type: String,
+    default: "new view",
   },
-  league: { type: mongoose.Types.ObjectId, ref: "League" },
+  viewThumbnailURL: {
+    type: String,
+    default: "https://melkorwebjobstorage.blob.core.windows.net/web/logo0.png",
+  },
 });
-export default mongoose.models.DashBoard ||
-  mongoose.model("DashBoard", DashBoardSchema);
+
+export default mongoose.models.View ||
+  mongoose.model<IView>("View", ViewSchema);

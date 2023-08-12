@@ -1,18 +1,32 @@
-import mongoose from "mongoose";
-import { getNetRunrate } from "../lib/util";
+import { Types, Schema, model, models } from "mongoose";
 
-/* PetSchema will correspond to a collection in your MongoDB database. */
-const TeamSchema = new mongoose.Schema({
+interface ITeam {
+  logoURL?: string;
+  logoID?: Types.ObjectId;
+  teamName: string;
+  abrev: string;
+  pld?: number;
+  win?: number;
+  draw?: number;
+  loss?: number;
+  isQualified?: number;
+  isActive?: boolean;
+  runsScored?: number;
+  runsConceded?: number;
+  oversFaced?: number;
+  oversBowled?: number;
+  league?: Types.ObjectId;
+  syncedMatches: Types.ObjectId[];
+}
+const TeamSchema = new Schema<ITeam>({
   logoURL: {
     type: String,
     default: "https://melkorwebjobstorage.blob.core.windows.net/web/logo0.png",
   },
   logoID: {
-    type: mongoose.Types.ObjectId,
+    type: Schema.Types.ObjectId,
   },
   teamName: {
-    /* The name of the company cv is generated for */
-
     type: String,
     required: [true, "Please provide a name for the team."],
     maxlength: [60, "team Name cannot be more than 60 characters"],
@@ -65,11 +79,11 @@ const TeamSchema = new mongoose.Schema({
     default: 0,
   },
 
-  league: { type: mongoose.Types.ObjectId, ref: "League" },
+  league: { type: Schema.Types.ObjectId, ref: "League" },
 
   syncedMatches: [
     {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Match",
     },
   ],
@@ -88,4 +102,4 @@ TeamSchema.virtual("pts").get(function () {
   return this.win * 3 + this.draw;
 });
 
-export default mongoose.models.Team || mongoose.model("Team", TeamSchema);
+export default models.Team || model("Team", TeamSchema);

@@ -1,9 +1,17 @@
-import mongoose from "mongoose";
-import { Password } from "../lib/util";
+import { Schema, Types, models, model } from "mongoose";
+import { Passwords } from "../lib/encryption";
 import { findLeagueById, hasLeagueAccess } from "./user.extend";
 
+interface IUser {
+  email: string;
+  password: string;
+  leagues?: Types.ObjectId[];
+  leagueInView?: Types.ObjectId;
+  isActive?: boolean;
+}
+
 /* PetSchema will correspond to a collection in your MongoDB database. */
-const UserSchema = new mongoose.Schema(
+const UserSchema = new Schema<IUser>(
   {
     email: {
       type: String,
@@ -15,13 +23,13 @@ const UserSchema = new mongoose.Schema(
     },
     leagues: [
       {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "League",
       },
     ],
 
     leagueInView: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "League",
     },
     isActive: {
@@ -41,20 +49,11 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.pre("save", async function (done) {
   if (this.isModified("password")) {
-    const hashed = await Password.toHash(this.get("password"));
+    const hashed = await Passwords.toHash(this.get("password"));
     this.set("password", hashed);
   }
   done();
 });
 UserSchema.method("findLeagueById", findLeagueById);
 UserSchema.method("hasLeagueAccess", hasLeagueAccess);
-// UserSchema.methods.doesLeagueExist = function (leagueId) {
-//   if (this.leagues.find((l) => l.equals(leagueId))) return true;
-//   return false;
-// };
-// UserSchema.static.doesLeagueExist = function (leagueId) {
-//   if (this.leagues.find((l) => l.equals(leagueId))) return true;
-//   return false;
-// };
-
-export default mongoose.models.User || mongoose.model("User", UserSchema);
+export default models.User || model<IUser>("User", UserSchema);

@@ -1,8 +1,14 @@
-import mongoose from "mongoose";
+import { Schema, Types, models, model } from "mongoose";
 import { TOSS_STATUS, BATFIRST_STATUS, WIN_STATUS } from "../lib/util";
 
-const MatchTeamSchema = new mongoose.Schema({
-  team: { type: mongoose.Types.ObjectId, ref: "Team" },
+interface IMatchTeam {
+  team?: Types.ObjectId;
+  runs?: number;
+  wickets?: number;
+  overs: number;
+}
+const MatchTeamSchema = new Schema<IMatchTeam>({
+  team: { type: Schema.Types.ObjectId, ref: "Team" },
   runs: {
     type: Number,
     default: 0,
@@ -17,7 +23,20 @@ const MatchTeamSchema = new mongoose.Schema({
   },
 });
 
-const MatchSchema = new mongoose.Schema(
+interface IMatch {
+  team1: IMatchTeam;
+  team2: IMatchTeam;
+  toss?: string;
+  bat1st?: string;
+  won?: string;
+  isSynced?: boolean;
+  isDeleted?: boolean;
+  lockedForSync?: boolean;
+  winMargin: string;
+  league?: Types.ObjectId;
+}
+
+const MatchSchema = new Schema<IMatch>(
   {
     team1: {
       type: MatchTeamSchema,
@@ -64,9 +83,9 @@ const MatchSchema = new mongoose.Schema(
       default: "",
       // accpected format: 5 Wickets, 13 runs, 2 Wickets (DLS)
     },
-    league: { type: mongoose.Types.ObjectId, ref: "League" },
+    league: { type: Schema.Types.ObjectId, ref: "League" },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Match || mongoose.model("Match", MatchSchema);
+export default models.Match || model("Match", MatchSchema);
