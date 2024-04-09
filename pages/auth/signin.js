@@ -92,6 +92,7 @@ export async function getServerSideProps(context) {
       },
     };
   } catch (err) {
+    console.log(err)
     // will do nothing because it'll create a loop
   }
 

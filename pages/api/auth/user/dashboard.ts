@@ -18,15 +18,15 @@ export default async function handler(req, res) {
       try {
         UserMiddleware(req, res);
         const currentUserId = CookieSession.get("currentUser", { req, res });
-        const exsistingUser = await User.findById(currentUserId);
-        if (!exsistingUser) {
+        const existingUser = await User.findById(currentUserId);
+        if (!existingUser) {
           throw new BadRequest("Invalid User!.");
         }
-        const { leagueInView: leagueInViewId } = exsistingUser;
+        const { leagueInView: leagueInViewId } = existingUser;
         // get dashboard
         const dashboard = await DashBoard.findOne({ league: leagueInViewId });
         if (!dashboard) {
-          throw new NotFound("No dashboard set in view!.");
+          throw new NotFound();
         }
         res.status(200).json({ status: "success!.", data: dashboard });
       } catch (err) {
@@ -42,16 +42,16 @@ export default async function handler(req, res) {
         ]);
         UserMiddleware(req, res);
         const currentUserId = CookieSession.get("currentUser", { req, res });
-        const exsistingUser = await User.findById(currentUserId);
-        if (!exsistingUser) {
+        const existingUser = await User.findById(currentUserId);
+        if (!existingUser) {
           throw new BadRequest("Invalid User!.");
         }
         const { leagueInViewId } = req.body;
-        if (!exsistingUser.hasLeagueAccess(leagueInViewId)) {
+        if (!existingUser.hasLeagueAccess(leagueInViewId)) {
           throw new Forbidden("User does not have to access to this league");
         }
-        exsistingUser.leagueInView = leagueInViewId;
-        await exsistingUser.save();
+        existingUser.leagueInView = leagueInViewId;
+        await existingUser.save();
         trigger(publisher, {
           channelName: CHANNELS.DASHBOARD,
           eventName: EVENTS.DASHBOARD.UPDATE_LEAGUE_IN_VIEW,

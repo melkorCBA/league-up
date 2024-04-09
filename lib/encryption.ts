@@ -3,7 +3,7 @@ import { promisify } from "util";
 import jwt from "jsonwebtoken";
 import { ENVIRONMENT } from "./util";
 
-const scryptAsync = promisify(scrypt);
+const scryptAsync: (password:unknown, sault:unknown, base:unknown) => Promise<Buffer> = promisify(scrypt);
 const Passwords = {
   toHash: async (password) => {
     const sault = randomBytes(8).toString("hex");

@@ -8,7 +8,7 @@ export default async function handler(req, res) {
       try {
         CookieSession.remove("jwt", { req, res });
         CookieSession.remove("currentUser", { req, res });
-        res.status(200).json({ status: "Signout success!.", data: {} });
+        res.status(200).json({ status: "Sign out success!.", data: {} });
       } catch (err) {
         errorHandler(err, res);
       }

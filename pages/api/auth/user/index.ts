@@ -13,11 +13,11 @@ export default async function handler(req, res) {
       try {
         UserMiddleware(req, res);
         const currentUserId = CookieSession.get("currentUser", { req, res });
-        const exsistingUser = await User.findById(currentUserId);
-        if (!exsistingUser) {
+        const existingUser = await User.findById(currentUserId);
+        if (!existingUser) {
           throw new BadRequest("Invalid User!.");
         }
-        res.status(200).json({ status: "success!.", data: exsistingUser });
+        res.status(200).json({ status: "success!.", data: existingUser });
       } catch (err) {
         errorHandler(err, res);
       }

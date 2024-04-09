@@ -19,30 +19,18 @@ export default async function handler(req, res) {
           ),
         ]);
         const { email, password } = req.body;
-        const exsistingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ email });
 
-        if (!exsistingUser) {
-          throw new BadRequest("Invalid User!.");
+        if (existingUser) {
+          throw new BadRequest("email already in use");
         }
-        const passwordMatch = await Passwords.compare(
-          exsistingUser.password,
-          password
-        );
-        if (!passwordMatch) {
-          throw new BadRequest("invlaid credentials");
-        }
-        // generate jwt & set session
-
+        const user = await new User({ email, password });
+        await user.save();
         CookieSession.set(
-          JWT.signToSession({
-            id: exsistingUser["_id"],
-            email: exsistingUser.email,
-          }),
+          JWT.signToSession({ id: user["_id"], email: user.email }),
           { req, res }
         );
-        res
-          .status(200)
-          .json({ status: "signin success!.", data: exsistingUser });
+        res.status(201).json({ status: "Signup success!.", data: user });
       } catch (err) {
         errorHandler(err, res);
       }

@@ -15,22 +15,34 @@ export default async function handler(req, res) {
         await validators.attach(req, res, [
           validators.body.fields(
             ["email", "password"],
-            "Both email & password must be provided for User Signup!."
+            "Both email & password must be provided for User SignIn!."
           ),
         ]);
         const { email, password } = req.body;
-        const exsistingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ email });
 
-        if (exsistingUser) {
-          throw new BadRequest("email already in use");
+        if (!existingUser) {
+          throw new BadRequest("Invalid User!.");
         }
-        const user = await new User({ email, password });
-        await user.save();
+        const passwordMatch = await Passwords.compare(
+          existingUser.password,
+          password
+        );
+        if (!passwordMatch) {
+          throw new BadRequest("invlaid credentials");
+        }
+        // generate jwt & set session
+
         CookieSession.set(
-          JWT.signToSession({ id: user["_id"], email: user.email }),
+          JWT.signToSession({
+            id: existingUser["_id"],
+            email: existingUser.email,
+          }),
           { req, res }
         );
-        res.status(201).json({ status: "Signup success!.", data: user });
+        res
+          .status(200)
+          .json({ status: "signin success!.", data: existingUser });
       } catch (err) {
         errorHandler(err, res);
       }

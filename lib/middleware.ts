@@ -6,9 +6,15 @@ import User from "../models/user";
 import { JWT } from "./encryption";
 import { BadRequest, Unauthorized } from "./errors";
 import { isNullEmpty } from "./util";
+import { NextApiRequest, NextApiResponse } from "next";
+
+type NextAPIRequestResponse ={
+  req:NextApiRequest,
+  res:NextApiResponse
+}
 
 const CookieSession = {
-  set: (session, { req, res, maxAge }) => {
+  set: (session, { req, res, maxAge }: NextAPIRequestResponse & {maxAge?: number}) => {
     Object.keys(session).forEach((key) => {
       setCookie(key, session[key], {
         httpOnly: true,
@@ -29,7 +35,7 @@ const CookieSession = {
   },
 };
 
-const UserMiddleware = (req, res) => {
+const UserMiddleware = (req:NextApiRequest, res:NextApiResponse) => {
   try {
     const jwt = CookieSession.get("jwt", { req, res });
     const userPayload = JWT.getUserPayload({ jwt });
