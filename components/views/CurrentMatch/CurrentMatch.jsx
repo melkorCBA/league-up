@@ -11,6 +11,10 @@ import {
 } from "../../../lib/util";
 
 const CurrentMatch = ({ match, matchView, miniView }) => {
+  if(!match || Object.keys(match).length < 1)
+  return (
+    <div className="text-center my-auto">No Match is selected for the dashboard</div>
+      )
   const beforeMatch = () => {
     const getFooterText = () => {
       const getTeamName = (team) => team?.team.teamName;
@@ -26,6 +30,7 @@ const CurrentMatch = ({ match, matchView, miniView }) => {
         tossWinTeam === batFirstTeam ? "Bat first" : "Field fisrt"
       }`;
     };
+
     return (
       <>
         <MatchNumber num={2} />

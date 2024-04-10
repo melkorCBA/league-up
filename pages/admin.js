@@ -129,10 +129,14 @@ export async function getServerSideProps(context) {
     const dashboard = await dashboardService.getDashboard({}, axios);
     const teams = await teamService.getTeams(null, axios);
     const leagueInView = await leagueService.getLeague(dashboard.league, axios);
-    const matchInView = await matchService.getMatch(
-      dashboard.currentMatch,
-      axios
-    );
+    let matchInView = {}
+    if(dashboard.currentMatch) {
+      matchInView = await matchService.getMatch(
+        dashboard.currentMatch,
+        axios
+      );
+    }
+    
     const leagues = await leagueService.getLeagues(axios);
     const views = await viewService.getViews(axios);
 

@@ -1,9 +1,9 @@
-import Team from "../../models/team";
-import Match from "../../models/match";
+import Team from "../../../models/team";
+import Match from "../../../models/match";
 
-import dbConnect from "../../lib/dbConnect";
-import { errorHandler, validators } from "../../lib/errorHandler";
-import { UserMiddleware, getUserData } from "../../lib/middleware";
+import dbConnect from "../../../lib/dbConnect";
+import { errorHandler, validators } from "../../../lib/errorHandler";
+import { UserMiddleware, getUserData } from "../../../lib/middleware";
 
 export default async function handler(req, res) {
   const { method } = req;

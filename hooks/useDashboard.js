@@ -33,6 +33,8 @@ const useDashboard = ({ initialData, clientenvs }) => {
     },
     matchInView: async () => {
       const matchInViewId = dashboard["currentMatch"];
+      if(!matchInViewId)
+        return;
       const data = await matchService.getMatch(matchInViewId);
       setMatchInView(data);
     },

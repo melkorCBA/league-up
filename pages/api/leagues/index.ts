@@ -11,6 +11,7 @@ import {
   checkUserAccess,
   getUserData,
 } from "../../../lib/middleware";
+import { Unauthorized } from "../../../lib/errors";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -34,7 +35,7 @@ export default async function handler(req, res) {
 
         for (const league of userLeagues) {
           const { _id, name } = league;
-          if (league["_id"].equals(mongoose.Types.ObjectId(leagueInViewId))) {
+          if (league["_id"].equals(new mongoose.Types.ObjectId(leagueInViewId))) {
             leagues.push({ _id, name, default: true });
             continue;
           }

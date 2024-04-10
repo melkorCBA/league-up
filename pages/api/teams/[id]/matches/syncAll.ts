@@ -9,6 +9,7 @@ import {
   checkUserAccess,
   getUserData,
 } from "../../../../../lib/middleware";
+import { Unauthorized } from "../../../../../lib/errors";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -23,7 +24,7 @@ export default async function handler(req, res) {
         ]);
         UserMiddleware(req, res);
         const { id } = req.query;
-        // check user has acces to specified team - league in users's league list ?
+        // check user has acces to specified team - league in users's league list ?S
         const hasAccessToTeam = await checkUserAccess.hasTeamAccess(id, {
           req,
           res,

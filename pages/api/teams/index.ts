@@ -1,14 +1,15 @@
-import Team from "../../models/team";
-import Logo from "../../models/logo";
-import dbConnect from "../../lib/dbConnect";
-import { errorHandler, validators } from "../../lib/errorHandler";
-import { getPublisher, trigger } from "../../pusher/publisher";
-import { CHANNELS, EVENTS } from "../../pusher/constants";
+import Team from "../../../models/team";
+import Logo from "../../../models/logo";
+import dbConnect from "../../../lib/dbConnect";
+import { errorHandler, validators } from "../../../lib/errorHandler";
+import { getPublisher, trigger } from "../../../pusher/publisher";
+import { CHANNELS, EVENTS } from "../../../pusher/constants";
 import {
   UserMiddleware,
   checkUserAccess,
   getUserData,
-} from "../../lib/middleware";
+} from "../../../lib/middleware";
+import { Unauthorized } from "../../../lib/errors";
 
 export default async function handler(req, res) {
   const { method } = req;

@@ -9,6 +9,7 @@ import {
   checkUserAccess,
   getUserData,
 } from "../../../../lib/middleware";
+import { Unauthorized } from "../../../../lib/errors";
 
 export default async function handler(req, res) {
   const { method } = req;
