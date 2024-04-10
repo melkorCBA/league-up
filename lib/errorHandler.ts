@@ -2,7 +2,7 @@ import { Unauthorized, BadRequest, Forbidden, NotFound } from "./errors";
 
 const validators = (() => {
   const attach = (req, res, fns) => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const errors = [];
       for (const fn of fns) {
         fn(req, (result) => {
@@ -23,17 +23,24 @@ const validators = (() => {
     field: (field, message) => {
       return function (req, callback) {
         req.body[field] === undefined
-          ? callback(new BadRequest(message ?? `${field} is requried`))
+          ? callback(new BadRequest(message ?? `${field} is required`))
           : callback(true);
       };
     },
     fields: (fields, message) => {
       return function (req, callback) {
+        let requiredField: string
         const isAnyUndefined = fields.some(
-          (field) => req.body[field] === undefined
+          (field) => {
+            if(req.body[field] === undefined){
+              requiredField = field;
+              return true;
+            }
+            return false;
+          }
         );
         isAnyUndefined
-          ? callback(new BadRequest(message ?? `${field} is requried`))
+          ? callback(new BadRequest(message ?? `${requiredField} is required`))
           : callback(true);
       };
     },
@@ -43,7 +50,7 @@ const validators = (() => {
           (field) => req.body[field] !== undefined
         );
         !isAnyPresent
-          ? callback(new BadRequest(message ?? `${field} is requried`))
+          ? callback(new BadRequest(message ?? `at least one field is required`))
           : callback(true);
       };
     },
@@ -54,7 +61,7 @@ const validators = (() => {
       return function (req, callback) {
         req.headers[headerName] === undefined
           ? callback(
-              new Unauthorized(message ?? `${headerName} header is requried`)
+              new Unauthorized(message ?? `${headerName} header is required`)
             )
           : callback(true);
       };
@@ -67,7 +74,7 @@ const validators = (() => {
         req.query[queryParamName] === undefined
           ? callback(
               new Unauthorized(
-                message ?? `${queryParamName} header is requried`
+                message ?? `${queryParamName} header is required`
               )
             )
           : callback(true);
