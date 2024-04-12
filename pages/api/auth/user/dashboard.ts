@@ -6,7 +6,6 @@ import { errorHandler, validators } from "../../../../lib/errorHandler";
 import { UserMiddleware, CookieSession } from "../../../../lib/middleware";
 import { BadRequest, NotFound, Forbidden } from "../../../../lib/errors";
 import { getPublisher, trigger } from "../../../../pusher/publisher";
-import { CHANNELS, EVENTS } from "../../../../pusher/constants";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -52,14 +51,11 @@ export default async function handler(req, res) {
         }
         existingUser.leagueInView = leagueInViewId;
         await existingUser.save();
-        trigger(publisher, {
-          channelName: CHANNELS.DASHBOARD,
-          eventName: EVENTS.DASHBOARD.UPDATE_LEAGUE_IN_VIEW,
-        });
+        trigger(publisher, null , 'dashboard', 'DASHBOARD_updateLeagueInView');
         // get dashboard
         const dashboard = await DashBoard.findOne({ league: leagueInViewId });
         if (!dashboard) {
-          throw new NotFound("No dashboard set in view!.");
+          throw new NotFound();
         }
         res.status(201).json({ status: "success!.", data: dashboard });
       } catch (err) {

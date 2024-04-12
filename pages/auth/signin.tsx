@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { UseRequest, RequestMethods } from "../../hooks/useRequest";
-import { axiosClient } from "../../lib/apiClient";
 import Router from "next/router";
 import {
   setClientenvsInSession,
@@ -9,7 +8,8 @@ import {
 } from "../../lib/util";
 import { ACTIONS, useStore } from "../../contexts/storeContext";
 import useLoading from "../../hooks/useLoading";
-import { userService } from "../../services/api-service";
+import { userService } from "../../services/apiClients/user.service";
+import { axiosClient } from "../../services/apiClients/api.client";
 export default function Signin({ clientenvs }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -11,7 +11,7 @@ export default function NotFound() {
           width="250"
           height="350"
         ></Image>
-        <div>Opps! Page not found!</div>
+        <div>Oops! Page not found!</div>
       </div>
     </div>
   );

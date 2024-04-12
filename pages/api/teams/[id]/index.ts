@@ -3,7 +3,6 @@ import Logo from "../../../../models/logo";
 import dbConnect from "../../../../lib/dbConnect";
 import { errorHandler, validators } from "../../../../lib/errorHandler";
 import { getPublisher, trigger } from "../../../../pusher/publisher";
-import { CHANNELS, EVENTS } from "../../../../pusher/constants";
 import {
   UserMiddleware,
   checkUserAccess,
@@ -100,10 +99,7 @@ export default async function handler(req, res) {
         });
 
         await team.save();
-        trigger(publisher, {
-          channelName: CHANNELS.STANDING_BOARD,
-          eventName: EVENTS.UPDATE_TEAMS,
-        });
+        trigger(publisher, null, 'standings', 'TEAM_updateTeams');
         res.status(200).json({ status: "updated", data: team });
       } catch (err) {
         errorHandler(err, res);
@@ -131,11 +127,8 @@ export default async function handler(req, res) {
 
         const logoId = team["logoID"];
         await Team.deleteOne({ _id: id });
-        trigger(publisher, {
-          channelName: CHANNELS.STANDING_BOARD,
-          eventName: EVENTS.UPDATE_TEAMS,
-        });
-        // deattch logo
+        trigger(publisher, null, 'standings', 'TEAM_updateTeams');
+        // detach logo
         if (logoId) {
           const logo = await Logo.findById(logoId);
           logo["isUsed"] = false;

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { ACTIONS, useStore } from "../contexts/storeContext";
-import { userService } from "../services/api-service";
+import { userService } from "../services/apiClients/user.service";
+
 
 const useCurretUser = () => {
   const { dispatch } = useStore();

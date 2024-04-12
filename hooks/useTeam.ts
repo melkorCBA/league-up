@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ENVIRONMENT } from "../lib/util";
 import { useError } from "../contexts/errorContext";
-import { leagueService, teamService } from "../services/api-service";
+import { leagueService } from "../services/apiClients/league.service";
+import { teamService } from "../services/apiClients/team.service";
 
 const useTeam = (initialTeams, initialLeague) => {
   const [teams, setTeams] = useState(initialTeams);
@@ -81,7 +82,7 @@ const useTeam = (initialTeams, initialLeague) => {
       const data = await teamService.getTeams(leagueId);
       setTeams(data);
     } catch (err) {
-      etErrors([err["message"]]);
+      setErrors([err["message"]]);
     }
   };
 

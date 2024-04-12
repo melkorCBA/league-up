@@ -57,7 +57,7 @@ export default async function handler(req, res) {
         league["name"] = leagueName;
 
         await league.save();
-        trigger(publisher);
+        trigger(publisher, null);
         res.status(201).json({ status: "created", data: league });
       } catch (err) {
         errorHandler(err, res);

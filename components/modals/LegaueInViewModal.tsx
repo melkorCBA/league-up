@@ -1,16 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Modal from "../shared/Modal";
 import { ACTIONS, useStore } from "../../contexts/storeContext";
-import {
-  dashboardService,
-  matchService,
-  userService,
-} from "../../services/api-service";
+
 import DropdownSelect from "../shared/DropdownSelect";
 import useModal from "../../hooks/useModal";
 import useLoading from "../../hooks/useLoading";
+import { dashboardService } from "../../services/apiClients/dashboard.service";
+import { userService } from "../../services/apiClients/user.service";
+import { matchService } from "../../services/apiClients/match.service";
 
-userService;
+
 
 const LegaueInViewModal = () => {
   const { store, dispatch } = useStore();
@@ -67,8 +66,7 @@ const LegaueInViewModal = () => {
     await userService.updateUserDashboard({
       leagueInViewId: league._id,
     });
-    await dashboardService.updateDashboard({
-      leagueId: league._id,
+    await dashboardService.updateDashboard(league._id,{
       currentMatch: match._id,
     });
     dispatch({

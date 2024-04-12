@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "pusher/publisher.js"  ],
+, "pusher/publisher.ts", "contexts/storeContext.tsx"  ],
   "exclude": [
     "node_modules"
   ]

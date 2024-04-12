@@ -3,14 +3,12 @@ import Table from "../components/table";
 import CurrentMatch from "../components/views/CurrentMatch/CurrentMatch";
 import { CLIENT_ENVIRONMENT, CONSTANTS } from "../lib/util";
 import styles from "../styles/Home.module.css";
-import { axiosClient } from "../lib/apiClient";
 import useLive from "../hooks/useLive";
-import {
-  dashboardService,
-  leagueService,
-  matchService,
-  teamService,
-} from "../services/api-service";
+import { leagueService } from "../services/apiClients/league.service";
+import { dashboardService } from "../services/apiClients/dashboard.service";
+import { matchService } from "../services/apiClients/match.service";
+import { teamService } from "../services/apiClients/team.service";
+import { axiosClient } from "../services/apiClients/api.client";
 
 export default function Home({ intialData, clientenvs }) {
   const { leagueInView, view, teams, matchInView } = useLive(
@@ -22,7 +20,7 @@ export default function Home({ intialData, clientenvs }) {
     if (view === CONSTANTS.VIEWS.STANDINGS) {
       return <Table teams={teams} />;
     } else {
-      return <CurrentMatch match={matchInView} matchView={view} />;
+      return <CurrentMatch match={matchInView} matchView={view} miniView={false} />;
     }
   };
 

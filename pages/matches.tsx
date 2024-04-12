@@ -4,14 +4,12 @@ import styles from "../styles/Home.module.css";
 import { CLIENT_ENVIRONMENT, setClientenvsInSession } from "../lib/util";
 import MatchesCardList from "../components/MatchesCardList";
 import useMatch from "../hooks/useMatch";
-import { axiosClient } from "../lib/apiClient";
-import {
-  dashboardService,
-  leagueService,
-  matchService,
-  teamService,
-  userService,
-} from "../services/api-service";
+import { leagueService } from "../services/apiClients/league.service";
+import { dashboardService } from "../services/apiClients/dashboard.service";
+import { userService } from "../services/apiClients/user.service";
+import { matchService } from "../services/apiClients/match.service";
+import { teamService } from "../services/apiClients/team.service";
+import { axiosClient } from "../services/apiClients/api.client";
 
 export default function Matches({
   teams,
@@ -31,8 +29,7 @@ export default function Matches({
       if (!leagueId || !matchId) {
         return;
       }
-      await dashboardService.updateDashboard({
-        leagueId,
+      await dashboardService.updateDashboard(  leagueId, {
         currentMatch: matchId,
       });
       const match = matches.find((m) => m._id === matchId);

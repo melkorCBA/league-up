@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { ENVIRONMENT } from "../lib/util";
 import { useError } from "../contexts/errorContext";
-import {
-  userService,
-  leagueService,
-  matchService,
-  dashboardService,
-} from "../services/api-service";
+import { leagueService } from "../services/apiClients/league.service";
+import { dashboardService } from "../services/apiClients/dashboard.service";
+import { userService } from "../services/apiClients/user.service";
+import { matchService } from "../services/apiClients/match.service";
 
 const useUser = (initialUserDashboard) => {
   const [user, setUser] = useState({});
@@ -49,10 +47,9 @@ const useUser = (initialUserDashboard) => {
     };
   };
 
-  const saveDashbaord = async () => {
+  const saveDashboard = async () => {
     try {
-      await dashboardService.updateDashboard({
-        leagueId: dashboard["league"],
+      await dashboardService.updateDashboard(dashboard["league"], {
         currentMatch: dashboard["currentMatch"],
       });
       setSuccess("Dashboard Saved!");
@@ -83,7 +80,7 @@ const useUser = (initialUserDashboard) => {
     },
     matches,
     addLeague,
-    saveDashbaord,
+    saveDashbaord: saveDashboard,
   };
 };
 

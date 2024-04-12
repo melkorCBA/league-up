@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useUser from "../../hooks/useUser";
-import { axiosClient } from "../../lib/apiClient";
 import { CLIENT_ENVIRONMENT, setClientenvsInSession } from "../../lib/util";
+import { axiosClient } from "../../services/apiClients/api.client";
 
 const User = ({ initalDashboard, clientenvs }) => {
   const {

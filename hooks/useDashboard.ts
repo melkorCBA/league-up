@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
-import client from "../pusher/client";
-import { CHANNELS, EVENTS } from "../pusher/constants";
-import { CONSTANTS, setClientenvsInSession } from "../lib/util";
-import {
-  dashboardService,
-  matchService,
-  teamService,
-  userService,
-} from "../services/api-service";
+import { setClientenvsInSession } from "../lib/util";
 import { ACTIONS, useStore } from "../contexts/storeContext";
+import { dashboardService } from "../services/apiClients/dashboard.service";
+import { matchService } from "../services/apiClients/match.service";
+import { teamService } from "../services/apiClients/team.service";
 
 const useDashboard = ({ initialData, clientenvs }) => {
   const { store, dispatch } = useStore();
@@ -33,8 +28,7 @@ const useDashboard = ({ initialData, clientenvs }) => {
     },
     matchInView: async () => {
       const matchInViewId = dashboard["currentMatch"];
-      if(!matchInViewId)
-        return;
+      if (!matchInViewId) return;
       const data = await matchService.getMatch(matchInViewId);
       setMatchInView(data);
     },
@@ -72,7 +66,7 @@ const useDashboard = ({ initialData, clientenvs }) => {
 
   const updateView = async (view) => {
     const { _id: leagueId } = leagueSelected;
-    await dashboardService.updateDashboard({ leagueId, view });
+    await dashboardService.updateDashboard(leagueId, { view });
     setDashboard({ ...dashboard, view });
   };
 

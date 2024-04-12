@@ -10,7 +10,6 @@ import {
   getUserData,
 } from "../../lib/middleware";
 
-import { CHANNELS, EVENTS } from "../../pusher/constants";
 import { Unauthorized } from "../../lib/errors";
 
 export default async function handler(req, res) {
@@ -111,7 +110,7 @@ export default async function handler(req, res) {
         });
 
         await dashBoard.save();
-        dashboardUpdateTriger(publisher, payload);
+        dashboardUpdateTiger(publisher, payload);
         res.status(201).json({ status: "updated", data: dashBoard });
       } catch (err) {
         errorHandler(err, res);
@@ -126,19 +125,13 @@ export default async function handler(req, res) {
   }
 }
 
-function dashboardUpdateTriger(publisher, payload) {
+function dashboardUpdateTiger(publisher, payload) {
   if (payload.currentMatch) {
-    trigger(publisher, {
-      channelName: CHANNELS.DASHBOARD,
-      eventName: EVENTS.DASHBOARD.UPDATE_CURRENT_MATCH,
-    });
+    trigger(publisher, null, 'dashboard', 'DASHBOARD_updateCurrentMatch');
     return;
   }
   if (payload.view) {
-    trigger(publisher, {
-      channelName: CHANNELS.DASHBOARD,
-      eventName: EVENTS.DASHBOARD.UPDATE_VIEW,
-    });
+    trigger(publisher, null, 'dashboard', 'DASHBOARD_updateView');
     return;
   }
 }

@@ -131,7 +131,7 @@ export default async function handler(req, res) {
           match.team2["team"]
         );
         await match.save();
-        if (sendPushNofification) trigger(publisher);
+        if (sendPushNofification) trigger(publisher, null);
         res.status(201).json({
           status: "updated",
           data: match,

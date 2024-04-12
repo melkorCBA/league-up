@@ -3,7 +3,7 @@ import { getHashMap } from "../lib/util";
 import { useError } from "../contexts/errorContext";
 import { ENVIRONMENT } from "../lib/util";
 import axios from "axios";
-import { matchService } from "../services/api-service";
+import { matchService } from "../services/apiClients/match.service";
 
 const useMatch = (initalMatches, league) => {
   const [matches, setMatches] = useState(initalMatches);
@@ -22,7 +22,7 @@ const useMatch = (initalMatches, league) => {
         team2Id: teams[1]._id,
       };
       const { _id: leagueId } = league;
-      await matchService.addMatch({ leagueId, ...payload });
+      await matchService.addMatch(leagueId, payload);
       setSuccess("match added");
       await reFeatchMatches();
     } catch (err) {

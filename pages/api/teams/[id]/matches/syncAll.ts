@@ -38,7 +38,7 @@ export default async function handler(req, res) {
 
         const syncedMatchIds = team.syncedMatches;
         await updateSyncForMatches(syncedMatchIds, syncStatus);
-        trigger(publisher);
+        trigger(publisher, null);
         res.status(201).json({ status: "updated", data: team });
       } catch (err) {
         errorHandler(err, res);

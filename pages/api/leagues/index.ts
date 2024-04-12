@@ -35,7 +35,9 @@ export default async function handler(req, res) {
 
         for (const league of userLeagues) {
           const { _id, name } = league;
-          if (league["_id"].equals(new mongoose.Types.ObjectId(leagueInViewId))) {
+          if (
+            league["_id"].equals(new mongoose.Types.ObjectId(leagueInViewId))
+          ) {
             leagues.push({ _id, name, default: true });
             continue;
           }
@@ -52,14 +54,14 @@ export default async function handler(req, res) {
     case "POST": {
       try {
         await validators.attach(req, res, [
-          validators.body.field("name", "league name is missing"),
+          validators.body.field("leagueName", "league name is missing"),
         ]);
 
         UserMiddleware(req, res);
         const currentUser = await getUserData({ req, res });
 
-        const { name } = req.body;
-        const league = await new League({ name });
+        const { leagueName } = req.body;
+        const league = await new League({ name: leagueName });
         await league.save();
         currentUser.leagues.push(league["_id"]);
         await currentUser.save();
@@ -91,7 +93,7 @@ export default async function handler(req, res) {
         league["name"] = leagueName;
 
         await league.save();
-        trigger(publisher);
+        trigger(publisher, null);
         res.status(201).json({ status: "created", data: league });
       } catch (err) {
         errorHandler(err, res);

@@ -12,18 +12,16 @@ import ViewSelector from "../components/views/ViewSelector";
 import CurrentMatch from "../components/views/CurrentMatch/CurrentMatch";
 import useDashboard from "../hooks/useDashboard";
 import { useRouter } from "next/router";
-import { axiosClient } from "../lib/apiClient";
 import DropdownSelect from "../components/shared/DropdownSelect";
-import {
-  leagueService,
-  viewService,
-  dashboardService,
-  teamService,
-  matchService,
-} from "../services/api-service";
 import useModal from "../hooks/useModal";
 import Modal from "../components/shared/Modal";
 import LegaueInViewModal from "../components/modals/LegaueInViewModal";
+import { viewService } from "../services/apiClients/view.service";
+import { leagueService } from "../services/apiClients/league.service";
+import { dashboardService } from "../services/apiClients/dashboard.service";
+import { matchService } from "../services/apiClients/match.service";
+import { teamService } from "../services/apiClients/team.service";
+import { axiosClient } from "../services/apiClients/api.client";
 
 export default function Admin({ initialData, clientenvs }) {
   //const leagueInView = leagues?.filter((l) => l.default)[0];
