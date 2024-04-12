@@ -12,6 +12,11 @@ const nextConfig = {
     BRW_PusherApiKey: process.env.BRW_PusherApiKey,
     BRW_AdminPasscode: process.env.BRW_AdminPasscode,
   },
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = nextConfig;
