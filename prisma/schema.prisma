@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type MatchTeam {
+  id      String @map("_id") @db.ObjectId
+  overs   Float?
+  runs    Int
+  teamId  String @db.ObjectId
+  wickets Int
+}
+
+model Dashboard {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  currentMatch String? @db.ObjectId
+  leagueId     String  @unique @db.ObjectId
+  league       League  @relation(fields: [leagueId], references: [id])
+  view         String
+}
+
+model League {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  Team      Team[]
+  Match     Match[]
+  Dashboard Dashboard?
+  userId    String?    @unique @db.ObjectId
+  User      User?      @relation(fields: [userId], references: [id])
+}
+
+model Logo {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  isUsed  Boolean
+  logoURL String
+  Team    Team?
+}
+
+model Match {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  bat1st             String?
+  createdAt          DateTime  @db.Date
+  includeInStandings Boolean?
+  isDeleted          Boolean
+  isSynced           Boolean
+  leagueId           String    @db.ObjectId
+  lockedForSync      Boolean
+  team1              MatchTeam
+  team2              MatchTeam
+  toss               String?
+  updatedAt          DateTime  @db.Date
+  winMargin          String?
+  won                String?
+  league             League    @relation(fields: [leagueId], references: [id])
+}
+
+model Team {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  abrev         String?
+  draw          Int
+  isActive      Boolean
+  isQualified   Int?
+  leagueId      String   @db.ObjectId
+  logoId        String?  @unique @db.ObjectId
+  loss          Int?
+  oversBowled   Int?
+  oversFaced    Int?
+  pld           Int?
+  runsConceded  Int?
+  runsScored    Int?
+  syncedMatches String[]
+  teamName      String
+  win           Int?
+  league        League   @relation(fields: [leagueId], references: [id])
+  logo          Logo?    @relation(fields: [logoId], references: [id])
+}
+
+model User {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  email          String
+  isActive       Boolean
+  leagueInViewId String?  @unique @db.ObjectId
+  leagues        League[]
+  password       String
+}
+
+model View {
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  name             String?
+  view             String
+  viewThumbnailURL String
+}
