@@ -18,6 +18,7 @@ const useTeam = (initialTeams, initialLeague) => {
     loss: "",
     pts: "",
     nr: "",
+    logoURL: "",
   };
   const [newTeam, setNewTeam] = useState(emptyTeam);
 

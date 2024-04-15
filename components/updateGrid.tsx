@@ -53,7 +53,7 @@ const UpdateGrid = ({ data, league }) => {
             {teams?.map((d, i) => (
               <tr
                 key={d["_id"]}
-                className={"row" + i < 2 ? "table-primary" : ""}
+                className={"row" + (i < 2 ? "table-primary" : "")}
               >
                 <td>
                   <span>{i + 1}</span>

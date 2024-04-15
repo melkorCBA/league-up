@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { ACTIONS, useStore } from "../../contexts/storeContext";
 import useModal from "../../hooks/useModal";
 
-const Portal = ({ children, containerId, onClose, onOpen }) => {
+const Portal = ({ children, containerId, onClose, onOpen }:{children?: React.ReactNode, containerId:string, onClose?:()=>void, onOpen?:()=>void}) => {
   const [container, setContainer] = useState(null);
   const getModalContainer = (containerId) => {
     if (document.getElementById(containerId))
@@ -39,7 +39,7 @@ const Modal = ({ identifier, Header, Body, Buttons, onClose, onOpen }) => {
 
   const onBackdropClick = ({ target: element }) => {
     if (element && element.classList.contains("modal-container")) {
-      close(identifier);
+      close();
     }
   };
 
@@ -73,7 +73,7 @@ const Modal = ({ identifier, Header, Body, Buttons, onClose, onOpen }) => {
               className="btn btn-outline-secondary btn-sm"
               data-dismiss="modal"
               aria-label="Close"
-              onClick={() => close(identifier)}
+              onClick={() => close()}
             >
               <span aria-hidden="true">&times;</span>
             </button>

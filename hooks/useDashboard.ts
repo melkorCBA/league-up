@@ -18,7 +18,7 @@ const useDashboard = ({ initialData, clientenvs }) => {
   const refetch = {
     dashboard: async () => {
       const { _id: leagueId } = leagueSelected;
-      const data = await dashboardService.getDashboard({ leagueId });
+      const data = await dashboardService.getDashboard(leagueId);
       setDashboard(data);
     },
     teams: async () => {

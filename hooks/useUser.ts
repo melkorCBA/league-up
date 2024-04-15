@@ -20,13 +20,13 @@ const useUser = (initialUserDashboard) => {
 
   const getUserLeagues = async () => {
     const userLeagues = await leagueService.getLeagues();
-    setUserLeagues(userLeagues);
+    setUserLeagues(<any[]>userLeagues);
   };
 
   const getMatches = async () => {
     const { league: leagueId } = dashboard;
     const matchesForLeague = await matchService.getMatchesForLeague(leagueId);
-    setMatches(matchesForLeague);
+    setMatches(<any[]>matchesForLeague);
   };
 
   const addLeague = async ({ leagueName }) => {

@@ -11,7 +11,6 @@ const MatchesCardList = ({ matches, currentMatchId, updateCurrentMatch }) => {
             <MatchCard
               matchData={match}
               matchNumber={i + 1}
-              className="col-md-3"
               isOnLive={currentMatchId === match._id}
               onLiveChnage={updateCurrentMatch}
             />
