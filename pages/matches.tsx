@@ -62,12 +62,12 @@ export async function getServerSideProps(context) {
 
   if (!leagueId) {
     const userDashboard = await userService.getUserDashboard(axios);
-    leagueId = userDashboard.league;
+    leagueId = userDashboard['league'];
   }
 
   const teams = await teamService.getTeams(leagueId, axios);
   const matches = await matchService.getMatchesForLeague(leagueId, axios);
-  const dashboard = await dashboardService.getDashboard({ leagueId }, axios);
+  const dashboard = await dashboardService.getDashboard(leagueId , axios);
   const league = await leagueService.getLeague(leagueId, axios);
 
   // Pass data to the page via props
@@ -75,7 +75,7 @@ export async function getServerSideProps(context) {
     props: {
       teams,
       initalMatches: matches,
-      initialMatchInViewId: dashboard.currentMatch,
+      initialMatchInViewId: dashboard['currentMatch'],
       league,
       clientenvs: envs,
     },

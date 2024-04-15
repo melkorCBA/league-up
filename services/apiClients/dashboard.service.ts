@@ -3,7 +3,7 @@ import { getAxios, getCleanPayload, getData } from "./api.client";
 import { ENVIRONMENT } from "../../lib/util";
 
 export const getDashboard = async (
-  { leagueId },
+  leagueId: string,
   axiosClient: AxiosInstance = null
 ) => {
   let URL = `${ENVIRONMENT().BaseApiURL}/dashboard`;

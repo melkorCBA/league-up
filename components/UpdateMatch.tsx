@@ -115,6 +115,7 @@ const UpdateMatch = ({ league, match, updateMatch }) => {
               onChange={(v) => onMeataFieldChange("lockedForSync", v)}
               values={[false, true]}
               defultValue={match["lockedForSync"]}
+              isDisabled="false"
             />
             <Switch
               valueLabels={["No", "Yes"]}

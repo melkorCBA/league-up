@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { Password } from "../lib/util";
 import { findLeagueById, hasLeagueAccess } from "./user.extend";
+import { Passwords } from "../lib/encryption";
 
 /* PetSchema will correspond to a collection in your MongoDB database. */
 const UserSchema = new mongoose.Schema(
@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.pre("save", async function (done) {
   if (this.isModified("password")) {
-    const hashed = await Password.toHash(this.get("password"));
+    const hashed = await Passwords.toHash(this.get("password"));
     this.set("password", hashed);
   }
   done();

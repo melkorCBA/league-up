@@ -37,7 +37,7 @@ const MatchCard = ({ matchData, matchNumber, isOnLive, onLiveChnage }) => {
         overs: match.team2.overs,
         tm: match.bat1st === "2" ? 0 : 1,
       },
-    ].sort((t1, t2) => t1 - t2),
+    ].sort((t1, t2) => t1.tm - t2.tm),
   };
   return (
     <div className="d-flex flex-column  match-card">
@@ -84,6 +84,7 @@ const MatchCard = ({ matchData, matchNumber, isOnLive, onLiveChnage }) => {
         values={[false, true]}
         defultValue={match.isDeleted}
         onChange={(v) => onStatusChnage(v)}
+        isDisabled="false"
       />
     </div>
   );
