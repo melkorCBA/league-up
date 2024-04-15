@@ -2,7 +2,7 @@
 FROM node:16-alpine AS deps
 WORKDIR /app
 copy package.json .
-run npm install --omit=dev
+run npm ci
 
 
 # Rebuild the source code only when needed
