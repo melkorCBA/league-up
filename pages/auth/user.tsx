@@ -20,7 +20,7 @@ const User = ({ initalDashboard, clientenvs }) => {
   return (
     <div className="row container m-auto mt-5">
       <h1 className="text-center">User Settings</h1>
-      <div className="text-center">Email : {user.email}</div>
+      <div className="text-center">Email : {(user['email'])}</div>
 
       <div className="col-md-8 col-12 d-flex flex-column align-items-center">
         {/* <div>

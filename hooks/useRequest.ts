@@ -12,8 +12,20 @@ const RequestMethods = Object.freeze({
 });
 
 const UseRequest = (
-  { url, method, body, onSuccess, onError },
-  { onSuccessMsg, onErrorMsg }
+  {
+    url,
+    method,
+    body,
+    onSuccess,
+    onError,
+  }: {
+    url: string;
+    method: string;
+    body: { [key: string]: unknown };
+    onSuccess?: (data: unknown) => void;
+    onError?: (data: unknown) => void;
+  },
+  { onSuccessMsg, onErrorMsg }: { onSuccessMsg?: string; onErrorMsg?: string }
 ) => {
   const { setErrors, setSuccess } = useError();
   const doRequest = async () => {

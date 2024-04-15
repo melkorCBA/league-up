@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = ({ text }) => {
+const Footer = ({ text }: {text?:string}) => {
   return (
     <div className="h4 mt-5 text-center">
       {text}

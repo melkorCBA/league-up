@@ -34,7 +34,6 @@ export default function Admin({ initialData, clientenvs }) {
     updateLeagueSelected,
     updateView,
     matchInView,
-    updateLeagueInView,
   } = useDashboard({
     initialData,
     clientenvs,
@@ -124,7 +123,7 @@ export async function getServerSideProps(context) {
   const envs = CLIENT_ENVIRONMENT;
   const axios = axiosClient(context.req);
   try {
-    const dashboard = await dashboardService.getDashboard({}, axios);
+    const dashboard: any = await dashboardService.getDashboard(null, axios);
     const teams = await teamService.getTeams(null, axios);
     const leagueInView = await leagueService.getLeague(dashboard.league, axios);
     let matchInView = {}
