@@ -1,7 +1,7 @@
 # Install dependencies only when needed
 FROM node:16-alpine AS deps
 WORKDIR /app
-copy package.json .
+copy package.json package-lock.json .
 run npm ci
 
 
